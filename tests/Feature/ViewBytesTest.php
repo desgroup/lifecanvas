@@ -22,13 +22,22 @@ class ViewBytesTest extends TestCase
             'user_id' => $this->user->id,
             'title' => 'This is my second byte'
         ]);
+        $this->userComment = factory(\App\Comment::class)->create([
+            'user_id' => $this->user->id,
+            'byte_id' => $this->byte1->id,
+            'body' => 'Byte comment'
+        ]);
 
         $this->otherUser = factory(\App\User::class)->create();
         $this->otherUserByte = factory(\App\Byte::class)->create([
             'user_id' => $this->otherUser->id,
-            'title' => 'Should not see this byte'
+            'title' => 'Other users byte'
         ]);
-
+        $this->otherUserComment = factory(\App\Comment::class)->create([
+            'user_id' => $this->otherUser->id,
+            'byte_id' => $this->otherUserByte->id,
+            'body' => 'Byte comment'
+        ]);
     }
 
     /** @test */
@@ -56,5 +65,8 @@ class ViewBytesTest extends TestCase
         $response = $this->get('/bytes/' . $this->byte1->id);
 
         $response->assertSee($this->byte1->title);
+
+        // Should see the associated comment
+        $response->assertSee($this->userComment->body);
     }
 }

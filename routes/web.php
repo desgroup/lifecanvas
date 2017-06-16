@@ -11,13 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
 // Official app routes
+Route::get('/', 'PagesController@welcome');
+Route::get('/feed', 'PagesController@feed');
 Route::resource('bytes', 'ByteController');
