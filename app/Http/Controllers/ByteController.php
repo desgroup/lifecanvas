@@ -27,7 +27,7 @@ class ByteController extends Controller
      */
     public function create()
     {
-        //
+        return view('byte.create');
     }
 
     /**
@@ -38,7 +38,17 @@ class ByteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+        ]);
+
+        $byte =Byte::create([
+            'user_id' => auth()->id(),
+            'title' => request('title'),
+            'story' => request('story')
+        ]);
+
+        return redirect($byte->path());
     }
 
     /**

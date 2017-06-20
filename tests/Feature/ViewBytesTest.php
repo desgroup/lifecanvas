@@ -14,6 +14,7 @@ class ViewBytesTest extends TestCase
         parent::setUp();
 
         $this->user = factory(\App\User::class)->create();
+        $this->be($this->user);
         $this->byte1 = factory(\App\Byte::class)->create([
             'user_id' => $this->user->id,
             'title' => 'This is my first byte'
@@ -69,4 +70,14 @@ class ViewBytesTest extends TestCase
         // Should see the associated comment
         $response->assertSee($this->userComment->body);
     }
+
+    /** @test  */
+    public function a_user_can_read_comments_that_are_associated_with_a_byte_they_created()
+    {
+        $comment = factory('App\Comment')->create(['byte_id' => $this->byte1->id]);
+
+        $response = $this->get('/bytes/' . $this->byte1->id);
+        $response->assertSee($comment->body);
+    }
+
 }

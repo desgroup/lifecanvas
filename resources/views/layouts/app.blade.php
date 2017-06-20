@@ -19,7 +19,7 @@
     @yield('headcontent')
 
 </head>
-<body>
+<body style="padding-bottom: 100px;">
     <div id="app">
 
         @if(!isset($hidenav))

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class HomeController extends Controller // TODO-KGW I need to figure out if we need this controller anymore
 {
     /**
      * Create a new controller instance.

@@ -15,12 +15,23 @@
 //    return view('welcome');
 //});
 
+
+
+//Route::get('/home', 'HomeController@index')->name('home');
+
+
+// Official Lifecanvas routes
+// Guest routes
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', function () {
+    if(Auth::check()){return Redirect::to('feed');}
+    return view('welcome', ['hidenav' => true]);
+});
 
-
-// Official app routes
-Route::get('/', 'PagesController@welcome');
-Route::get('/feed', 'PagesController@feed');
-Route::resource('bytes', 'ByteController');
+// Must be signed in routes
+Route::group(['middleware' => ['auth']], function() {
+    Route::get('feed', 'PagesController@feed');
+    Route::resource('bytes', 'ByteController');
+    Route::post('/bytes/{byte}/comment', 'CommentController@store');
+});
