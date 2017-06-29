@@ -80,4 +80,10 @@ class ViewBytesTest extends TestCase
         $response->assertSee($comment->body);
     }
 
+    /** @test */
+    function a_user_can_view_their_bytes_by_lifeline()
+    {
+        // A signed in user
+        //
+    }
 }
