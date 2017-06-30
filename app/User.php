@@ -30,4 +30,8 @@ class User extends Authenticatable
     public function myBytes() {
         return $this->hasMany('App\Byte');
     }
+
+    public function myLines() {
+        return $this->hasMany('App\Line');
+    }
 }

@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class ViewBytesTest extends TestCase
+class BytesViewTest extends TestCase
 {
     use DatabaseMigrations;
 

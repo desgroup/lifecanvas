@@ -29,20 +29,20 @@ class LandingPageTest extends TestCase
     }
 
     /** @test */ // TODO-KGW This test needs to be completed, redirect is not working.
-//    public function a_signed_in_user_sees_their_feed_page_when_hitting_root_page()
-//    {
-//        // Sign-in as first user
-//        $this->be($this->user);
-//
-//        //$this->followRedirects();
-//
-//        // Go to lifecanvas.io root
-//        $response = $this->get('/');
-//
-//        //$this->assertRedirectedToRoute('feed');
-//
-//        // See the feed page
-//        //$response->assert('/feed'); // is the right URL
-//        $response->assertSee('Feed');
-//    }
+    public function a_signed_in_user_sees_their_feed_page_when_hitting_root_page()
+    {
+        // Sign-in as first user
+        $this->be($this->user);
+
+        $this->withExceptionHandling()
+            ->get('/')
+            ->assertRedirect('/feed');
+    }
+
+    /** @test */
+    function a_signed_out_user_sees_the_signin_page_when_clicking_on_signin_link()
+    {
+        $this->get('/signin')
+            ->assertSee('Sign In');
+    }
 }

@@ -27,9 +27,10 @@ class DatabaseSeeder extends Seeder
             array_push($this->tables,
                 'users',
                 'bytes',
-                'comments'
+                'comments',
+                'lines',
+                'byte_line'
                 //'places',
-                //'lines',
                 //'people',
                 //'byte_person',
                 //'byte_line'
@@ -54,8 +55,8 @@ class DatabaseSeeder extends Seeder
             $this->call(UsersTableSeeder::class);
             $this->call(BytesTableSeeder::class);
             $this->call(CommentsTableSeeder::class);
+            $this->call(LinesTableSeeder::class);
             //$this->call(PlacesTableSeeder::class);
-            //$this->call(LinesTableSeeder::class);
             //$this->call(PeopleTableSeeder::class);
             //$this->call(ByteLineSeeder::class);
             //$this->call(BytePeopleSeeder::class);

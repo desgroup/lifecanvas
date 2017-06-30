@@ -23,8 +23,8 @@ class CreateBytesTable extends Migration
 //            $table->boolean('favorite')->nullable()->default(false);
 //            // 5 star rating
 //            $table->tinyInteger('rating')->nullable();
-//            // privacy setting for the byte: 0 is private, 1 is friends, 2 is world
-//            $table->tinyInteger('privacy')->default('0');
+            // privacy setting for the byte: 0 is private, 1 is friends, 2 is world
+            $table->tinyInteger('privacy')->default('0');
 //            // The date the byte happened in UTC, can be empty
 //            $table->dateTime('byte_date')->nullable();
 //            // The timezone id for the byte_date that provides the UTC offset

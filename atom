@@ -1,0 +1,41 @@
+commit 7b096133a4f83157cc332db3a0278ff96c6b4c7b
+Author: Kyle Whatley <kgwhatley@me.com>
+Date:   Wed Jun 28 22:32:23 2017 -0400
+
+    Add lifelines and byte privacy
+
+commit f41101c9009dbd4b7c10239d5c56c9c1f2d55685
+Author: Kyle Whatley <kgwhatley@me.com>
+Date:   Tue Jun 20 19:43:53 2017 -0400
+
+    Add comment feature with verification
+
+commit 9bd62400382bab33c5e2d3e60aa4ebdbcc4a4651
+Author: Kyle Whatley <kgwhatley@me.com>
+Date:   Fri Jun 16 19:58:51 2017 -0400
+
+    Change auth code to signup and username
+
+commit 447257c9bd818323fffb1a5b55d425da6fcbcae8
+Author: Kyle Whatley <kgwhatley@me.com>
+Date:   Mon Jun 12 20:42:04 2017 -0400
+
+    Add view bytes feature
+
+commit b230ee94d2a3a68e2b5010a94a4503e31bda5258
+Author: Kyle Whatley <kgwhatley@me.com>
+Date:   Sun Jun 11 17:49:20 2017 -0400
+
+    Ran yarn -> generated yarn.lock
+
+commit 1d9cb9bfeb5834bbdb1d47a103a20bc1c436b186
+Author: Kyle Whatley <kgwhatley@me.com>
+Date:   Sun Jun 11 17:41:56 2017 -0400
+
+    Add db and test configuration changes and auth scaffolding
+
+commit 8617a9aaaa2263c47c89488593bcbb1386e5d176
+Author: Kyle Whatley <kgwhatley@me.com>
+Date:   Sun Jun 11 17:15:57 2017 -0400
+
+    Create base Laravel project

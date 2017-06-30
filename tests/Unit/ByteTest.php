@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ByteTest extends TestCase
 {
@@ -39,5 +38,13 @@ class ByteTest extends TestCase
         ]);
 
         $this->assertCount(1, $this->byte->comments);
+    }
+
+    /** @test */
+    function a_byte_can_be_tagged_with_lifelines()
+    {
+        $this->byte->lines()->attach([
+            1,2
+        ]);
     }
 }

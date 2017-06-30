@@ -34,4 +34,5 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('feed', 'PagesController@feed');
     Route::resource('bytes', 'ByteController');
     Route::post('/bytes/{byte}/comment', 'CommentController@store');
+    Route::resource('lines', 'LineController');
 });

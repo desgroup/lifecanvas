@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class ByteController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * List all the user's bytes.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,7 +21,7 @@ class ByteController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a byte.
      *
      * @return \Illuminate\Http\Response
      */
@@ -31,7 +31,7 @@ class ByteController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created byte in the storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -45,25 +45,29 @@ class ByteController extends Controller
         $byte =Byte::create([
             'user_id' => auth()->id(),
             'title' => request('title'),
-            'story' => request('story')
+            'story' => request('story'),
+            'privacy' => request('privacy')
         ]);
+
+        $byte->lines()->attach($request->lines);
 
         return redirect($byte->path());
     }
 
     /**
-     * Display the specified resource.
+     * Display a specific byte.
      *
      * @param  \App\Byte  $byte
      * @return \Illuminate\Http\Response
      */
     public function show(Byte $byte)
     {
-        return view('byte.show',compact('byte'));
+        $lines = $byte->lines()->get();
+        return view('byte.show',compact('byte', 'lines'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing a byte.
      *
      * @param  \App\Byte  $byte
      * @return \Illuminate\Http\Response
@@ -74,7 +78,7 @@ class ByteController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified byte in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Byte  $byte
@@ -82,11 +86,11 @@ class ByteController extends Controller
      */
     public function update(Request $request, Byte $byte)
     {
-        //
+        dd($request);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified byte from storage.
      *
      * @param  \App\Byte  $byte
      * @return \Illuminate\Http\Response

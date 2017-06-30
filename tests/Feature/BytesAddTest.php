@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AddBytesTest extends TestCase
+class BytesAddTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -34,18 +34,26 @@ class AddBytesTest extends TestCase
     {
         $this->signIn(); // TODO-KGW Using the Laracast helper method. Should standardize if going to use.
 
-        $byte = factory('App\Byte')->make();
+        $byte = create('App\Byte', ['user_id' => auth()->id()]);
+        $byteArray = $byte->toArray();
 
-        $this->post('/bytes', $byte->toArray());
+        $line1 = create('App\Line', ['name' => 'Test1', 'user_id' => auth()->id()]);
+        $line2 = create('App\Line', ['name' => 'Test2', 'user_id' => auth()->id()]);
+        $lines = ['lines' => [$line1->id, $line2->id]];
+        $byteArray = array_merge($byteArray, $lines);
+
+        $this->post('/bytes', $byteArray);
 
         $this->get('/bytes')
             ->assertSee($byte->title)
-            ->assertSee($byte->story);
+            ->assertSee($byte->story)
+            ->assertSee($line1->name)
+            ->assertSee($line2->name);
     }
 
     // validation tests
     /** @test */
-    function a_thread_requires_a_title()
+    function a_byte_requires_a_title()
     {
         $this->addByte(['title' => null])
             ->assertSessionHasErrors('title');

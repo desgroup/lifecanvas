@@ -32,7 +32,7 @@ $factory->define(App\Byte::class, function (Faker\Generator $faker) {
         'story' => $faker->paragraph,
 //        'favorite' => $faker->boolean(),
 //        'rating' => $faker->numberBetween(0, 5),
-//        'privacy' => $faker->numberBetween(0, 2),
+        'privacy' => $faker->numberBetween(0, 2),
 //        'byte_date' => $faker->dateTimeBetween(
 //            $startDate = '-30 years',
 //            $endDate = 'now',
@@ -58,3 +58,15 @@ $factory->define(App\Comment::class, function (Faker\Generator $faker) {
         'user_id' => $faker->randomElement($userIds)
     ];
 });
+
+$factory->define(App\Line::class, function (Faker\Generator $faker) {
+
+    $userIds = App\User::pluck('id')->toArray();
+
+    return [
+        'name' => $faker->word,
+        'user_id' => $faker->randomElement($userIds)
+    ];
+});
+
+
