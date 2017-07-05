@@ -11,16 +11,6 @@
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-
-
-
-//Route::get('/home', 'HomeController@index')->name('home');
-
-
-// Official Lifecanvas routes
 // Guest routes
 Auth::routes();
 
@@ -29,10 +19,13 @@ Route::get('/', function () {
     return view('welcome', ['hidenav' => true]);
 });
 
-// Must be signed in routes
+// Authentication routes
 Route::group(['middleware' => ['auth']], function() {
-    Route::get('feed', 'PagesController@feed');
-    Route::resource('bytes', 'ByteController');
+    Route::get('/feed', 'PagesController@feed');
+    Route::resource('/bytes', 'ByteController');
+    Route::resource('/lines', 'LineController');
+    Route::resource('/profiles', 'ProfileController');
+    Route::get('{user}', 'ProfileController@userProfile');
+    Route::post('/bytes/{byte}/favorites', 'FavoriteController@store');
     Route::post('/bytes/{byte}/comment', 'CommentController@store');
-    Route::resource('lines', 'LineController');
 });

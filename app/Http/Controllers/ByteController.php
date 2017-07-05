@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Byte;
 use App\User;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class ByteController extends Controller
      */
     public function index()
     {
-        $bytes = \Auth::user()->myBytes()->latest()->get();
+        $bytes = Auth::user()->myBytes()->latest()->paginate();
 
         return view('byte.index',compact('bytes'));
     }

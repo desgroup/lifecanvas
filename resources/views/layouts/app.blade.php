@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css">
 
     @yield('css_page')
     @yield('head_js')

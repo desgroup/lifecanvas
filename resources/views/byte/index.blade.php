@@ -15,6 +15,7 @@
                             <div class="body">{{ $byte->story }}</div>
                             <hr>
                         @endforeach
+                        {{ $bytes->links() }}
                     </div>
                 </div>
             </div>

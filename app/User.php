@@ -27,11 +27,32 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function myBytes() {
         return $this->hasMany('App\Byte');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function myLines() {
         return $this->hasMany('App\Line');
+    }
+
+    public function bytes()
+    {
+        return $this->hasMany(Byte::class)->latest();
+    }
+
+    /**
+     * Changes the binding reference to username vs id for route model binding
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'username';
     }
 }
