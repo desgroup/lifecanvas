@@ -42,9 +42,15 @@ class CreateLinesTable extends Migration
      */
     public function down()
     {
-        //DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        if(env('DB_CONNECTION') == "mysql")
+        {
+            DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        }
         Schema::dropIfExists('lines');
         Schema::dropIfExists('byte_line');
-        //DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        if(env('DB_CONNECTION') == "mysql")
+        {
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        }
     }
 }

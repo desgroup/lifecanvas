@@ -7,16 +7,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="level">
-                            <h5 class="flex">
-                                {{ $byte->title }} <br>
-                                <a href="@if($byte->creator->username == Auth::user()->username)
-                                        /">
-                                    @else
-                                        /{{ $byte->creator->username }}">
-                                    @endif
-                                    {{ $byte->creator->username }}</a> at {{ $byte->created_at->diffForHumans() }}
-                            </h5>
-                            <div>
+                            <div class="pull-right">
                                 <form method="POST" action="/bytes/{{ $byte->id }}/favorites">
                                     {{ csrf_field() }}
                                     <button type="submit" class="btn btn-default" {{ $byte->isFavorited() ? 'disabled' : ''}}>
@@ -24,6 +15,15 @@
                                     </button>
                                 </form>
                             </div>
+                            <h4>
+                                {{ $byte->title }} <br>
+                                <a href="@if($byte->creator->username == Auth::user()->username)
+                                        /">
+                                    @else
+                                        /{{ $byte->creator->username }}">
+                                    @endif
+                                    {{ $byte->creator->username }}</a> at {{ $byte->created_at->diffForHumans() }}
+                            </h4>
                         </div>
                     </div>
                     <div class="panel-body">
