@@ -8,7 +8,12 @@
                 <div class="panel-heading"><h3 class="panel-title">Feed</h3></div>
 
                 <div class="panel-body">
-                    Your feed will go here.
+                    @foreach($bytes as $byte)
+                        <article><h4><a href="/bytes/{{ $byte->id }}">{{ $byte->title }}</a></h4></article>
+                        <div class="body">{{ $byte->story }}</div>
+                        <hr>
+                    @endforeach
+                    {{ $bytes->links() }}
                 </div>
             </div>
         </div>

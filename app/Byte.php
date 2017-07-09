@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Byte extends Model
 {
-    use Favoriteable;
+    use Favoriteable, RecordsActivity;
 
     protected $guarded = [];
 

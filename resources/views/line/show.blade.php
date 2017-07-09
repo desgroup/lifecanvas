@@ -9,11 +9,13 @@
                         <h3 class="panel-title">{{ $line->name }}</h3>
                     </div>
                     <div class="panel-body">
-                        @foreach($bytes as $byte)
+                        @forelse($bytes as $byte)
                             <article><h4><a href="/bytes/{{ $byte->id }}">{{ $byte->title }}</a></h4></article>
                             <div class="body">{{ $byte->story }}</div>
                             <hr>
-                        @endforeach
+                        @empty
+                            <p>There are no bytes in this lifeline.</p>
+                        @endforelse
                     </div>
                 </div>
             </div>

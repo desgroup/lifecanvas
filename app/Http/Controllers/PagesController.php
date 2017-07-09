@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Byte;
 use Illuminate\Http\Request;
 
 class PagesController extends Controller // TODO-KGW Maybe deal with this controller in just the routes file
@@ -15,6 +16,8 @@ class PagesController extends Controller // TODO-KGW Maybe deal with this contro
 
     public function feed()
     {
-        return view('feed');
+        $bytes = Byte::latest()->paginate(30);
+
+        return view('feed', compact('bytes'));
     }
 }

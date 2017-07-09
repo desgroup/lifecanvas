@@ -25,6 +25,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // TODO-KGW need to deal with the auth exception for administrators
+        // this can be done by role ideally
+        Gate::before(function ($user) {
+            //if($user->name === 'John Doe') return true;
+        });
     }
 }

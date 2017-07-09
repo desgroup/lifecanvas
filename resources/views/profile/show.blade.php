@@ -2,27 +2,21 @@
 
 @section('content')
     <div class="container">
-        <div class="page-header">
-            <h1>
-                {{ $profileUser->username }}
-            </h1>
-            <h3>Lifer since: {{ $profileUser->created_at->diffForHumans() }}</h3>
-        </div>
-        @foreach($bytes as $byte)
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="level">
-                        <span class="flex">
-                            <a href="/bytes/{{ $byte->id }}">{{ $byte->title }}</a> posted:
-                        </span>
-                        <span>{{ $byte->created_at->diffForHumans() }}</span>
-                    </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="page-header">
+                    <h1>
+                        {{ $profileUser->username }}
+                    </h1>
+                    <h3>Lifer since: {{ $profileUser->created_at->diffForHumans() }}</h3>
                 </div>
-                <div class="panel-body">
-                    <div class="body">{{ $byte->story }}</div>
-                </div>
+                @foreach($activities as $date => $activityGroup)
+                    <h3 class="page-header">{{ $date }}</h3>
+                    @foreach($activityGroup as $activity)
+                        @include("activity.{$activity->type}")
+                    @endforeach
+                @endforeach
             </div>
-        @endforeach
-        {{ $bytes->links() }}
+        </div>
     </div>
 @endsection

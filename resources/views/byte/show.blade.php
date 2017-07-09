@@ -8,6 +8,13 @@
                     <div class="panel-heading">
                         <div class="level">
                             <div class="pull-right">
+                                @if($byte->user_id == auth()->id())
+                                    <form action="{{ $byte->path() }}" method="POST">
+                                        {{ csrf_field() }}
+                                        {{ method_field('DELETE') }}
+                                        <button type="submit" class="btn btn-default"> <i class="fa fa-trash"></i> </button>
+                                    </form>
+                                @endif
                                 <form method="POST" action="/bytes/{{ $byte->id }}/favorites">
                                     {{ csrf_field() }}
                                     <button type="submit" class="btn btn-default" {{ $byte->isFavorited() ? 'disabled' : ''}}>
@@ -16,7 +23,7 @@
                                 </form>
                             </div>
                             <h4>
-                                {{ $byte->title }} <br>
+                                {{ $byte->title }}<br>
                                 <a href="@if($byte->creator->username == Auth::user()->username)
                                         /">
                                     @else

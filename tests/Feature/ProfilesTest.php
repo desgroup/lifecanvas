@@ -31,15 +31,13 @@ class ProfilesTest extends TestCase
     }
 
     /** @test */
-    function profiles_display_all_public_bytes_created_by_user()
+    function profile_displays_latest_user_activity()
     {
         $this->signIn();
 
-        $user = create('App\User');
+        $byte = create('App\Byte', ['user_id' =>auth()->id()]);
 
-        $byte = create('App\Byte', ['user_id' => $user->id]);
-
-        $this->get("/{$user->username}")
+        $this->get("/" . auth()->user()->username)
             ->assertSee($byte->title)
             ->assertSee($byte->story);
     }

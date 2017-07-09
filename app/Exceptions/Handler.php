@@ -44,9 +44,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        // TODO-KGW Not working, but I want it too. TokenMissmatch
         if ($exception instanceof TokenMismatchException) {
-
-            return redirect(route('signin'))->with('message', 'You page session expired. Please try again');
+            return redirect(route('signin'))->with('message', 'Your page session expired. Please try again');
         }
 
         return parent::render($request, $exception);

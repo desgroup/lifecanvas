@@ -98,6 +98,24 @@ class ByteController extends Controller
      */
     public function destroy(Byte $byte)
     {
-        //
+        if ($byte->user_id != auth()->id()) {
+            // TODO-KGW I don't like this approach, I would prefer redirect back with a message
+            abort(403, 'You do not have permission to delete this thread.');
+            if (request()->wantsJson()) {
+                // TODO-KGW This is here just for testing, not sure about this.
+                return response(['status' => 'Permission Denied'], 403);
+            }
+            return redirect('/signin');
+        }
+
+        $byte->comments()->delete();
+        $byte->delete();
+
+        if(request()->wantsJson())
+        {
+            return response([], 204);
+        }
+
+        return redirect('/bytes');
     }
 }

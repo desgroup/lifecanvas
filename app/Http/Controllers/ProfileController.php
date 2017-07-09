@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Activity;
 use App\User;
 use App\Profile;
 use Illuminate\Http\Request;
@@ -17,9 +18,16 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
+//        return view('profile.show', [
+//            'profileUser' => $user,
+//            'bytes' => $user->bytes()->paginate(30)
+//        ]);
+
+        //dd(Activity::feed($user));
+
         return view('profile.show', [
             'profileUser' => $user,
-            'bytes' => $user->bytes()->paginate(30)
+            'activities' => Activity::feed($user)
         ]);
     }
 
@@ -97,9 +105,14 @@ class ProfileController extends Controller
      */
     public function userProfile(User $user)
     {
+//        return view('profile.show', [
+//            'profileUser' => $user,
+//            'bytes' => $user->bytes()->paginate(30)
+//        ]);
+
         return view('profile.show', [
             'profileUser' => $user,
-            'bytes' => $user->bytes()->paginate(30)
+            'activities' => Activity::feed($user)
         ]);
     }
 }
