@@ -12,7 +12,22 @@
 */
 
 // Guest routes
-Auth::routes();
+//Auth::routes();
+// Authentication Routes...
+Route::get('signin', 'Auth\SigninController@showSigninForm')->name('signin');
+Route::post('signin', 'Auth\SigninController@signin');
+Route::post('signout', 'Auth\SigninController@signout')->name('signout');
+
+// Registration Routes...
+Route::get('signup', 'Auth\SignupController@showSignupForm')->name('signup');
+Route::post('signup', 'Auth\SignupController@signup');
+
+// Password Reset Routes...
+Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+
 
 Route::get('/', function () {
     if(Auth::check()){return Redirect::to('feed');}
