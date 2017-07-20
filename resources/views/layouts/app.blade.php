@@ -28,6 +28,7 @@
         @endif
 
         @yield('content')
+            <flash message="{{ session('flash') }}"></flash>
     </div>
 
     @yield('onPageCSS')

@@ -11,6 +11,7 @@ class FavoriteController extends Controller
     {
         $byte->favorite();
 
-        return back();
+        return back()
+            ->with('flash', 'You have favorited a byte');
     }
 }

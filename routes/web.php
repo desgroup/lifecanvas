@@ -12,7 +12,7 @@
 */
 
 // Guest routes
-//Auth::routes();
+Auth::routes();
 // Authentication Routes...
 Route::get('signin', 'Auth\SigninController@showSigninForm')->name('signin');
 Route::post('signin', 'Auth\SigninController@signin');
@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('/bytes', 'ByteController');
     Route::resource('/lines', 'LineController');
     Route::resource('/profiles', 'ProfileController');
+    Route::delete('/comments/{comment}', 'CommentController@destroy');
     Route::get('{user}', 'ProfileController@userProfile');
     Route::post('/bytes/{byte}/favorites', 'FavoriteController@store');
     Route::post('/bytes/{byte}/comment', 'CommentController@store');

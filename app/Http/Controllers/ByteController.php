@@ -52,7 +52,8 @@ class ByteController extends Controller
 
         $byte->lines()->attach($request->lines);
 
-        return redirect($byte->path());
+        return redirect($byte->path())
+            ->with('flash', 'Your byte has been added');
     }
 
     /**
@@ -108,7 +109,7 @@ class ByteController extends Controller
             return redirect('/signin');
         }
 
-        $byte->comments()->delete();
+        //$byte->comments()->delete();
         $byte->delete();
 
         if(request()->wantsJson())

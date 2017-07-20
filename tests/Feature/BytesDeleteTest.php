@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Activity;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -38,5 +39,7 @@ class BytesDeleteTest extends TestCase
 
         $this->assertDatabaseMissing('bytes', ['id' => $byte->id]);
         $this->assertDatabaseMissing('comments', ['id' => $comment->id]);
+
+        $this->assertEquals(0, Activity::count());
     }
 }

@@ -1,6 +1,6 @@
 @component('activity.activity')
     @slot('heading')
-        {{ $profileUser->name }} commented on lifebyte: <a href="{{ $activity->subject->byte->path() }}">
+        {{ $profileUser->username }} commented on lifebyte: <a href="{{ $activity->subject->byte->path() }}">
             {{ $activity->subject->byte->title }}
         </a>
     @endslot

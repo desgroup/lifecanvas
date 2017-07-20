@@ -84,6 +84,6 @@ class BytesViewTest extends TestCase
     function a_user_can_view_their_bytes_by_lifeline()
     {
         // A signed in user
-        //
+        // TODO-KGW this test is not finished, need to finish
     }
 }

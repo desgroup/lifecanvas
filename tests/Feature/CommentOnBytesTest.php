@@ -32,9 +32,37 @@ class CommentOnBytesTest extends TestCase
             ->assertSee($comment->body);
     }
 
+    /** @test */
+    function unauthorized_users_cannot_delete_comments()
+    {
+        $this->withExceptionHandling();
+
+        $comment = create('App\Comment', ['user_id' => 1, 'byte_id' => 1]);
+
+        $this->delete("/comments/{$comment->id}")
+            ->assertRedirect('signin');
+
+        $this->signIn()
+            ->delete("/comments/{$comment->id}")
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    function authorized_users_can_delete_their_comments()
+    {
+        $this->signIn();
+
+        $comment = create('App\Comment', ['user_id' => auth()->id(), 'byte_id' => 1]);
+
+        $this->delete("/comments/{$comment->id}")
+            ->assertStatus(302);
+
+        $this->assertDatabaseMissing('comments', ['id' => $comment->id]);
+    }
+
     // validation tests
     /** @test */
-    function a_thread_requires_a_comment()
+    function a_comment_requires_a_body()
     {
         $this->addComment(['body' => null])
             ->assertSessionHasErrors('body');

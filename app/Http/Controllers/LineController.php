@@ -46,7 +46,8 @@ class LineController extends Controller
             'name' => request('name')
         ]);
 
-        return redirect('/lines');
+        return redirect('/lines')
+            ->with('flash', 'Your lifeline has been added');
     }
 
     /**

@@ -16,3 +16,13 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['prefix' => 'v1'], function(){
+    Route::post('/login', 'ApiAuthController@login');
+    Route::resource('byte', 'ApiByteController');
+//    Route::get('byte/{$id}/lines', 'ApiLineController@index');
+//    Route::resource('byte', 'ApiByteController');
+//    Route::resource('line', 'ApiLineController', ['only' => ['index', 'show']]);
+    //Route::get('lessons/{id}/tags', 'TagsController@lessonTags');
+    //Route::resource('tags', 'TagsController');
+});

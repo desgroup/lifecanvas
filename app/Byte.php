@@ -12,6 +12,19 @@ class Byte extends Model
 
     protected $with = ['creator'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('commentCount', function ($buiilder) {
+            $buiilder->withCount('comments');
+        });
+
+        static::deleting(function ($thread) {
+            $thread->comments->each->delete();
+        });
+    }
+
     /**
      * @return string
      */

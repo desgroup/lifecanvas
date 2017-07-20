@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Byte;
-use App\Comment;
 use Illuminate\Http\Request;
 
-class CommentController extends Controller
+class ApiByteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,28 +33,29 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Byte $byte, Request $request)
+    public function store(Request $request)
     {
-        $this->validate($request, [
-            'body' => 'required',
+        $byte =Byte::create([
+            'user_id' => 1,
+            'title' => request('title'),
+            'story' => request('story'),
+            'privacy' => request('privacy')
         ]);
 
-        $byte->addComment([
-            'body' => request('body'),
-            'user_id' => auth()->id()
-        ]);
+        $byte->lines()->attach($request->lines);
 
-        return back()
-            ->with('flash', 'Your comment has been added');
+        $response = -2;
+
+        return $response;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Comment  $comment
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function show($id)
     {
         //
     }
@@ -63,10 +63,10 @@ class CommentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Comment  $comment
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Comment $comment)
+    public function edit($id)
     {
         //
     }
@@ -75,10 +75,10 @@ class CommentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Comment  $comment
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -86,20 +86,11 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Comment  $comment
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy($id)
     {
-//        if($comment->user_id != auth()->id())
-//        {
-//            return response([], 403);
-//        }
-
-        $this->authorize('update', $comment);
-
-        $comment->delete();
-
-        return back();
+        //
     }
 }

@@ -10,4 +10,14 @@
     <div class="panel-body">
         <div class="body">{{ $comment->body }}</div>
     </div>
+    @can ('update', $comment)
+        <div class="panel-footer">
+            <form method="POST" action="/comments/{{ $comment->id }}">
+                {{ csrf_field() }}
+                {{ method_field('DELETE') }}
+                <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+            </form>
+        </div>
+    @endcan
+
 </div>
