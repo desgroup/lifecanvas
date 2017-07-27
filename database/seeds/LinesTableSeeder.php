@@ -21,7 +21,7 @@ class LinesTableSeeder extends Seeder
 
         foreach ($bytes as $byte) {
             $lines = App\Line::where('user_id', $byte->user_id)->get();
-            //dd($lines);
+
             foreach ($lines as $line) {
                 if((bool)random_int(0, 1)) {
                     $byte->lines()->attach($line);

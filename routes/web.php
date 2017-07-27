@@ -11,9 +11,8 @@
 |
 */
 
-// Guest routes
-Auth::routes();
 // Authentication Routes...
+//Auth::routes();
 Route::get('signin', 'Auth\SigninController@showSigninForm')->name('signin');
 Route::post('signin', 'Auth\SigninController@signin');
 Route::post('signout', 'Auth\SigninController@signout')->name('signout');
@@ -28,7 +27,7 @@ Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
-
+// Guest routes
 Route::get('/', function () {
     if(Auth::check()){return Redirect::to('feed');}
     return view('welcome', ['hidenav' => true]);
@@ -39,6 +38,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/feed', 'PagesController@feed');
     Route::resource('/bytes', 'ByteController');
     Route::resource('/lines', 'LineController');
+    Route::resource('/places', 'PlaceController');
     Route::resource('/profiles', 'ProfileController');
     Route::delete('/comments/{comment}', 'CommentController@destroy');
     Route::get('{user}', 'ProfileController@userProfile');

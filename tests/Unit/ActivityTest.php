@@ -63,6 +63,16 @@ class ActivityTest extends TestCase
     }
 
     /** @test */
+    function it_records_activity_when_a_user_adds_a_place()
+    {
+        $this->signIn();
+
+        create('App\Place');
+
+        $this->assertEquals(1, Activity::count());
+    }
+
+    /** @test */
     function it_fetches_an_activity_feed_for_a_given_user()
     {
         $this->signIn();

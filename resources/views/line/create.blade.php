@@ -22,6 +22,7 @@
                                 <input type="text" class="form-control" id="name" name="name"  value="{{ old('name') }}" placeholder="Line name" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Add Line</button>
+                            <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
                         </form>
                     </div>
                 </div>

@@ -6,17 +6,22 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">My Lifelines</h3>
+                        <h3 class="panel-title">{{ $place->name }}</h3>
                     </div>
                     <div class="panel-body">
-                        @forelse($lines as $line)
-                            <article><h4><a href="/lines/{{ $line->id }}">{{ $line->name }}</a></h4></article>
+                        @forelse($bytes as $byte)
+                            <article><h4><a href="/bytes/{{ $byte->id }}">{{ $byte->title }}</a></h4></article>
+                            <div class="body">{{ $byte->story }}</div>
                             <hr>
                         @empty
-                            <p>You have no lifelines. <a href="/lines/create">Add a lifeline.</a></p>
+                            <p>There are no bytes attached to this place.</p>
                         @endforelse
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
             </div>
         </div>
     </div>

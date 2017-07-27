@@ -10,6 +10,26 @@ class LinesTagBytesTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
+    function unauthenticated_users_cannot_see_the_a_line_list()
+    {
+        $this->withExceptionHandling()
+            ->get('/lines')
+            ->assertRedirect('signin');
+    }
+
+    /** @test */
+    function authenticated_users_can_see_a_list_of_lifelines()
+    {
+        $this->signIn();
+
+        $line = create('App\Line', ['user_id' => auth()->id()]);
+        //dd($line);
+
+        $this->get('/lines')
+            ->assertSee($line->name);
+    }
+
+    /** @test */
     function authenticated_users_can_view_bytes_by_lifelines()
     {
         // Authenticate a user
@@ -33,15 +53,11 @@ class LinesTagBytesTest extends TestCase
     }
 
     /** @test */
-    function authenticated_users_can_see_a_list_of_lifelines()
+    function unauthenticated_users_cannot_see_the_create_line_page()
     {
-        $this->signIn();
-
-        $line = create('App\Line', ['user_id' => auth()->id()]);
-        //dd($line);
-
-        $this->get('/lines')
-            ->assertSee($line->name);
+        $this->withExceptionHandling()
+            ->get('/lines/create')
+            ->assertRedirect('signin');
     }
 
     /** @test */
@@ -73,13 +89,13 @@ class LinesTagBytesTest extends TestCase
 //        $this->signIn();
 //
 //        // with a byte
-//        $byte = create('App\Byte', ['user_id' => auth()->id()]);
+//        $line = create('App\Byte', ['user_id' => auth()->id()]);
 //        $line1 = create('App\Line', ['name' => 'Test1', 'user_id' => auth()->id()]);
 //        $line2 = create('App\Line', ['name' => 'Test2', 'user_id' => auth()->id()]);
 //
-//        $this->put('/bytes/' . $byte->id, ['name' => [1,2]]);
+//        $this->put('/bytes/' . $line->id, ['name' => [1,2]]);
 //
-//        $this->get('/bytes/' . $byte->id)
+//        $this->get('/bytes/' . $line->id)
 //            ->assertSee($line1->name)
 //            ->assertSee($line2->name);
     }
@@ -105,8 +121,8 @@ class LinesTagBytesTest extends TestCase
     {
         $this->withExceptionHandling()->signIn();
 
-        $byte = make('App\Line', $overrides);
+        $line = make('App\Line', $overrides);
 
-        return $this->post('/lines', $byte->toArray());
+        return $this->post('/lines', $line->toArray());
     }
 }

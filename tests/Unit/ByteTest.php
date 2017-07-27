@@ -43,8 +43,10 @@ class ByteTest extends TestCase
     /** @test */
     function a_byte_can_be_tagged_with_lifelines()
     {
+        create('App\Line');
+
         $this->byte->lines()->attach([
-            1,2
+            1
         ]);
     }
 }

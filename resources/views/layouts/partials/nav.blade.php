@@ -23,9 +23,8 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bytes<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/bytes">My Bytes</a></li>
-                        <li><a href="/feed">Byte Feed</a></li>
                         <li><a href="/bytes/create">Add Byte</a></li>
+                        <li><a href="/bytes">My Bytes</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -37,6 +36,13 @@
                         @foreach($mylines as $myline)
                             <li><a href="/lines/{{ $myline->id }}">{{ $myline->name }}</a></li>
                         @endforeach
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Places<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/places/create">Add Place</a></li>
+                        <li><a href="/places">My Places</a></li>
                     </ul>
                 </li>
             </ul>
@@ -54,6 +60,7 @@
                             {{ Auth::user()->username }} <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
+                            <li><a href="/profiles">Profile</a></li>
                             <li>
                                 <a href="{{ route('signout') }}"
                                    onclick="event.preventDefault();
@@ -64,7 +71,6 @@
                                     {{ csrf_field() }}
                                 </form>
                             </li>
-                            <li><a href="/profiles">Profile</a></li>
                         </ul>
                     </li>
                 @endif

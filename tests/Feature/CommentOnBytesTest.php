@@ -37,7 +37,7 @@ class CommentOnBytesTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $comment = create('App\Comment', ['user_id' => 1, 'byte_id' => 1]);
+        $comment = create('App\Comment', ['user_id' => 2, 'byte_id' => 1]);
 
         $this->delete("/comments/{$comment->id}")
             ->assertRedirect('signin');

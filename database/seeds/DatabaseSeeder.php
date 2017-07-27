@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
     function __construct()
     {
         $this->tables = [
-            //'timezones',
-            //'countries'
+            'timezones',
+            'countries'
         ];
 
         if(getenv('APP_ENV') == "local")
@@ -29,12 +29,12 @@ class DatabaseSeeder extends Seeder
                 'bytes',
                 'comments',
                 'lines',
-                'byte_line'
-                //'places',
+                'byte_line',
+                'places',
                 //'people',
+                'byte_line'
                 //'byte_person',
-                //'byte_line'
-            //'assets'
+                //'assets'
             );
         }
     }
@@ -48,17 +48,17 @@ class DatabaseSeeder extends Seeder
     {
         $this->truncateDatabase();
 
-        //$this->call(TimezonesTableSeeder::class);
-        //$this->call(CountriesTableSeeder::class);
+        $this->call(TimezonesTableSeeder::class);
+        $this->call(CountriesTableSeeder::class);
 
         if(getenv('APP_ENV') == "local") {
             $this->call(UsersTableSeeder::class);
+            $this->call(LinesTableSeeder::class);
+            $this->call(PlacesTableSeeder::class);
+            //$this->call(PeopleTableSeeder::class);
             $this->call(BytesTableSeeder::class);
             $this->call(CommentsTableSeeder::class);
-            $this->call(LinesTableSeeder::class);
-            //$this->call(PlacesTableSeeder::class);
-            //$this->call(PeopleTableSeeder::class);
-            //$this->call(ByteLineSeeder::class);
+            $this->call(ByteLineSeeder::class);
             //$this->call(BytePeopleSeeder::class);
             //$this->call(AssetsTableSeeder::class);
         }

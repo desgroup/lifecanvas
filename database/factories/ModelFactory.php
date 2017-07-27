@@ -23,27 +23,82 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Byte::class, function (Faker\Generator $faker) {
+$factory->define(App\Line::class, function (Faker\Generator $faker) {
 
     $userIds = App\User::pluck('id')->toArray();
 
     return [
+        'name' => $faker->word,
+        'user_id' => $faker->randomElement($userIds)
+    ];
+});
+
+$factory->define(App\Place::class, function (Faker\Generator $faker) {
+
+    $timezones = [];
+    $userIds = App\User::pluck('id')->toArray();
+    $countryCodes = DB::table('countries')->select('id')->get()->toArray();
+    $countryCode = $faker->randomElement($countryCodes);
+    if(! is_null ($countryCode)) {
+        $timezones = DB::table('timezones')->where('country_code', '=', $countryCode->id)->get()->toArray();
+        $cc = $countryCode->id;
+    } else {
+        $cc = 1;
+    }
+    if($timezones == []) {
+        $tz = 1;
+    } else {
+        $tz = $faker->randomElement($timezones)->id;
+    }
+
+    return [
+        'name' => $faker->city,
+        'address' => $faker->streetAddress,
+        'city' => $faker->city,
+        'province' => $faker->stateAbbr,
+        'country_code' => $cc,
+        'extant' => 1,
+        'url_place' => $faker->url,
+        'url_wikipedia' => $faker->url,
+        'lat' => $faker->latitude,
+        'lng' => $faker->longitude,
+        'map_zoom' => $faker->numberBetween(10, 19),
+        'image_id' => $faker->numberBetween(1, 50),
+        'timezone_id' => $tz,
+        'user_id' => $faker->randomElement($userIds)
+    ];
+});
+
+$factory->define(App\Byte::class, function (Faker\Generator $faker) {
+
+    $userIds = App\User::pluck('id')->toArray();
+    $userId = $faker->randomElement($userIds);
+    $places = DB::table('places')->where('user_id', '=', $userId)->get()->toArray();
+    if($places == []) {
+        $place_id = 1;
+        $place_tz = 1;
+    } else {
+        $place = $faker->randomElement($places);
+        $place_id = $place->id;
+        $place_tz = $place->timezone_id;
+    }
+
+    return [
         'title' => $faker->sentence,
         'story' => $faker->paragraph,
-//        'favorite' => $faker->boolean(),
-//        'rating' => $faker->numberBetween(0, 5),
+        'rating' => $faker->numberBetween(0, 5),
         'privacy' => $faker->numberBetween(0, 2),
-//        'byte_date' => $faker->dateTimeBetween(
-//            $startDate = '-30 years',
-//            $endDate = 'now',
-//            $timezone = 'UTC'),
-//        'accuracy' => '11' . $faker->numberBetween(0, 1) . '000',
-//        'timezone_id' => $faker->numberBetween(1, 200),
-//        'lat' => $faker->latitude,
-//        'lng' => $faker->longitude,
+        'byte_date' => $faker->dateTimeBetween(
+            $startDate = '-30 years',
+            $endDate = 'now',
+            $timezone = 'UTC'),
+        'accuracy' => '11' . $faker->numberBetween(0, 1) . '000',
+        'timezone_id' => $place_tz,
+        'lat' => $faker->latitude,
+        'lng' => $faker->longitude,
 //        //'image_id' => $faker->numberBetween(1,200), // TODO-KGW disabled until I figure out how to choose the right one
-//        'place_id' => $faker->numberBetween(1, 200),
-        'user_id' => $faker->randomElement($userIds)
+        'place_id' => $place_id,
+        'user_id' => $userId
     ];
 });
 
@@ -58,15 +113,4 @@ $factory->define(App\Comment::class, function (Faker\Generator $faker) {
         'user_id' => $faker->randomElement($userIds)
     ];
 });
-
-$factory->define(App\Line::class, function (Faker\Generator $faker) {
-
-    $userIds = App\User::pluck('id')->toArray();
-
-    return [
-        'name' => $faker->word,
-        'user_id' => $faker->randomElement($userIds)
-    ];
-});
-
 

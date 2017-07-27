@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Place;
 use App\Byte;
 use App\User;
+use App\Timezone;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Lifecanvas\Utilities\FuzzyDate;
 
 class ByteController extends Controller
 {
@@ -16,6 +20,7 @@ class ByteController extends Controller
      */
     public function index()
     {
+        //dd(Timezone::where('id', '=', 1)->first());
         $bytes = Auth::user()->myBytes()->latest()->paginate();
 
         return view('byte.index',compact('bytes'));
@@ -28,7 +33,10 @@ class ByteController extends Controller
      */
     public function create()
     {
-        return view('byte.create');
+        $places = Place::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
+        $timezones = Timezone::orderBy('timezone_name')->pluck('timezone_name', 'id')->toArray();
+
+        return view('byte.create', compact('places', 'timezones'));
     }
 
     /**
@@ -43,11 +51,20 @@ class ByteController extends Controller
             'title' => 'required',
         ]);
 
+        //dd($request);
+
+        $byte_date = $this->createTimestamp($request);
+
         $byte =Byte::create([
             'user_id' => auth()->id(),
             'title' => request('title'),
             'story' => request('story'),
-            'privacy' => request('privacy')
+            'rating' => request('rating'),
+            'privacy' => request('privacy'),
+            'place_id' => request('place_id') == "00" ? null : request('place_id'),
+            'timezone_id' => request('timezone_id') == "00" ? null : request('timezone_id'),
+            'byte_date' => $byte_date['datetime']->setTimezone('UTC'),
+            'accuracy' => $byte_date['accuracy']
         ]);
 
         $byte->lines()->attach($request->lines);
@@ -119,4 +136,61 @@ class ByteController extends Controller
 
         return redirect('/bytes');
     }
+
+    private function createTimestamp($request, $image_date = null) {
+
+        if(is_null($image_date)) {
+
+            //dd('is null');
+
+            $fuzzy_date = new FuzzyDate();
+
+            $byte_date = $fuzzy_date->makeByteDate(
+                $request->year,
+                $request->month,
+                $request->day,
+                $request->hour,
+                $request->minute,
+                $request->seconds
+            );
+
+            //dd("Input: " . $byte_date['datetime']);
+
+        } else {
+
+            //dd('not null');
+
+            $byte_date = array("datetime" => $image_date['datetime'],
+                "accuracy" => $image_date['accuracy']);
+
+            //dd("Image: " . $byte_date['datetime']);
+        }
+
+        //dd('Here I am');
+        //dd(Timezone::where('id', '=', 1)->first());
+        //dd(Timezone::where('id', '=', 1)->get());
+        //dd($request->timezone_id);
+        if(!is_null($request->timezone_id) && $request->timezone_id <> "00") {
+            //dd($request->timezone_id);
+            $timeZone = Timezone::where('id', '=', $request->timezone_id)->first();
+            //$timeZone = Timezone::where('id', '=', $request->timezone_id)->first();
+            //dd(Timezone::where('id', '=', $request->timezone_id)->first());
+            //dd($timeZone);
+            //dd('Here I am');
+        } elseif (!is_null($request->usertimezone)) {
+            $timeZone = Timezone::where('timezone_name', '=', $request->usertimezone)->first();
+            //dd('users tz');
+        } else {
+            $timeZone = Timezone::where('id', '=', 371)->first();
+            //dd('default');
+        }
+
+        $byte_date["datetime"] = $timestamp = Carbon::createFromFormat('Y:m:d H:i:s',
+            $byte_date["datetime"], $timeZone->timezone_name);
+
+        //dd($byte_date);
+
+        return $byte_date;
+    }
+
 }

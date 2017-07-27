@@ -36,9 +36,15 @@ class ProfilesTest extends TestCase
         $this->signIn();
 
         $byte = create('App\Byte', ['user_id' =>auth()->id()]);
+        $this->post('/bytes/' . $byte->id . '/favorites');
+        $line = create('App\Line', ['user_id' =>auth()->id()]);
+        $place = create('App\Place', ['user_id' =>auth()->id()]);
 
         $this->get("/" . auth()->user()->username)
             ->assertSee($byte->title)
-            ->assertSee($byte->story);
+            ->assertSee('favorited:')
+            ->assertSee($byte->story)
+            ->assertSee($line->name)
+            ->assertSee($place->name);
     }
 }
