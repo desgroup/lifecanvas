@@ -69,6 +69,25 @@ $factory->define(App\Place::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Person::class, function (Faker\Generator $faker) {
+    $relationships = [
+        null,
+        'Father',
+        'Mother',
+        'Friend',
+        'Son',
+        'Daughter',
+        'Sibling'
+    ]; // TODO-KGW Need to add a relationships lookup table for Person
+
+    return [
+        'name' => $faker->name,
+        'relationship' => $faker->numberBetween(0, 6),
+        'account_id' => null,
+        'user_id' => $faker->numberBetween(0, 12)
+    ];
+});
+
 $factory->define(App\Byte::class, function (Faker\Generator $faker) {
 
     $userIds = App\User::pluck('id')->toArray();

@@ -73,6 +73,14 @@ class Byte extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function people()
+    {
+        return $this->belongsToMany('App\Person')->withTimestamps();
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function favorites()

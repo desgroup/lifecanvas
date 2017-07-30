@@ -98,13 +98,23 @@
                                 </div>
                             </div>
                             {{ old("lines->id") }}
-                            <div class="form-group">
-                                <label for="story">Lifeline:</label>
-                                <select class="form-control" multiple="multiple" name="lines[]" id="lines" class="form-control" >
-                                    @foreach($mylines as $line)
-                                        <option value="{{ $line->id }}" {{ (collect(old('lines'))->contains($line->id)) ? 'selected':'' }}>{{ $line->name }}</option>
-                                    @endforeach
-                                </select>
+                            <div class="row form-group">
+                                <div class="col-md-6">
+                                    <label for="people">People:</label>
+                                    <select class="form-control" multiple="multiple" name="people[]" id="people" class="form-control" >
+                                        @foreach($people as $key => $value)
+                                            <option value="{{ $key }}" {{ (collect(old('people'))->contains($key)) ? 'selected':'' }}>{{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lines">Lifeline:</label>
+                                    <select class="form-control" multiple="multiple" name="lines[]" id="lines" class="form-control" >
+                                        @foreach($mylines as $line)
+                                            <option value="{{ $line->id }}" {{ (collect(old('lines'))->contains($line->id)) ? 'selected':'' }}>{{ $line->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                             <div class='form-group'>
                                 <button type="submit" class="btn btn-primary">Add Byte</button>

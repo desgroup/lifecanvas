@@ -48,6 +48,13 @@ class User extends Authenticatable
         return $this->hasMany('App\Place');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function myPeople() {
+        return $this->hasMany('App\Person');
+    }
+
     public function bytes()
     {
         return $this->hasMany(Byte::class)->latest();

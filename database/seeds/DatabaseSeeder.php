@@ -31,9 +31,9 @@ class DatabaseSeeder extends Seeder
                 'lines',
                 'byte_line',
                 'places',
-                //'people',
-                'byte_line'
-                //'byte_person',
+                'people',
+                'byte_line',
+                'byte_person'
                 //'assets'
             );
         }
@@ -55,11 +55,11 @@ class DatabaseSeeder extends Seeder
             $this->call(UsersTableSeeder::class);
             $this->call(LinesTableSeeder::class);
             $this->call(PlacesTableSeeder::class);
-            //$this->call(PeopleTableSeeder::class);
+            $this->call(PeopleTableSeeder::class);
             $this->call(BytesTableSeeder::class);
             $this->call(CommentsTableSeeder::class);
             $this->call(ByteLineSeeder::class);
-            //$this->call(BytePeopleSeeder::class);
+            $this->call(BytePeopleSeeder::class);
             //$this->call(AssetsTableSeeder::class);
         }
     }

@@ -38,6 +38,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/feed', 'PagesController@feed');
     Route::resource('/bytes', 'ByteController');
     Route::resource('/lines', 'LineController');
+    Route::resource('/people', 'PersonController');
     Route::resource('/places', 'PlaceController');
     Route::resource('/profiles', 'ProfileController');
     Route::delete('/comments/{comment}', 'CommentController@destroy');

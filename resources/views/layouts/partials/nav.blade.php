@@ -39,6 +39,13 @@
                     </ul>
                 </li>
                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">People<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/people/create">Add Person</a></li>
+                        <li><a href="/people">My People</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Places<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/places/create">Add Place</a></li>

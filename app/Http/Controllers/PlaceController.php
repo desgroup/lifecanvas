@@ -49,6 +49,7 @@ class PlaceController extends Controller
 
         $input = array_add($request->all(), 'user_id', Auth::id());
 
+        // TODO-KGW Check if you need this one, I may be handling null values below.
         foreach ($input as $key => $value) {
             $input[$key] = $input[$key] == "" ? null : $input[$key];
         }
