@@ -33,8 +33,8 @@ class CreateBytesTable extends Migration
             $table->double('lat')->nullable();
             // The longitude where the byte was captured from the device, can be Null
             $table->double('lng')->nullable();
-//            // The id for the record in the image table
-//            $table->integer('image_id')->nullable()->unsigned();
+            // The id for the record in the image table
+            $table->integer('asset_id')->nullable()->unsigned();
             // The id for the record for the place associated with the byte
             $table->integer('place_id')->nullable()->unsigned();
             // The user id for the user that created the byte

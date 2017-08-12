@@ -22,22 +22,19 @@ class FileManagement
      */
     public function makePath($pathname, $is_filename = false, $mode = 0777)
     {
-        if ($is_filename)
-        {
+        if ($is_filename) {
             $pathname = substr($pathname, 0, strrpos($pathname, '/'));
         }
 
         // Check if directory already exists
-        if (is_dir($pathname) || empty($pathname))
-        {
+        if (is_dir($pathname) || empty($pathname)) {
             return true;
         }
 
         // Ensure a file does not already exist with the same name
         $pathname = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $pathname);
 
-        if (is_file($pathname))
-        {
+        if (is_file($pathname)) {
             trigger_error('mkdirr() File exists', E_USER_WARNING);
             return false;
         }
@@ -45,10 +42,8 @@ class FileManagement
         // Crawl up the directory tree
         $next_pathname = substr($pathname, 0, strrpos($pathname, DIRECTORY_SEPARATOR));
 
-        if ($this->makePath($next_pathname, $mode))
-        {
-            if (!file_exists($pathname))
-            {
+        if ($this->makePath($next_pathname, $mode)) {
+            if (!file_exists($pathname)) {
                 return mkdir($pathname, $mode);
             }
         }

@@ -12,9 +12,9 @@ class FuzzyDate
     private $datetime;
     private $accuracy;
 
-    public static function createTimestamp($request, $image_date = null)
+    public static function createTimestamp($request)
     {
-        if (is_null($image_date)) {
+//        if (is_null($image_data)) {
 
             $fuzzy_date = new FuzzyDate();
 
@@ -26,23 +26,23 @@ class FuzzyDate
                 $request->minute,
                 $request->second
             );
+//
+//        } else {
+//
+//            $byte_date = array("datetime" => $image_data['datetime'],
+//                "accuracy" => $image_data['accuracy']);
+//        }
 
-        } else {
-
-            $byte_date = array("datetime" => $image_date['datetime'],
-                "accuracy" => $image_date['accuracy']);
-        }
-
-        if (!is_null($request->timezone_id) && $request->timezone_id <> "00") {
-            $timeZone = Timezone::where('id', '=', $request->timezone_id)->first();
-        } elseif (!is_null($request->usertimezone)) {
-            $timeZone = Timezone::where('timezone_name', '=', $request->usertimezone)->first();
-        } else {
-            $timeZone = Timezone::where('id', '=', 371)->first();
-        }
-
-        $byte_date["datetime"] = $timestamp = Carbon::createFromFormat('Y:m:d H:i:s',
-            $byte_date["datetime"], $timeZone->timezone_name);
+//        if (!is_null($request->timezone_id) && $request->timezone_id <> "00") {
+//            $timeZone = Timezone::where('id', '=', $request->timezone_id)->first();
+//        } elseif (!is_null($request->usertimezone)) {
+//            $timeZone = Timezone::where('timezone_name', '=', $request->usertimezone)->first();
+//        } else {
+//            $timeZone = Timezone::where('id', '=', 371)->first();
+//        }
+//
+//        $byte_date["datetime"] = $timestamp = Carbon::createFromFormat('Y:m:d H:i:s',
+//            $byte_date["datetime"], $timeZone->timezone_name);
 
         return $byte_date;
     }

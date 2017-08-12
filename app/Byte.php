@@ -80,6 +80,16 @@ class Byte extends Model
         return $this->belongsToMany('App\Person')->withTimestamps();
     }
 
+    public function asset()
+    {
+        return $this->belongsTo('App\Asset');
+    }
+
+    public function thumbnail()
+    {
+        return '/usr/' . auth()->id() . '/thumb/' . $this->asset->file_name;
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */

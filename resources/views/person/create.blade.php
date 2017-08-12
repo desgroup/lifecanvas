@@ -19,7 +19,7 @@
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <label for="name">Name:</label>
-                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" placeholder="Person name">
+                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" placeholder="Person name" required autofocus>
                             </div>
                             <div class='form-group'>
                                 <button type="submit" class="btn btn-primary">Add Person</button>

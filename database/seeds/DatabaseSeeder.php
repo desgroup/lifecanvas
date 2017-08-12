@@ -33,8 +33,8 @@ class DatabaseSeeder extends Seeder
                 'places',
                 'people',
                 'byte_line',
-                'byte_person'
-                //'assets'
+                'byte_person',
+                'assets'
             );
         }
     }

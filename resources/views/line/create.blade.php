@@ -19,7 +19,7 @@
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <label for="title">Name:</label>
-                                <input type="text" class="form-control" id="name" name="name"  value="{{ old('name') }}" placeholder="Line name" required>
+                                <input type="text" class="form-control" id="name" name="name"  value="{{ old('name') }}" placeholder="Line name" required autofocus>
                             </div>
                             <button type="submit" class="btn btn-primary">Add Line</button>
                             <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>

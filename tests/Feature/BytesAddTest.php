@@ -20,7 +20,7 @@ class BytesAddTest extends TestCase
     }
 
     /** @test */
-    function unauthenticated_users_cannnot_add_bytes()
+    function unauthenticated_users_cannot_add_bytes()
     {
         $this->expectException('Illuminate\Auth\AuthenticationException');
 

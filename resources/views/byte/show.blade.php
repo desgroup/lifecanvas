@@ -6,8 +6,26 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <div class="level">
-                            <div class="pull-right">
+                        <div class="row">
+                            @if( !is_null($byte->asset))
+                                <div class="col-md-2">
+                                    <img src="{{ $byte->thumbnail() }}" class="img-thumbnail">
+                                </div>
+                                <div class="col-md-6">
+                            @else
+                                <div class="col-md-8">
+                                    @endif
+                                <h4>
+                                    {{ $byte->title }}<br>
+                                    <a href="@if($byte->creator->username == Auth::user()->username)
+                                            /">
+                                        @else
+                                            /{{ $byte->creator->username }}">
+                                        @endif
+                                        {{ $byte->creator->username }}</a> at {{ $byte->created_at->diffForHumans() }}
+                                </h4>
+                            </div>
+                            <div class="col-md-4">
                                 @if($byte->user_id == auth()->id())
                                     <form action="{{ $byte->path() }}" method="POST">
                                         {{ csrf_field() }}
@@ -22,15 +40,6 @@
                                     </button>
                                 </form>
                             </div>
-                            <h4>
-                                {{ $byte->title }}<br>
-                                <a href="@if($byte->creator->username == Auth::user()->username)
-                                        /">
-                                    @else
-                                        /{{ $byte->creator->username }}">
-                                    @endif
-                                    {{ $byte->creator->username }}</a> at {{ $byte->created_at->diffForHumans() }}
-                            </h4>
                         </div>
                     </div>
                     <div class="panel-body">

@@ -92,15 +92,12 @@ class FuzzyDateTest extends TestCase
             'day' => '22',
             'hour' => '22',
             'minute' => '00',
-            'second' => '00',
-            'timezone_id' => 1
+            'second' => '00'
         ]);
 
         $result = FuzzyDate::createTimestamp($request);
 
-        $this->assertInstanceOf(Carbon::class, $result['datetime']);
-        $this->assertEquals('1966-10-22 22:00:00', $result['datetime']->toDateTimeString());
-        $this->assertEquals('Europe/Andorra', $result['datetime']->timezoneName);
+        $this->assertEquals('1966:10:22 22:00:00', $result['datetime']);
         $this->assertEquals('111111', $result['accuracy']);
     }
 }

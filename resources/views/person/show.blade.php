@@ -10,9 +10,7 @@
                     </div>
                     <div class="panel-body">
                         @forelse($bytes as $byte)
-                            <article><h4><a href="/bytes/{{ $byte->id }}">{{ $byte->title }}</a></h4></article>
-                            <div class="body">{{ $byte->story }}</div>
-                            <hr>
+                            @include('byte.byte')
                         @empty
                             <p>There are no bytes attached to this person.</p>
                         @endforelse

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Lifecanvas\Utilities\DateTimeUtilities;
 use App\Person;
 use Auth;
 use App\Place;
@@ -9,6 +10,7 @@ use App\Byte;
 use Carbon\Carbon;
 use App\Timezone;
 use Illuminate\Http\Request;
+use App\Lifecanvas\Utilities\ImageUtilities;
 use App\Lifecanvas\Utilities\FuzzyDate;
 
 class ByteController extends Controller
@@ -54,20 +56,60 @@ class ByteController extends Controller
             'title' => 'required',
         ]);
 
-        //dd($request);
+        $image_data = [];
 
-        $byte_date = FuzzyDate::createTimestamp($request);
+        if ($request->hasFile('image')) {
+            $imageUtilities = new ImageUtilities();
+            $image_data = $imageUtilities->processImage($request->file('image')); // TODO-KGW Need to check if it is really and image
+        }
+
+        //$image_data = [];
+        //dd($image_data->contains('asset_date_local'));
+        //dd($image_data);
+
+        if ($request->use_image_time == "on" && !$image_data == []) {
+            $byte_date = array("datetime" => $image_data['asset_date_local'], "accuracy" => '111111');
+            if (!is_null($image_data['timezone_id'])) {
+                $timeZone = Timezone::where('id', '=', $image_data['timezone_id'])->first();
+            }
+            $lat = $image_data['lat'];
+            $lng = $image_data['lng'];
+        } else {
+            $byte_date = FuzzyDate::createTimestamp($request);
+        }
+
+        if (!isset($timezone)) {
+            if (!is_null($request->timezone_id) && $request->timezone_id <> "00") {
+                $timeZone = Timezone::where('id', '=', $request->timezone_id)->first();
+            } elseif (!is_null($request->usertimezone)) {
+                $timeZone = Timezone::where('timezone_name', '=', $request->usertimezone)->first();
+            } else {
+                $timeZone = Timezone::where('id', '=', 371)->first();
+            }
+        }
+
+        //dd($timeZone);
+
+//        $byte_date["datetime"] = $timestamp = Carbon::createFromFormat('Y:m:d H:i:s',
+//            $byte_date["datetime"], $timeZone->timezone_name);
+
+        //dd($byte_date['datetime']);
+        $datetime = DateTimeUtilities::toUtcTime($byte_date['datetime'], $timeZone->timezone_name);
+        //dd($datetime);
 
         $byte =Byte::create([
-            'user_id' => auth()->id(),
             'title' => request('title'),
             'story' => request('story'),
             'rating' => request('rating'),
             'privacy' => request('privacy'),
+            'timezone_id' => is_null($timeZone) ? null : $timeZone->id,
+            'byte_date' => $datetime,
+            'accuracy' => $byte_date['accuracy'],
+            'lat' => isset($lat) ? $lat : null,
+            'lng' => isset($lng) ? $lng : null,
+            'asset_id' => !isset($image_data['id']) ? null : $image_data['id'],
             'place_id' => request('place_id') == "00" ? null : request('place_id'),
-            'timezone_id' => request('timezone_id') == "00" ? null : request('timezone_id'),
-            'byte_date' => $byte_date['datetime']->setTimezone('UTC'),
-            'accuracy' => $byte_date['accuracy']
+            'user_id' => auth()->id()
         ]);
 
         $byte->lines()->attach($request->lines);

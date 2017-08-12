@@ -15,7 +15,7 @@
                                 @endforeach
                             </ul>
                         @endif
-                        <form method="POST" action="/bytes">
+                        <form method="POST" action="/bytes" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <input type="hidden" name="usertimezone" id="usertimezone" value="">
                             <script>
@@ -24,7 +24,7 @@
                             </script>
                             <div class="form-group">
                                 <label for="title">Title:</label>
-                                <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" placeholder="Byte title">
+                                <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" placeholder="Byte title" required autofocus>
                             </div>
                             <div class="form-group">
                                 <label for="story">Story:</label>
@@ -101,7 +101,7 @@
                             <div class="row form-group">
                                 <div class="col-md-6">
                                     <label for="people">People:</label>
-                                    <select class="form-control" multiple="multiple" name="people[]" id="people" class="form-control" >
+                                    <select multiple="multiple" class="form-control" name="people[]" id="people">
                                         @foreach($people as $key => $value)
                                             <option value="{{ $key }}" {{ (collect(old('people'))->contains($key)) ? 'selected':'' }}>{{ $value }}</option>
                                         @endforeach
@@ -109,11 +109,22 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="lines">Lifeline:</label>
-                                    <select class="form-control" multiple="multiple" name="lines[]" id="lines" class="form-control" >
+                                    <select multiple="multiple" class="form-control" name="lines[]" id="lines">
                                         @foreach($mylines as $line)
                                             <option value="{{ $line->id }}" {{ (collect(old('lines'))->contains($line->id)) ? 'selected':'' }}>{{ $line->name }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <!-- Image File -->
+                                <div class="col-md-4">
+                                    <label for="image">Image:</label>
+                                    <input type="file" name="image" id="image">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="use_image_time">Use Image Data:</label><br>
+                                    <input type="checkbox" checked="checked" name="use_image_time" id="use_image_time">
                                 </div>
                             </div>
                             <div class='form-group'>
