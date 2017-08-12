@@ -120,7 +120,11 @@
                                 <!-- Image File -->
                                 <div class="col-md-4">
                                     <label for="image">Image:</label>
-                                    <input type="file" name="image" id="image">
+                                    @if($agent->isMobile() || $agent->isTablet())
+                                        <input type="file" accept="image/*;capture=camera">
+                                    @else
+                                        <input type="file" name="image" id="image">
+                                    @endif
                                 </div>
                                 <div class="col-md-4">
                                     <label for="use_image_time">Use Image Data:</label><br>
