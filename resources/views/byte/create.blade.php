@@ -121,7 +121,7 @@
                                 <div class="col-md-4">
                                     <label for="image">Image:</label>
                                     @if($agent->isMobile() || $agent->isTablet())
-                                        <input type="file" accept="image/*;capture=camera">
+                                        <input type="file" name="image" id="image" accept="image/*;capture=camera">
                                     @else
                                         <input type="file" name="image" id="image">
                                     @endif
