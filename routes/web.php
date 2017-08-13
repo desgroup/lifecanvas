@@ -11,6 +11,11 @@
 |
 */
 
+// PHP info route for debugging in early stages
+Route::get('/info', function () {
+    return phpinfo();
+});
+
 // Authentication Routes...
 //Auth::routes();
 Route::get('signin', 'Auth\SigninController@showSigninForm')->name('signin');
