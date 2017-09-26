@@ -2,6 +2,15 @@
 
 @section('content')
     <div class="container">
+        @if(!is_null($byte->place))
+            @if(!is_null($byte->place->lat) && !is_null($byte->place->lng))
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div id="map"></div>
+            </div>
+        </div>
+            @endif
+        @endif
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
@@ -74,3 +83,36 @@
         </div>
     </div>
 @endsection
+
+@if(!is_null($byte->place))
+    @if(!is_null($byte->place->lat) && !is_null($byte->place->lng))
+        @section('css_page')
+            <style>
+                #map {
+                    height: 250px;
+                    width: 100%;
+                }
+            </style>
+        @endsection
+
+        @section('js_scripts')
+            <script>
+                function initMap() {
+                    var uluru = {lat: {{ $byte->place->lat }}, lng: {{ $byte->place->lng }}};
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: {{ $byte->place->map_zoom }},
+                        center: uluru
+                    });
+                    var marker = new google.maps.Marker({
+                        position: uluru,
+                        map: map
+                    });
+                }
+            </script>
+            <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0b8kHZFV0eqVi_d5a3J2W6QFucKZcY5I&callback=initMap">
+            </script>
+        @endsection
+    @endif
+@endif
+

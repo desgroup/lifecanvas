@@ -80,6 +80,11 @@ class Byte extends Model
         return $this->belongsToMany('App\Person')->withTimestamps();
     }
 
+    public function place()
+    {
+        return $this->belongsTo('App\Place');
+    }
+
     public function asset()
     {
         return $this->belongsTo('App\Asset');

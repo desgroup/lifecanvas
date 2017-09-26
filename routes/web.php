@@ -16,6 +16,10 @@ Route::get('/info', function () {
     return phpinfo();
 });
 
+Route::get('/develop', function () {
+    return view('develop', ['lat' => 43.438338, 'lng' => -79.686901]);
+});
+
 // Authentication Routes...
 //Auth::routes();
 Route::get('signin', 'Auth\SigninController@showSigninForm')->name('signin');

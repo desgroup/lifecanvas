@@ -57,30 +57,33 @@ class ImageUtilities
         $lat = null;
         $lng = null;
 
-        // Grab exif data from file if jpg or tiff
-        if($exif = exif_read_data($filePath . '/org/' . $filename)) {
-            //$exif = exif_read_data($filePath . '/org/' . $filename);
+        try {
+            // Grab exif data from file if jpg or tiff
+            if ($exif = exif_read_data($filePath . '/org/' . $filename)) {
+                //$exif = exif_read_data($filePath . '/org/' . $filename);
 
-            $size = $exif['FileSize']/1000;
-            $height = $exif['COMPUTED']['Height'];
-            $width = $exif['COMPUTED']['Width'];
-            $date = $exif['DateTime'];
+                $size = $exif['FileSize'] / 1000;
+                $height = $exif['COMPUTED']['Height'];
+                $width = $exif['COMPUTED']['Width'];
+                $date = $exif['DateTime'];
 
-            // Build longitude and latitude data if available
-            if (array_key_exists('GPSLongitude', $exif)) {
-                $lat = $this->getGps($exif['GPSLatitude'], $exif['GPSLatitudeRef']);
-                $lng = $this->getGps($exif['GPSLongitude'], $exif['GPSLongitudeRef']);
+                // Build longitude and latitude data if available
+                if (array_key_exists('GPSLongitude', $exif)) {
+                    $lat = $this->getGps($exif['GPSLatitude'], $exif['GPSLatitudeRef']);
+                    $lng = $this->getGps($exif['GPSLongitude'], $exif['GPSLongitudeRef']);
 
-                if ($this->urlExists('https://maps.googleapis.com'))
-                {
-                    $timezoneInfo = json_decode(
-                        file_get_contents(
-                            "https://maps.googleapis.com/maps/api/timezone/json?location=$lat,$lng&timestamp=1458000000&key=AIzaSyAAegLHNSxBaOM-V_4tM1Uuq_S8Atr2t1c")
-                        , true);
-                    //dd($timezoneInfo['timeZoneId']);
-                    $timezone = Timezone::where('timezone_name', '=', $timezoneInfo['timeZoneId'])->first();
+                    if ($this->urlExists('https://maps.googleapis.com')) {
+                        $timezoneInfo = json_decode(
+                            file_get_contents(
+                                "https://maps.googleapis.com/maps/api/timezone/json?location=$lat,$lng&timestamp=1458000000&key=AIzaSyAAegLHNSxBaOM-V_4tM1Uuq_S8Atr2t1c")
+                            , true);
+                        //dd($timezoneInfo['timeZoneId']);
+                        $timezone = Timezone::where('timezone_name', '=', $timezoneInfo['timeZoneId'])->first();
+                    }
                 }
             }
+        } catch (Exception $e) {
+            //
         }
 
         $image_data = array(
