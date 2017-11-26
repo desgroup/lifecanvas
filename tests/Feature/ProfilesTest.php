@@ -16,7 +16,7 @@ class ProfilesTest extends TestCase
 
         $this->withExceptionHandling()
             ->get("/{$user->username}")
-            ->assertRedirect('/signin');
+            ->assertRedirect('/login');
     }
 
     /** @test */

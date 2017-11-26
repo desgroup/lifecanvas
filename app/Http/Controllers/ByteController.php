@@ -50,8 +50,6 @@ class ByteController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request);
-
         $this->validate($request, [
             'title' => 'required',
         ]);
@@ -139,7 +137,47 @@ class ByteController extends Controller
      */
     public function edit(Byte $byte)
     {
-        //
+        // Gather that the menu items
+        $places = Place::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
+        $people = Person::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
+        $timezones = Timezone::orderBy('timezone_name')->pluck('timezone_name', 'id')->toArray();
+
+        // Get the date information
+        $fuzzy_date = new FuzzyDate();
+
+        if($byte->accuracy == "0000000") {
+
+            $formDate = $fuzzy_date->makeFormValues(null, "0000000");
+
+        } else {
+
+            $timeZone = Timezone::where('id', '=', $byte->timezone_id)->first();
+
+            $timestamp = Carbon::createFromFormat('Y-m-d H:i:s',
+                $byte->byte_date, 'UTC');
+
+            $formDate = $fuzzy_date->makeFormValues($timestamp->setTimezone($timeZone->timezone_name), $byte->accuracy);
+        }
+
+        $peopleData = $byte->people()->select('id', 'name')->get();
+
+        $peopleDataArray = [];
+
+        foreach ($peopleData as $person)
+        {
+            $peopleDataArray[$person->id] = $person->name;
+        }
+
+        $linesData = $byte->lines()->select('id', 'name')->get();
+
+        $linesDataArray = [];
+
+        foreach ($linesData as $line)
+        {
+            $linesDataArray[$line->id] = $line->name;
+        }
+
+        return view('byte.edit', compact('byte', 'places', 'people', 'timezones', 'formDate', 'peopleDataArray', 'linesDataArray'));
     }
 
     /**
@@ -147,11 +185,69 @@ class ByteController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Byte  $byte
-     * @return \Illuminate\Http\Response
+     * @return Byte
      */
     public function update(Request $request, Byte $byte)
     {
-        dd($request);
+        $this->authorize('update', $byte); // Using BytePolicy registered in AuthServiceProvider
+
+        $this->validate($request, [
+            'title' => 'required',
+            'privacy' => 'required'
+        ]);
+
+        $image_data = [];
+
+        if ($request->hasFile('image')) {
+            $imageUtilities = new ImageUtilities();
+            $image_data = $imageUtilities->processImage($request->file('image')); // TODO-KGW Need to check if it is really and image
+        }
+
+        if ($request->use_image_time == "on" && !$image_data == []) {
+            $byte_date = array("datetime" => $image_data['asset_date_local'], "accuracy" => '111111');
+            if (!is_null($image_data['timezone_id'])) {
+                $timeZone = Timezone::where('id', '=', $image_data['timezone_id'])->first();
+            }
+            $lat = $image_data['lat'];
+            $lng = $image_data['lng'];
+        } else {
+            $byte_date = FuzzyDate::createTimestamp($request);
+        }
+
+        if (!isset($timeZone)) {
+            if (!is_null($request->timezone_id) && $request->timezone_id <> "00") {
+                $timeZone = Timezone::where('id', '=', $request->timezone_id)->first();
+            } elseif (!is_null($request->usertimezone)) {
+                $timeZone = Timezone::where('timezone_name', '=', $request->usertimezone)->first();
+            } else {
+                $timeZone = Timezone::where('id', '=', 371)->first();
+            }
+        }
+
+        $datetime = DateTimeUtilities::toUtcTime($byte_date['datetime'], $timeZone->timezone_name);
+
+        //dd($request);
+
+        $byte->update([
+            'title' => request('title'),
+            'story' => request('story'),
+            'rating' => request('rating'),
+            'privacy' => request('privacy'),
+            'timezone_id' => is_null($timeZone) ? null : $timeZone->id,
+            'byte_date' => $datetime,
+            'accuracy' => $byte_date['accuracy'],
+            'lat' => isset($lat) ? $lat : null,
+            'lng' => isset($lng) ? $lng : null,
+            'asset_id' => !isset($image_data['id']) ? null : $image_data['id'],
+            'place_id' => request('place_id') == "00" ? null : request('place_id'),
+            'user_id' => auth()->id()
+        ]);
+
+        $byte->lines()->sync($request->lines);
+        $byte->people()->sync($request->people);
+        
+        return redirect($byte->path())
+            ->with('flash', 'Your byte has been updated');
     }
 
     /**

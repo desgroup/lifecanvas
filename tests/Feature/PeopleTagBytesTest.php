@@ -14,7 +14,7 @@ class PeopleTagBytesTest extends TestCase
     {
         $this->withExceptionHandling()
             ->get('/people')
-            ->assertRedirect('signin');
+            ->assertRedirect('login');
     }
 
     /** @test */
@@ -58,7 +58,7 @@ class PeopleTagBytesTest extends TestCase
     {
         $this->withExceptionHandling()
             ->get('/people/create')
-            ->assertRedirect('signin');
+            ->assertRedirect('login');
     }
 
     /** @test */

@@ -79,11 +79,4 @@ class BytesViewTest extends TestCase
         $response = $this->get('/bytes/' . $this->byte1->id);
         $response->assertSee($comment->body);
     }
-
-    /** @test */
-    function a_user_can_view_their_bytes_by_lifeline()
-    {
-        // A signed in user
-        // TODO-KGW this test is not finished, need to finish
-    }
 }

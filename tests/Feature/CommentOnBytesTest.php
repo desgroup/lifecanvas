@@ -40,7 +40,7 @@ class CommentOnBytesTest extends TestCase
         $comment = create('App\Comment', ['user_id' => 2, 'byte_id' => 1]);
 
         $this->delete("/comments/{$comment->id}")
-            ->assertRedirect('signin');
+            ->assertRedirect('login');
 
         $this->signIn()
             ->delete("/comments/{$comment->id}")

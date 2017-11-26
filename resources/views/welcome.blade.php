@@ -12,8 +12,8 @@
             <h1 class="brand-font">Lifecanvas</h1>
             <p class="subtitle">Capture your past, present and future</p>
             <p class="main-buttons">
-                <a href="/signin" class="well">Sign In</a>
-                <a href="signup" class="well">Sign Up</a>
+                <a href="/login" class="well">Sign In</a>
+                <a href="/register" class="well">Sign Up</a>
             </p>
         </div> <!-- end centered -->
     </div>

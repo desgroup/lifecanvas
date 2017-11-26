@@ -18,6 +18,7 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
+        //dd($user);
 //        return view('profile.show', [
 //            'profileUser' => $user,
 //            'bytes' => $user->bytes()->paginate(30)

@@ -15,9 +15,9 @@ trait RegistersUsers
      *
      * @return \Illuminate\Http\Response
      */
-    public function showSignupForm()
+    public function showRegistrationForm()
     {
-        return view('auth.signup');
+        return view('auth.register');
     }
 
     /**
@@ -26,7 +26,7 @@ trait RegistersUsers
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function signup(Request $request)
+    public function register(Request $request)
     {
         $this->validator($request->all())->validate();
 

@@ -18,7 +18,7 @@ class BytesDeleteTest extends TestCase
         $byte = create('App\Byte', ['user_id' => 2]);
 
         $this->delete($byte->path())
-            ->assertRedirect('/signin');
+            ->assertRedirect('/login');
 
         $this->signIn();
         $this->json('DELETE', $byte->path())

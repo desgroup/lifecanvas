@@ -16,7 +16,7 @@ class BytesAddTest extends TestCase
     {
         $this->withExceptionHandling()
             ->get('/bytes/create')
-            ->assertRedirect('signin');
+            ->assertRedirect('login');
     }
 
     /** @test */

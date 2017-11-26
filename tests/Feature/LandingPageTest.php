@@ -42,7 +42,7 @@ class LandingPageTest extends TestCase
     /** @test */
     function a_signed_out_user_sees_the_signin_page_when_clicking_on_signin_link()
     {
-        $this->get('/signin')
+        $this->get('/login')
             ->assertSee('Sign In');
     }
 }

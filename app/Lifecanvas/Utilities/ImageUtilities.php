@@ -62,10 +62,10 @@ class ImageUtilities
             if ($exif = exif_read_data($filePath . '/org/' . $filename)) {
                 //$exif = exif_read_data($filePath . '/org/' . $filename);
 
-                $size = $exif['FileSize'] / 1000;
-                $height = $exif['COMPUTED']['Height'];
-                $width = $exif['COMPUTED']['Width'];
-                $date = $exif['DateTime'];
+                $size = array_key_exists('GPSLongitude', $exif) ? $exif['FileSize'] / 1000 : NULL;
+                $height = $exif['COMPUTED']['Height'] ?? NULL;
+                $width = $exif['COMPUTED']['Width'] ?? NULL;
+                $date = $exif['DateTime'] ?? NULL;
 
                 // Build longitude and latitude data if available
                 if (array_key_exists('GPSLongitude', $exif)) {
@@ -77,7 +77,6 @@ class ImageUtilities
                             file_get_contents(
                                 "https://maps.googleapis.com/maps/api/timezone/json?location=$lat,$lng&timestamp=1458000000&key=AIzaSyAAegLHNSxBaOM-V_4tM1Uuq_S8Atr2t1c")
                             , true);
-                        //dd($timezoneInfo['timeZoneId']);
                         $timezone = Timezone::where('timezone_name', '=', $timezoneInfo['timeZoneId'])->first();
                     }
                 }

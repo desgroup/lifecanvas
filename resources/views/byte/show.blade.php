@@ -35,19 +35,22 @@
                                 </h4>
                             </div>
                             <div class="col-md-4">
+                                <div class="level">
+                                    <form method="POST" action="/bytes/{{ $byte->id }}/favorites">
+                                        {{ csrf_field() }}
+                                        <button type="submit" class="btn btn-default mr-1" data-toggle="tooltip" data-placement="top" title="Favorite this byte" {{ $byte->isFavorited() ? 'disabled' : ''}}>
+                                            {{ $byte->favorites_count }} <i class="fa fa-heart"></i>
+                                        </button>
+                                    </form>
                                 @if($byte->user_id == auth()->id())
+                                        <a href="{{ $byte->id }}/edit" class="btn btn-default mr-1" data-toggle="tooltip" data-placement="top" title="Edit this byte"><i class="fa fa-pencil"></i></a>
                                     <form action="{{ $byte->path() }}" method="POST">
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }}
-                                        <button type="submit" class="btn btn-default"> <i class="fa fa-trash"></i> </button>
+                                        <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Delete this byte"> <i class="fa fa-trash"></i> </button>
                                     </form>
                                 @endif
-                                <form method="POST" action="/bytes/{{ $byte->id }}/favorites">
-                                    {{ csrf_field() }}
-                                    <button type="submit" class="btn btn-default" {{ $byte->isFavorited() ? 'disabled' : ''}}>
-                                        {{ $byte->favorites_count }} <i class="fa fa-heart"></i> {{ str_plural('Favorite', $byte->favorites_count) }}
-                                    </button>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>

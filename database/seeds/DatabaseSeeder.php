@@ -34,7 +34,9 @@ class DatabaseSeeder extends Seeder
                 'people',
                 'byte_line',
                 'byte_person',
-                'assets'
+                'assets',
+                'activities',
+                'favorites'
             );
         }
     }

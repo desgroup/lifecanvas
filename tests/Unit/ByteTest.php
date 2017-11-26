@@ -48,5 +48,7 @@ class ByteTest extends TestCase
         $this->byte->lines()->attach([
             1
         ]);
+
+        $this->assertCount(1, $this->byte->lines);
     }
 }

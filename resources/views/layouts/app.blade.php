@@ -13,6 +13,12 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css">
+    <style>
+        body { padding-bottom: 100px; }
+        .level { display: flex; justify-content: flex-end; }
+        .flex { flex: 1; }
+        .mr-1 { margin-right: 1em; }
+    </style>
 
     @yield('css_page')
     @yield('head_js')
@@ -35,6 +41,11 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
     @yield('js_scripts')
 </body>
 </html>

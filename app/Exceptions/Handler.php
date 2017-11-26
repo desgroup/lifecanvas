@@ -46,7 +46,7 @@ class Handler extends ExceptionHandler
     {
         // TODO-KGW Not working, but I want it too. TokenMissmatch
         if ($exception instanceof TokenMismatchException) {
-            return redirect(route('signin'))->with('message', 'Your page session expired. Please try again');
+            return redirect(route('login'))->with('message', 'Your page session expired. Please try again');
         }
 
         return parent::render($request, $exception);
@@ -65,6 +65,6 @@ class Handler extends ExceptionHandler
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
-        return redirect()->guest(route('signin'));
+        return redirect()->guest(route('login'));
     }
 }

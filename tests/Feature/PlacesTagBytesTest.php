@@ -14,7 +14,7 @@ class PlacesTagBytesTest extends TestCase
     {
         $this->withExceptionHandling()
             ->get('/places')
-            ->assertRedirect('signin');
+            ->assertRedirect('login');
     }
 
     /** @test */
@@ -56,7 +56,7 @@ class PlacesTagBytesTest extends TestCase
     {
         $this->withExceptionHandling()
             ->get('/places/create')
-            ->assertRedirect('signin');
+            ->assertRedirect('login');
     }
 
     /** @test */
@@ -70,7 +70,7 @@ class PlacesTagBytesTest extends TestCase
             ->assertSee('Add a Place');
 
         // Build a line
-        $place = make('App\Place');
+        $place = make('App\Place', ['name' => "O'Conner"]);
 
         // Submit a line
         // See the new line in a list of lines
@@ -78,7 +78,7 @@ class PlacesTagBytesTest extends TestCase
 
         // See the new line in a list of lines
         $this->get('/places')
-            ->assertSee($place->name);
+            ->assertSee(htmlentities($place->name, ENT_QUOTES));
     }
 
 //    /** @test */

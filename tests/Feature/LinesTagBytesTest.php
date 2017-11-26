@@ -14,7 +14,7 @@ class LinesTagBytesTest extends TestCase
     {
         $this->withExceptionHandling()
             ->get('/lines')
-            ->assertRedirect('signin');
+            ->assertRedirect('login');
     }
 
     /** @test */
@@ -57,7 +57,7 @@ class LinesTagBytesTest extends TestCase
     {
         $this->withExceptionHandling()
             ->get('/lines/create')
-            ->assertRedirect('signin');
+            ->assertRedirect('login');
     }
 
     /** @test */
@@ -82,23 +82,23 @@ class LinesTagBytesTest extends TestCase
             ->assertSee($line->name);
     }
 
-    /** @test */
-    function a_user_can_tag_their_bytes_with_lifelines() // Maybe do one for on creation, and one for adding later?
-    { // TODO-KGW not finished test. Remove of finish when you add a asynchronous tagging mechanism.
-//        // A signed in user
-//        $this->signIn();
-//
-//        // with a byte
-//        $line = create('App\Byte', ['user_id' => auth()->id()]);
-//        $line1 = create('App\Line', ['name' => 'Test1', 'user_id' => auth()->id()]);
-//        $line2 = create('App\Line', ['name' => 'Test2', 'user_id' => auth()->id()]);
-//
-//        $this->put('/bytes/' . $line->id, ['name' => [1,2]]);
-//
-//        $this->get('/bytes/' . $line->id)
-//            ->assertSee($line1->name)
-//            ->assertSee($line2->name);
-    }
+//    /** @test */
+//    function a_user_can_tag_their_bytes_with_lifelines() // Maybe do one for on creation, and one for adding later?
+//    { // TODO-KGW not finished test. Remove or finish when you add a asynchronous tagging mechanism.
+////        // A signed in user
+////        $this->signIn();
+////
+////        // with a byte
+////        $line = create('App\Byte', ['user_id' => auth()->id()]);
+////        $line1 = create('App\Line', ['name' => 'Test1', 'user_id' => auth()->id()]);
+////        $line2 = create('App\Line', ['name' => 'Test2', 'user_id' => auth()->id()]);
+////
+////        $this->put('/bytes/' . $line->id, ['name' => [1,2]]);
+////
+////        $this->get('/bytes/' . $line->id)
+////            ->assertSee($line1->name)
+////            ->assertSee($line2->name);
+//    }
 
     // validation tests
     /** @test */

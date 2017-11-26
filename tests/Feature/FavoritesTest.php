@@ -14,7 +14,7 @@ class FavoritesTest extends TestCase
     {
         $this->withExceptionHandling()
             ->post('/bytes/1/favorites')
-            ->assertRedirect('/signin');
+            ->assertRedirect('/login');
     }
 
     /** @test  */

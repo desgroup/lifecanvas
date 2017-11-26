@@ -21,14 +21,14 @@ Route::get('/develop', function () {
 });
 
 // Authentication Routes...
-//Auth::routes();
-Route::get('signin', 'Auth\SigninController@showSigninForm')->name('signin');
-Route::post('signin', 'Auth\SigninController@signin');
-Route::post('signout', 'Auth\SigninController@signout')->name('signout');
-
-// Registration Routes...
-Route::get('signup', 'Auth\SignupController@showSignupForm')->name('signup');
-Route::post('signup', 'Auth\SignupController@signup');
+Auth::routes();
+//Route::get('signin', 'Auth\SigninController@showSigninForm')->name('signin');
+//Route::post('signin', 'Auth\SigninController@login');
+//Route::post('signout', 'Auth\SigninController@logout')->name('signout');
+//
+//// Registration Routes...
+//Route::get('signup', 'Auth\SignupController@showSignupForm')->name('signup');
+//Route::post('signup', 'Auth\SignupController@signup');
 
 // Password Reset Routes...
 Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
