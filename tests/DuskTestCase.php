@@ -32,4 +32,19 @@ abstract class DuskTestCase extends BaseTestCase
             'http://localhost:9515', DesiredCapabilities::chrome()
         );
     }
+
+    /**
+     * Sign in a user
+     *
+     * @param null $user
+     * @return $this
+     */
+    protected function signIn($user = null)
+    {
+        $user = $user ?: create('App\User');
+
+        $this->actingAs($user);
+
+        return $this;
+    }
 }
