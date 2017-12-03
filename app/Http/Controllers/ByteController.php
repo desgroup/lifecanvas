@@ -65,6 +65,13 @@ class ByteController extends Controller
         //dd($image_data->contains('asset_date_local'));
         //dd($image_data);
 
+        //dd(request('place_id'));
+
+        if (request('place_id') <> "00") {
+            $timeZone = Place::where('id', '=', request('place_id'))->first()->timezone_id;
+            dd($timeZone);
+        }
+
         if ($request->use_image_time == "on" && !$image_data == []) {
             $byte_date = array("datetime" => $image_data['asset_date_local'], "accuracy" => '111111');
             if (!is_null($image_data['timezone_id'])) {
@@ -76,7 +83,7 @@ class ByteController extends Controller
             $byte_date = FuzzyDate::createTimestamp($request);
         }
 
-        if (!isset($timezone)) {
+        if (!isset($timeZone)) {
             if (!is_null($request->timezone_id) && $request->timezone_id <> "00") {
                 $timeZone = Timezone::where('id', '=', $request->timezone_id)->first();
             } elseif (!is_null($request->usertimezone)) {

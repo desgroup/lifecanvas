@@ -142,3 +142,15 @@
         </div>
     </div>
 @endsection
+
+@section('js_scripts')
+    <script>
+        myDate = new Date();
+        document.getElementById('year').value = myDate.getFullYear();
+        document.getElementById('month').value = myDate.getMonth() + 1;
+        document.getElementById('day').value = myDate.getDate();
+        document.getElementById('hour').value = myDate.getHours();
+        document.getElementById('minute').value = myDate.getMinutes();
+        document.getElementById('second').value = myDate.getSeconds();
+    </script>
+@endsection
