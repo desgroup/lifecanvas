@@ -32,7 +32,7 @@
                                 <textarea name="story" id="story" class="form-control" placeholder="Add a story or notes here" rows="4">{{ old('story', $byte->story) }}</textarea>
                             </div>
                             <div class="row form-group">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label for="rating">Rating:</label>
                                     <select class="form-control" id="rating" name="rating">
                                         <option value="0" {{ old('rating', $byte->rating) == 0 ? 'selected' : '' }}>Unrated</option>
@@ -43,13 +43,47 @@
                                         <option value="5" {{ old('rating', $byte->rating) == 5 ? 'selected' : '' }}>Loved it</option>
                                     </select>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <label for="repeat">Do it again:</label>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="repeat" id="repeat1" value="0" {{ old("repeat", $byte->repeat) == 0 ? "checked":"" }}>
+                                            Yes
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="repeat" id="repeat2" value="1" {{ old("repeat", $byte->repeat) == 1 ? "checked":"" }}>
+                                            Maybe
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="repeat" id="repeat3" value="2" {{ old("repeat", $byte->repeat) == 2 ? "checked":"" }}>
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
                                     <label for="privacy">Privacy:</label>
-                                    <select class="form-control" id="privacy" name="privacy">
-                                        <option value="0" {{ old("privacy", $byte->privacy) == 0 ? "selected":"" }}>Myself only</option>
-                                        <option value="1" {{ old("privacy", $byte->privacy) == 1 ? "selected":"" }}>My Friends</option>
-                                        <option value="2" {{ old("privacy", $byte->privacy) == 2 ? "selected":"" }}>The World</option>
-                                    </select>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="privacy" id="privacy1" value="0" {{ old("privacy", $byte->privacy) == 0 ? "checked":"" }}>
+                                            Myself only
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="privacy" id="privacy2" value="1" {{ old("privacy", $byte->privacy) == 1 ? "checked":"" }}>
+                                            My Friends
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="privacy" id="privacy3" value="2" {{ old("privacy", $byte->privacy) == 2 ? "checked":"" }}>
+                                            The World
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -122,7 +156,7 @@
                             <div class="row form-group">
                                 <!-- Image File -->
                                 <div class="col-md-4">
-                                    <label for="image">Image:</label>
+                                    <label for="image">Change Image:</label>
                                     @if($agent->isMobile() || $agent->isTablet())
                                         <input type="file" name="image" id="image" accept="image/*;capture=camera">
                                     @else

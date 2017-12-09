@@ -14,4 +14,10 @@ class Place extends Model
     {
         return $this->hasMany(Byte::class);
     }
+
+    public function timezone()
+    {
+        return $this->belongsTo('App\Timezone');
+    }
+
 }

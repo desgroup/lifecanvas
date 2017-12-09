@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Lifecanvas\Utilities\DateTimeUtilities;
 use App\Person;
-use Auth;
 use App\Place;
 use App\Byte;
-use Carbon\Carbon;
 use App\Timezone;
-use Illuminate\Http\Request;
-use App\Lifecanvas\Utilities\ImageUtilities;
 use App\Lifecanvas\Utilities\FuzzyDate;
+use App\Lifecanvas\Utilities\ImageUtilities;
+use App\Lifecanvas\Utilities\DateTimeUtilities;
+use Auth;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ByteController extends Controller
 {
@@ -42,6 +43,7 @@ class ByteController extends Controller
         return view('byte.create', compact('places', 'people', 'timezones'));
     }
 
+
     /**
      * Store a newly created byte in the storage.
      *
@@ -50,10 +52,12 @@ class ByteController extends Controller
      */
     public function store(Request $request)
     {
+        // validate the data to make sure we have a title
         $this->validate($request, [
             'title' => 'required',
         ]);
 
+        // look at image data and take what you can if an image exists
         $image_data = [];
 
         if ($request->hasFile('image')) {
@@ -61,59 +65,67 @@ class ByteController extends Controller
             $image_data = $imageUtilities->processImage($request->file('image')); // TODO-KGW Need to check if it is really and image
         }
 
-        //$image_data = [];
-        //dd($image_data->contains('asset_date_local'));
-        //dd($image_data);
+        // Find a related place
+        $lat = $image_data->lat ?? NULL;
+        $lng = $image_data->lng ?? NULL;
+        $distance = 2;
 
-        //dd(request('place_id'));
+        if (!is_null($lat) && !is_null($lng)) {
+            $place = DB::table('places')
+                ->selectRaw("places.*, ACOS(COS(RADIANS(lat)) * COS(RADIANS(lng)) * COS(RADIANS($lat)) * COS(RADIANS($lng)) + COS(RADIANS(lat)) * SIN(RADIANS(lng)) * COS(RADIANS($lat)) * SIN(RADIANS($lng)) + SIN(RADIANS(lat)) * SIN(RADIANS($lat))) * 3963.1 AS Distance")
+                ->whereRaw('1')
+                ->where('user_id', '=', auth()->id())
+                ->havingRaw("Distance <= $distance")
+                ->orderBy('Distance')
+                ->first(); // use toSql() to see the sql output
 
-        if (request('place_id') <> "00") {
-            $timeZone = Place::where('id', '=', request('place_id'))->first()->timezone_id;
-            dd($timeZone);
+            $placeId = $place->id ?? NULL;
         }
 
-        if ($request->use_image_time == "on" && !$image_data == []) {
-            $byte_date = array("datetime" => $image_data['asset_date_local'], "accuracy" => '111111');
-            if (!is_null($image_data['timezone_id'])) {
-                $timeZone = Timezone::where('id', '=', $image_data['timezone_id'])->first();
+        // set timezone
+        if (isset($image_data['timezone_id']) && !is_null($image_data['timezone_id'])) {
+            $timeZone = $image_data['timezone_id'];
+        } elseif (!is_null($request->place_id) && $request->place_id <> '00') {
+            //dd($request->place_id);
+            //dd(Place::where('id', '=', $request->place_id)->first()->timezone->id);
+            $timeZone = Place::where('id', '=', $request->place_id)->first()->timezone->id;
+        } else {
+            if (is_null($request->usertimezone)) {
+                $timeZone = NULL;
+            } else {
+                $timeZone = Timezone::where('timezone_name', '=', $request->usertimezone)->first(['id'])->id;
             }
-            $lat = $image_data['lat'];
-            $lng = $image_data['lng'];
+        }
+
+        // set date and accuracy
+        if (isset($image_data['asset_date_local']) && !is_null($image_data['asset_date_local'])) {
+            $byte_date = array("datetime" => $image_data['asset_date_local'], "accuracy" => '111111');
         } else {
             $byte_date = FuzzyDate::createTimestamp($request);
         }
 
-        if (!isset($timeZone)) {
-            if (!is_null($request->timezone_id) && $request->timezone_id <> "00") {
-                $timeZone = Timezone::where('id', '=', $request->timezone_id)->first();
-            } elseif (!is_null($request->usertimezone)) {
-                $timeZone = Timezone::where('timezone_name', '=', $request->usertimezone)->first();
-            } else {
-                $timeZone = Timezone::where('id', '=', 371)->first();
-            }
+        //dd(Timezone::where('id', '=', $timeZone)->first()->timezone_name);
+        if(is_null($timeZone)) {
+            $datetime = NULL;
+            $byte_date['accuracy'] = '000000';
+        } else {
+            $datetime = DateTimeUtilities::toUtcTime($byte_date['datetime'], Timezone::where('id', '=', $timeZone)->first()->timezone_name);
         }
 
-        //dd($timeZone);
-
-//        $byte_date["datetime"] = $timestamp = Carbon::createFromFormat('Y:m:d H:i:s',
-//            $byte_date["datetime"], $timeZone->timezone_name);
-
-        //dd($byte_date['datetime']);
-        $datetime = DateTimeUtilities::toUtcTime($byte_date['datetime'], $timeZone->timezone_name);
-        //dd($datetime);
-
-        $byte =Byte::create([
+        // Create new byte
+        $byte = Byte::create([
             'title' => request('title'),
             'story' => request('story'),
             'rating' => request('rating'),
+            'repeat' => request('repeat'),
             'privacy' => request('privacy'),
-            'timezone_id' => is_null($timeZone) ? null : $timeZone->id,
+            'timezone_id' => $timeZone,
             'byte_date' => $datetime,
             'accuracy' => $byte_date['accuracy'],
-            'lat' => isset($lat) ? $lat : null,
-            'lng' => isset($lng) ? $lng : null,
-            'asset_id' => !isset($image_data['id']) ? null : $image_data['id'],
-            'place_id' => request('place_id') == "00" ? null : request('place_id'),
+            'lat' => $lat ?? NULL,
+            'lng' => $lng ?? NULL,
+            'asset_id' => $image_data['id'] ?? NULL,
+            'place_id' => $placeId ?? NULL,
             'user_id' => auth()->id()
         ]);
 
@@ -132,8 +144,14 @@ class ByteController extends Controller
      */
     public function show(Byte $byte)
     {
+        //dd($byte->place);
+        //dd($byte->timezone->timezone_name);
         $lines = $byte->lines()->get();
-        return view('byte.show',compact('byte', 'lines'));
+        $displayDate = DateTimeUtilities::formatFullDate(Carbon::createFromFormat('Y-m-d H:i:s',$byte->byte_date)->setTimeZone($byte->timezone->timezone_name), $byte->accuracy);
+        //dd($byte->place_id);
+        $place = Place::where('id', '=', $byte->place_id)->first();
+        //dd($place);
+        return view('byte.show',compact('byte', 'displayDate', 'lines', 'place'));
     }
 
     /**
@@ -196,6 +214,8 @@ class ByteController extends Controller
      */
     public function update(Request $request, Byte $byte)
     {
+        //dd($request);
+
         $this->authorize('update', $byte); // Using BytePolicy registered in AuthServiceProvider
 
         $this->validate($request, [
@@ -203,50 +223,88 @@ class ByteController extends Controller
             'privacy' => 'required'
         ]);
 
-        $image_data = [];
-
         if ($request->hasFile('image')) {
             $imageUtilities = new ImageUtilities();
             $image_data = $imageUtilities->processImage($request->file('image')); // TODO-KGW Need to check if it is really and image
+
+            if ($request->use_image_time == "on") { // TODO-KGW Need to address wrong timezone images here and in store above save UTC
+                if (!is_null($image_data->asset_date_local) && !is_null($image_data->timezone_id)) {
+                    $datetime = DateTimeUtilities::toUtcTime($image_data->asset_date_local, $image_data->timezone->timezone_name);
+                    $byte_date = array("datetime" => $datetime, "accuracy" => '111111');
+                }
+            }
         }
 
-        if ($request->use_image_time == "on" && !$image_data == []) {
-            $byte_date = array("datetime" => $image_data['asset_date_local'], "accuracy" => '111111');
-            if (!is_null($image_data['timezone_id'])) {
-                $timeZone = Timezone::where('id', '=', $image_data['timezone_id'])->first();
+        // Where are we to set the place and timezone
+        if ($request->place_id == '00') {
+            if ($request->use_image_time == "on") {
+                // Find a related place
+                $lat = $image_data->lat;
+                $lng = $image_data->lng;
+                $distance = 2;
+
+                if (!is_null($image_data->lat) && !is_null($image_data->lng)) {
+                    $place = DB::table('places')
+                        ->selectRaw("places.*, ACOS(COS(RADIANS(lat)) * COS(RADIANS(lng)) * COS(RADIANS($lat)) * COS(RADIANS($lng)) + COS(RADIANS(lat)) * SIN(RADIANS(lng)) * COS(RADIANS($lat)) * SIN(RADIANS($lng)) + SIN(RADIANS(lat)) * SIN(RADIANS($lat))) * 3963.1 AS Distance")
+                        ->whereRaw('1')
+                        ->where('user_id', '=', auth()->id())
+                        ->havingRaw("Distance <= $distance")
+                        ->orderBy('Distance')
+                        ->first(); // use toSql() to see the sql output
+
+                    $place_id = $place->id ?? NULL;
+                    //dd($place_id);
+                    if (!is_null($place_id)) {
+                        $timeZone = Place::where('id', '=', $place_id)->first()->timezone;
+                    }
+                    //dd('From image: ' . $timeZone);
+                }
             }
-            $lat = $image_data['lat'];
-            $lng = $image_data['lng'];
-        } else {
-            $byte_date = FuzzyDate::createTimestamp($request);
+        } elseif (!is_null($request->place_id) && $request->place_id <> $byte->place_id) {
+            $place_id = $request->place_id;
+            $timeZone = Place::where('id', '=', $place_id)->first()->timezone;
+            //dd('From place: ' . $timeZone);
+        } elseif (!is_null($request->timezone_id) && $request->timezone_id <> "00") {
+            $timeZone = Timezone::where('id', '=', $request->timezone_id)->first();
+            //dd('From timzone: ' . $timeZone);
         }
 
         if (!isset($timeZone)) {
+            $timeZone = Timezone::where('id', '=', 90)->first();
+            //dd('From default: ' . $timeZone);
+        }
+
+        // Set time based on inputs if not using image time
+        if (!isset($byte_date)) {
+            $byte_date = FuzzyDate::createTimestamp($request);
+            $datetime = DateTimeUtilities::toUtcTime($byte_date['datetime'], $timeZone->timezone_name);
+        }
+
+        //dd('Hello World');
+
+       /* if (!isset($timeZone)) {
             if (!is_null($request->timezone_id) && $request->timezone_id <> "00") {
                 $timeZone = Timezone::where('id', '=', $request->timezone_id)->first();
             } elseif (!is_null($request->usertimezone)) {
                 $timeZone = Timezone::where('timezone_name', '=', $request->usertimezone)->first();
             } else {
-                $timeZone = Timezone::where('id', '=', 371)->first();
+                $timeZone = Timezone::where('id', '=', 90)->first();
             }
-        }
-
-        $datetime = DateTimeUtilities::toUtcTime($byte_date['datetime'], $timeZone->timezone_name);
-
-        //dd($request);
+        }*/
 
         $byte->update([
             'title' => request('title'),
             'story' => request('story'),
             'rating' => request('rating'),
+            'repeat' => request('repeat'),
             'privacy' => request('privacy'),
-            'timezone_id' => is_null($timeZone) ? null : $timeZone->id,
+            'timezone_id' => $timeZone->id ?? NULL,
             'byte_date' => $datetime,
             'accuracy' => $byte_date['accuracy'],
-            'lat' => isset($lat) ? $lat : null,
-            'lng' => isset($lng) ? $lng : null,
-            'asset_id' => !isset($image_data['id']) ? null : $image_data['id'],
-            'place_id' => request('place_id') == "00" ? null : request('place_id'),
+            'lat' => $lat ?? $byte->lat ?? NULL,
+            'lng' => $lng ?? $byte->lng ?? NULL,
+            'asset_id' => $image_data->id ?? $byte->asset_id ?? NULL,
+            'place_id' => $place_id ?? NULL,
             'user_id' => auth()->id()
         ]);
 

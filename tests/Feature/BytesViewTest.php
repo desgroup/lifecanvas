@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
+use PlacesTableSeeder;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use TimezonesTableSeeder;
 
 class BytesViewTest extends TestCase
 {
@@ -63,6 +65,13 @@ class BytesViewTest extends TestCase
     /** @test */
     public function a_user_can_view_a_specific_byte_they_created()
     {
+        $seeder = new TimezonesTableSeeder();
+        $seeder->run();
+
+        $seeder = new PlacesTableSeeder();
+        $seeder->run();
+
+        //dd($this->byte1);
         $response = $this->get('/bytes/' . $this->byte1->id);
 
         $response->assertSee($this->byte1->title);
@@ -74,6 +83,12 @@ class BytesViewTest extends TestCase
     /** @test  */
     public function a_user_can_read_comments_that_are_associated_with_a_byte_they_created()
     {
+        $seeder = new TimezonesTableSeeder();
+        $seeder->run();
+
+        $seeder = new PlacesTableSeeder();
+        $seeder->run();
+
         $comment = factory('App\Comment')->create(['byte_id' => $this->byte1->id]);
 
         $response = $this->get('/bytes/' . $this->byte1->id);

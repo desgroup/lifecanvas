@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Timezone;
+use PlacesTableSeeder;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use TimezonesTableSeeder;
@@ -35,6 +36,9 @@ class BytesAddTest extends TestCase
         $this->signIn(); // TODO-KGW Using the Laracast helper method. Should standardize if going to use.
 
         $seeder = new TimezonesTableSeeder();
+        $seeder->run();
+
+        $seeder = new PlacesTableSeeder();
         $seeder->run();
 
         $byte = create('App\Byte', ['user_id' => auth()->id()]);

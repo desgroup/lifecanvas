@@ -18,47 +18,20 @@
                         <form method="POST" action="/bytes" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <input type="hidden" name="usertimezone" id="usertimezone" value="">
-                            <input type="hidden" name="year" id="year" value="">
-                            <input type="hidden" name="month" id="month" value="">
-                            <input type="hidden" name="day" id="day" value="">
-                            <input type="hidden" name="hour" id="hour" value="">
-                            <input type="hidden" name="minute" id="minute" value="">
                             <script>
                                 timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                                 document.getElementById("usertimezone").value = timezone;
-                                myDate = new Date();
-                                document.getElementById('year').value = myDate.getFullYear();
-                                document.getElementById('month').value = myDate.getMonth() + 1;
-                                document.getElementById('day').value = myDate.getDate();
-                                document.getElementById('hour').value = myDate.getHours();
-                                document.getElementById('minute').value = myDate.getMinutes();
-                                document.getElementById('second').value = myDate.getSeconds();
                             </script>
-
-                            <div class="row form-group">
-                                <!-- Image File -->
-                                <div class="col-md-4">
-                                    <label for="image">Image:</label>
-                                    @if($agent->isMobile() || $agent->isTablet())
-                                        <input type="file" name="image" id="image" accept="image/*;capture=camera">
-                                    @else
-                                        <input type="file" class="form-control-file" name="image" id="image">
-                                    @endif
-                                </div>
-                            </div>
-
                             <div class="form-group">
                                 <label for="title">Title:</label>
                                 <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" placeholder="Byte title" required autofocus>
                             </div>
-
                             <div class="form-group">
                                 <label for="story">Story:</label>
                                 <textarea name="story" id="story" class="form-control" placeholder="Add a story or notes here" rows="4">{{ old('story') }}</textarea>
                             </div>
-
                             <div class="row form-group">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <label for="rating">Rating:</label>
                                     <select class="form-control" id="rating" name="rating">
                                         <option value="0" {{ old('rating') == 0 ? 'selected' : '' }}>Unrated</option>
@@ -69,51 +42,17 @@
                                         <option value="5" {{ old('rating') == 5 ? 'selected' : '' }}>Loved it</option>
                                     </select>
                                 </div>
-                                <div class="col-md-4">
-                                    <label for="repeat">Do it again:</label>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="repeat" id="repeat1" value="0" {{ old("repeat") == 0 ? "checked":"" }}>
-                                            Yes
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="repeat" id="repeat2" value="1" {{ old("repeat") == 1 ? "checked":"" }}>
-                                            Maybe
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="repeat" id="repeat3" value="2" {{ old("repeat") == 2 ? "checked":"" }}>
-                                            No
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <label for="privacy">Privacy:</label>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="privacy" id="privacy1" value="0" {{ old("privacy") == 0 ? "checked":"" }}>
-                                            Myself only
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="privacy" id="privacy2" value="1" {{ old("privacy") == 1 ? "checked":"" }}>
-                                            My Friends
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="privacy" id="privacy3" value="2" {{ old("privacy") == 2 ? "checked":"" }}>
-                                            The World
-                                        </label>
-                                    </div>
+                                    <select class="form-control" id="privacy" name="privacy" value="{{ old('privacy') }}">
+                                        <option value="0" {{ old("privacy") == 0 ? "selected":"" }}>Myself only</option>
+                                        <option value="1" {{ old("privacy") == 1 ? "selected":"" }}>My Friends</option>
+                                        <option value="2" {{ old("privacy") == 2 ? "selected":"" }}>The World</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row form-group">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label for="place_id">Place:</label>
                                     <select class="form-control" name="place_id" id="place_id">
                                         <option value="00" {{ !old('place_id') ? 'selected' : '' }}>Select a place</option>
@@ -122,9 +61,43 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="col-md-4">
+                                    <label for="timezone_id">Time Zone:</label>
+                                    <select class="form-control" name="timezone_id" id="timezone_id" >
+                                        <option value="00" {{ !old('timezone_id') ? 'selected':'' }}>Select a time zone</option>
+                                        @foreach($timezones as $key => $value)
+                                            <option value="{{ $key }}" {{ (collect(old('timezone_id'))->contains($key)) ? 'selected' : '' }}>{{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-
-                                {{ old("lines->id") }}
+                            <div class="row form-group">
+                                <div class="col-md-2">
+                                    <label for="year">Year:</label>
+                                    <input type="text" class="form-control" name="year" id="year" value="{{ old('year') }}">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="month">Month:</label>
+                                    <input type="text" class="form-control" name="month" id="month" value="{{ old('month') }}">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="day">Day:</label>
+                                    <input type="text" class="form-control" name="day" id="day" value="{{ old('day') }}">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="hour">Hour:</label>
+                                    <input type="text" class="form-control" name="hour" id="hour" value="{{ old('hour') }}">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="minute">Minute:</label>
+                                    <input type="text" class="form-control" name="minute" id="minute" value="{{ old('minute') }}">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="second">Seconds:</label>
+                                    <input type="text" class="form-control" name="second" id="second" value="{{ old('second') }}">
+                                </div>
+                            </div>
+                            {{ old("lines->id") }}
                             <div class="row form-group">
                                 <div class="col-md-6">
                                     <label for="people">People:</label>
@@ -143,6 +116,21 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="row form-group">
+                                <!-- Image File -->
+                                <div class="col-md-4">
+                                    <label for="image">Image:</label>
+                                    @if($agent->isMobile() || $agent->isTablet())
+                                        <input type="file" name="image" id="image" accept="image/*;capture=camera">
+                                    @else
+                                        <input type="file" name="image" id="image">
+                                    @endif
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="use_image_time">Use Image Data:</label><br>
+                                    <input type="checkbox" name="use_image_time" id="use_image_time" {{ old('use_image_time') == "on" ? "checked" : ""}}>
+                                </div>
+                            </div>
                             <div class='form-group'>
                                 <button type="submit" class="btn btn-primary">Add Byte</button>
                                 <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
@@ -156,4 +144,13 @@
 @endsection
 
 @section('js_scripts')
+    <script>
+        myDate = new Date();
+        document.getElementById('year').value = myDate.getFullYear();
+        document.getElementById('month').value = myDate.getMonth() + 1;
+        document.getElementById('day').value = myDate.getDate();
+        document.getElementById('hour').value = myDate.getHours();
+        document.getElementById('minute').value = myDate.getMinutes();
+        document.getElementById('second').value = myDate.getSeconds();
+    </script>
 @endsection

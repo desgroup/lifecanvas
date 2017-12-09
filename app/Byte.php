@@ -85,6 +85,11 @@ class Byte extends Model
         return $this->belongsTo('App\Place');
     }
 
+    public function timezone()
+    {
+        return $this->belongsTo('App\Timezone');
+    }
+
     public function asset()
     {
         return $this->belongsTo('App\Asset');
@@ -93,6 +98,16 @@ class Byte extends Model
     public function thumbnail()
     {
         return '/usr/' . auth()->id() . '/thumb/' . $this->asset->file_name;
+    }
+
+    public function small()
+    {
+        return '/usr/' . auth()->id() . '/small/' . $this->asset->file_name;
+    }
+
+    public function medium()
+    {
+        return '/usr/' . auth()->id() . '/medium/' . $this->asset->file_name;
     }
 
     /**

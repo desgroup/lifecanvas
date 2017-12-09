@@ -2,39 +2,45 @@
 
 @section('content')
     <div class="container">
-        @if(!is_null($byte->place))
-            @if(!is_null($byte->place->lat) && !is_null($byte->place->lng))
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div id="map"></div>
+            <div class="col-md-2">
+                <div class="row">
+                @if( !is_null($byte->asset))
+                    <img src="{{ $byte->small() }}" class="img-responsive center-block">
+                @endif
+                </div>
             </div>
-        </div>
-            @endif
-        @endif
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-8">
                 <div class="panel panel-default">
+                    @if(!is_null($byte->place))
+                        @if(!is_null($byte->place->lat) && !is_null($byte->place->lng))
+                            <div id="map"></div>
+                        @endif
+                    @endif
                     <div class="panel-heading">
-                        <div class="row">
-                            @if( !is_null($byte->asset))
-                                <div class="col-md-2">
-                                    <img src="{{ $byte->thumbnail() }}" class="img-thumbnail">
-                                </div>
-                                <div class="col-md-6">
-                            @else
-                                <div class="col-md-8">
+                        <h4>{{ $byte->title }}</h4>
+                    </div>
+                    <div class="panel-body">
+                        @if ($byte->place_id > 0)
+                            <a href="/places/{{ $place->id }}">{{ $place->name }}</a><br>
+                        @endif
+                        @if (isset($displayDate))
+                            {{ $displayDate }}<br>
+                        @endif
+                        @if (!is_null($byte->story))
+                            <div class="body mt-1">{{ $byte->story }}</div>
+                        @endif
+                        <div class="row mt-1">
+                            <div class="col-md-6">
+                                @include('byte.partials.rating') @include('byte.partials.repeat')<br>
+                                Lifer: <a href="@if($byte->creator->username == Auth::user()->username)
+                                        /">
+                                    @else
+                                        /{{ $byte->creator->username }}">
                                     @endif
-                                <h4>
-                                    {{ $byte->title }}<br>
-                                    <a href="@if($byte->creator->username == Auth::user()->username)
-                                            /">
-                                        @else
-                                            /{{ $byte->creator->username }}">
-                                        @endif
-                                        {{ $byte->creator->username }}</a> at {{ $byte->created_at->diffForHumans() }}
-                                </h4>
+                                    {{ $byte->creator->username }}</a>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="level">
                                     <form method="POST" action="/bytes/{{ $byte->id }}/favorites">
                                         {{ csrf_field() }}
@@ -42,20 +48,26 @@
                                             {{ $byte->favorites_count }} <i class="fa fa-heart"></i>
                                         </button>
                                     </form>
-                                @if($byte->user_id == auth()->id())
+                                    @if($byte->user_id == auth()->id())
                                         <a href="{{ $byte->id }}/edit" class="btn btn-default mr-1" data-toggle="tooltip" data-placement="top" title="Edit this byte"><i class="fa fa-pencil"></i></a>
-                                    <form action="{{ $byte->path() }}" method="POST">
-                                        {{ csrf_field() }}
-                                        {{ method_field('DELETE') }}
-                                        <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Delete this byte"> <i class="fa fa-trash"></i> </button>
-                                    </form>
-                                @endif
+                                        <form action="{{ $byte->path() }}" method="POST">
+                                            {{ csrf_field() }}
+                                            {{ method_field('DELETE') }}
+                                            <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Delete this byte"> <i class="fa fa-trash"></i> </button>
+                                        </form>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="row">
+                <div class="panel panel-default">
                     <div class="panel-body">
-                        <div class="body">{{ $byte->story }}</div>
+                        <h4>Lifelines</h4>
                         <div class="lines">
                             @foreach($lines as $line)
                                 <a href="/lines/{{ $line->id }}">{{ $line->name }}</a> |
@@ -64,8 +76,10 @@
                     </div>
                 </div>
             </div>
+            </div>
         </div>
-        <div class="row">
+
+        <div class="row mt-1">
             <div class="col-md-8 col-md-offset-2">
                 @foreach($byte->comments as $comment)
                     @include('byte.comment')
@@ -92,7 +106,7 @@
         @section('css_page')
             <style>
                 #map {
-                    height: 250px;
+                    height: 200px;
                     width: 100%;
                 }
             </style>

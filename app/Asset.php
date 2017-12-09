@@ -9,4 +9,9 @@ class Asset extends Model
 
     protected $guarded = [];
 
+    public function timezone()
+    {
+        return $this->belongsTo('App\Timezone');
+    }
+
 }

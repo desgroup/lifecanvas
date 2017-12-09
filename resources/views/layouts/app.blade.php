@@ -17,7 +17,10 @@
         body { padding-bottom: 100px; }
         .level { display: flex; justify-content: flex-end; }
         .flex { flex: 1; }
+        .mt-1 { margin-top: 1em; }
         .mr-1 { margin-right: 1em; }
+        .ml-1 { margin-left: 1em; }
+        .mb-1 { margin-bottom: 1em; }
     </style>
 
     @yield('css_page')

@@ -92,7 +92,7 @@ class ImageUtilities
             'height_px'         => $height,
             'width_px'          => $width,
             'asset_date_local'  => $date,
-            'timezone_id'       => !isset($timezone) ? null : $timezone->id,
+            'timezone_id'       => $timezone->id ?? NULL,
             'lat'               => $lat,
             'lng'               => $lng,
             'user_id'           => auth()->id()

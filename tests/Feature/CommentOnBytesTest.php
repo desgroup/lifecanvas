@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
+use PlacesTableSeeder;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use TimezonesTableSeeder;
 
 class CommentOnBytesTest extends TestCase
 {
@@ -21,6 +23,14 @@ class CommentOnBytesTest extends TestCase
     /** @test */
     function authenticated_users_can_add_comments_to_bytes()
     {
+        factory(\App\User::class)->create();
+
+        $seeder = new TimezonesTableSeeder();
+        $seeder->run();
+
+        $seeder = new PlacesTableSeeder();
+        $seeder->run();
+
         $this->be($user = factory('App\User')->create());
 
         $byte = factory('App\Byte')->create();
