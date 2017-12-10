@@ -68,32 +68,43 @@ class ByteController extends Controller
         // Find a related place
         $lat = $image_data->lat ?? NULL;
         $lng = $image_data->lng ?? NULL;
-        $distance = 2;
 
-        if (!is_null($lat) && !is_null($lng)) {
-            $place = DB::table('places')
-                ->selectRaw("places.*, ACOS(COS(RADIANS(lat)) * COS(RADIANS(lng)) * COS(RADIANS($lat)) * COS(RADIANS($lng)) + COS(RADIANS(lat)) * SIN(RADIANS(lng)) * COS(RADIANS($lat)) * SIN(RADIANS($lng)) + SIN(RADIANS(lat)) * SIN(RADIANS($lat))) * 3963.1 AS Distance")
-                ->whereRaw('1')
-                ->where('user_id', '=', auth()->id())
-                ->havingRaw("Distance <= $distance")
-                ->orderBy('Distance')
-                ->first(); // use toSql() to see the sql output
+        if ($request->place_id <> "00") {
+            $placeId = $request->place_id;
+        } else {
+            if (!is_null($lat) && !is_null($lng)) {
+                $distance = 2;
+                $place = DB::table('places')
+                    ->selectRaw("places.*, ACOS(COS(RADIANS(lat)) * COS(RADIANS(lng)) * COS(RADIANS($lat)) * COS(RADIANS($lng)) + COS(RADIANS(lat)) * SIN(RADIANS(lng)) * COS(RADIANS($lat)) * SIN(RADIANS($lng)) + SIN(RADIANS(lat)) * SIN(RADIANS($lat))) * 3963.1 AS Distance")
+                    ->whereRaw('1')
+                    ->where('user_id', '=', auth()->id())
+                    ->havingRaw("Distance <= $distance")
+                    ->orderBy('Distance')
+                    ->first(); // use toSql() to see the sql output
 
-            $placeId = $place->id ?? NULL;
+                $placeId = $place->id ?? NULL;
+            }
         }
+
 
         // set timezone
         if (isset($image_data['timezone_id']) && !is_null($image_data['timezone_id'])) {
-            $timeZone = $image_data['timezone_id'];
+            $timeZone_id = $image_data['timezone_id'];
         } elseif (!is_null($request->place_id) && $request->place_id <> '00') {
             //dd($request->place_id);
-            //dd(Place::where('id', '=', $request->place_id)->first()->timezone->id);
-            $timeZone = Place::where('id', '=', $request->place_id)->first()->timezone->id;
+            $timeZone = Place::where('id', '=', $request->place_id)->first()->timezone;
+            //dd(Place::where('id', '=', $request->place_id)->first()->timezone);
+            if(!is_null($timeZone)) {
+                //dd($timeZone->id);
+                $timeZone_id = $timeZone->id;
+            } else {
+                $timeZone_id = NULL;
+            }
         } else {
             if (is_null($request->usertimezone)) {
-                $timeZone = NULL;
+                $timeZone_id = NULL;
             } else {
-                $timeZone = Timezone::where('timezone_name', '=', $request->usertimezone)->first(['id'])->id;
+                $timeZone_id = Timezone::where('timezone_name', '=', $request->usertimezone)->first(['id'])->id;
             }
         }
 
@@ -105,11 +116,11 @@ class ByteController extends Controller
         }
 
         //dd(Timezone::where('id', '=', $timeZone)->first()->timezone_name);
-        if(is_null($timeZone)) {
+        if(is_null($timeZone_id)) {
             $datetime = NULL;
             $byte_date['accuracy'] = '000000';
         } else {
-            $datetime = DateTimeUtilities::toUtcTime($byte_date['datetime'], Timezone::where('id', '=', $timeZone)->first()->timezone_name);
+            $datetime = DateTimeUtilities::toUtcTime($byte_date['datetime'], Timezone::where('id', '=', $timeZone_id)->first()->timezone_name);
         }
 
         // Create new byte
@@ -147,6 +158,7 @@ class ByteController extends Controller
         //dd($byte->place);
         //dd($byte->timezone->timezone_name);
         $lines = $byte->lines()->get();
+        if (!is_null($byte->byte_date) && !is_null($byte->timezone))
         $displayDate = DateTimeUtilities::formatFullDate(Carbon::createFromFormat('Y-m-d H:i:s',$byte->byte_date)->setTimeZone($byte->timezone->timezone_name), $byte->accuracy);
         //dd($byte->place_id);
         $place = Place::where('id', '=', $byte->place_id)->first();

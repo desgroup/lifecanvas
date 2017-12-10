@@ -24,7 +24,8 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bytes<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/bytes/create">Add Byte</a></li>
-                        <li><a href="/bytes">My Bytes</a></li>
+                        <li><a href="/bytes">Byte List</a></li>
+                        <li><a href="/map">Byte Map</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">

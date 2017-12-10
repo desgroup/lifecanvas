@@ -46,6 +46,8 @@ Route::get('/', function () {
 // Authentication routes
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/feed', 'PagesController@feed');
+    Route::get('/map', 'MapController@index');
+    Route::get('/map/{country}', 'MapController@country');
     Route::resource('/bytes', 'ByteController');
     Route::resource('/lines', 'LineController');
     Route::resource('/people', 'PersonController');
