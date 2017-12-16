@@ -129,7 +129,7 @@ class ByteController extends Controller
             'rating' => request('rating'),
             'repeat' => request('repeat'),
             'privacy' => request('privacy'),
-            'timezone_id' => $timeZone,
+            'timezone_id' => $timeZone_id,
             'byte_date' => $datetime,
             'accuracy' => $byte_date['accuracy'],
             'lat' => $lat ?? NULL,
