@@ -1,14 +1,24 @@
 @extends('layouts.app')
 
+@section('css_page')
+    <link rel="stylesheet" type="text/css" href="/css/slim.min.css">
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-2">
-                <div class="row">
+            <div class="col-md-4">
+
                 @if( !is_null($byte->asset))
-                    <img src="{{ $byte->small() }}" class="img-responsive center-block">
+                    <div class="slim"
+                         data-service="async.php"
+                         data-fetcher="/photo/fetch"
+                         data-max-file-size="10">
+                        <img src="{{ $byte->medium() }}" class="img-responsive center-block">
+                        <input type="file" name="slim[]"/>
+                    </div>
                 @endif
-                </div>
+
             </div>
             <div class="col-md-8">
                 <div class="panel panel-default">
@@ -30,6 +40,11 @@
                         @if (!is_null($byte->story))
                             <div class="body mt-1">{{ $byte->story }}</div>
                         @endif
+                        <div class="lines mt-1">
+                        @foreach($lines as $line)
+                            <a href="/lines/{{ $line->id }}">{{ $line->name }}</a> |
+                        @endforeach
+                        </div>
                         <div class="row mt-1">
                             <div class="col-md-6">
                                 @include('byte.partials.rating') @include('byte.partials.repeat')<br>
@@ -61,41 +76,22 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-2">
-                <div class="row">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h4>Lifelines</h4>
-                        <div class="lines">
-                            @foreach($lines as $line)
-                                <a href="/lines/{{ $line->id }}">{{ $line->name }}</a> |
-                            @endforeach
-                        </div>
-                    </div>
+                <div class="mt-1">
+                    @foreach($byte->comments as $comment)
+                        @include('byte.comment')
+                    @endforeach
                 </div>
-            </div>
-            </div>
-        </div>
-
-        <div class="row mt-1">
-            <div class="col-md-8 col-md-offset-2">
-                @foreach($byte->comments as $comment)
-                    @include('byte.comment')
-                @endforeach
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <form method="POST" action="{{ $byte->path() . '/comment' }}">
-                    {{ csrf_field() }}
-                    <div class="form-group">
-                        <textarea name="body" id="body" class="form-control" placeholder="Have something to say?"
-                                  rows="3"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add Comment</button>
-                </form>
+                <div class="mt-1">
+                    <form method="POST" action="{{ $byte->path() . '/comment' }}">
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            <textarea name="body" id="body" class="form-control" placeholder="Have something to say?"
+                              rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Comment</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -129,6 +125,8 @@
             <script async defer
                     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0b8kHZFV0eqVi_d5a3J2W6QFucKZcY5I&callback=initMap">
             </script>
+
+            <script src="/js/slim.kickstart.min.js"></script>
         @endsection
     @endif
 @endif

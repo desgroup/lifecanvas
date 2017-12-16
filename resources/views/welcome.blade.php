@@ -13,7 +13,7 @@
             <p class="subtitle">Capture your past, present and future</p>
             <p class="main-buttons">
                 <a href="/login" class="well">Sign In</a>
-                <a href="/register" class="well">Sign Up</a>
+                <a href="#" class="well">Sign Up</a>
             </p>
         </div> <!-- end centered -->
     </div>

@@ -9,8 +9,10 @@
                     <h3 class="panel-title">Stats</h3>
                 </div>
                 <div class="panel-body">
-                    Continents Visited: {{ $my_stats->cont_count }}<br>
-                    Countries Visited: {{ $my_stats->count_count }}
+                    <h1>{{ $my_stats->cont_count }}/7</h1>
+                    Continents Visited ({{ round($my_stats->cont_count/7*100) }}%)<br>
+                    <h1>{{ $my_stats->count_count }}/249</h1>
+                    Countries Visited ({{ round($my_stats->count_count/249*100) }}%)
                 </div>
                 </div>
             </div>

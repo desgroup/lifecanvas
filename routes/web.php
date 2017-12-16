@@ -20,6 +20,12 @@ Route::get('/develop', function () {
     return view('develop', ['lat' => 43.438338, 'lng' => -79.686901]);
 });
 
+Route::get('/photo', function () {
+    return view('photo', ['lat' => 43.438338, 'lng' => -79.686901]);
+});
+
+Route::get('/photo/fetch', 'PhotosController@fetch');
+
 // Authentication Routes...
 Auth::routes();
 

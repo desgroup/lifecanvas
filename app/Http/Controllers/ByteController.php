@@ -88,6 +88,9 @@ class ByteController extends Controller
 
 
         // set timezone
+        // set to NULL by default
+        $timeZone_id = NULL;
+
         if (isset($image_data['timezone_id']) && !is_null($image_data['timezone_id'])) {
             $timeZone_id = $image_data['timezone_id'];
         } elseif (!is_null($request->place_id) && $request->place_id <> '00') {
@@ -97,13 +100,9 @@ class ByteController extends Controller
             if(!is_null($timeZone)) {
                 //dd($timeZone->id);
                 $timeZone_id = $timeZone->id;
-            } else {
-                $timeZone_id = NULL;
             }
         } else {
-            if (is_null($request->usertimezone)) {
-                $timeZone_id = NULL;
-            } else {
+            if (!is_null($request->usertimezone)) {
                 $timeZone_id = Timezone::where('timezone_name', '=', $request->usertimezone)->first(['id'])->id;
             }
         }
@@ -115,7 +114,7 @@ class ByteController extends Controller
             $byte_date = FuzzyDate::createTimestamp($request);
         }
 
-        //dd(Timezone::where('id', '=', $timeZone)->first()->timezone_name);
+        // Set date time
         if(is_null($timeZone_id)) {
             $datetime = NULL;
             $byte_date['accuracy'] = '000000';
