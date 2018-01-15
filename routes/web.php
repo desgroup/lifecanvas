@@ -17,7 +17,7 @@ Route::get('/info', function () {
 });
 
 Route::get('/develop', function () {
-    return view('develop', ['lat' => 43.438338, 'lng' => -79.686901]);
+    return view('develop', ['lat' => 43.438338, 'lng' => -79.686901, 'hidenav' => true]);
 });
 
 Route::get('/photo', function () {

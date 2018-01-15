@@ -21,7 +21,8 @@ class ManageAssetsTest extends TestCase
         $seeder = new TimezonesTableSeeder();
         $seeder->run();
 
-        $byte = make('App\Byte', ['user_id' => auth()->id()]);
+        $place = create('App\Place', ['user_id' => auth()->id()]);
+        $byte = make('App\Byte', ['user_id' => auth()->id(), 'place_id' => $place->id]);
         $form = $byte->toArray();
 
         copy(dirname(__FILE__) . '/Data/test2.jpg', dirname(__FILE__) . '/Data/test.jpg');

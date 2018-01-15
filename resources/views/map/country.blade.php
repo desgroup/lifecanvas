@@ -9,7 +9,7 @@
                         <h3 class="panel-title">{{ $country_code }}</h3>
                     </div>
                     <div class="panel-body">
-                        <script type='text/javascript' src='http://www.google.com/jsapi'></script>
+                        <script type='text/javascript' src='https://www.google.com/jsapi'></script>
                         <script type='text/javascript'>google.load('visualization', '1', {'packages': ['geochart']});
                             google.setOnLoadCallback(drawVisualization);
 

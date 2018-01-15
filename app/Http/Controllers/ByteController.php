@@ -248,7 +248,7 @@ class ByteController extends Controller
 
         // Where are we to set the place and timezone
         if ($request->place_id == '00') {
-            if ($request->use_image_time == "on") {
+            if ($request->use_image_time == "on" && isset($image_data)) {
                 // Find a related place
                 $lat = $image_data->lat;
                 $lng = $image_data->lng;

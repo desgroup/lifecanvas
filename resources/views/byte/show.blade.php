@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('css_page')
-    <link rel="stylesheet" type="text/css" href="/css/slim.min.css">
+
 @endsection
 
 @section('content')
@@ -10,13 +10,7 @@
             <div class="col-md-4">
 
                 @if( !is_null($byte->asset))
-                    <div class="slim"
-                         data-service="async.php"
-                         data-fetcher="/photo/fetch"
-                         data-max-file-size="10">
-                        <img src="{{ $byte->medium() }}" class="img-responsive center-block">
-                        <input type="file" name="slim[]"/>
-                    </div>
+                    <img src="{{ $byte->medium() }}" class="img-responsive center-block">
                 @endif
 
             </div>
@@ -125,8 +119,6 @@
             <script async defer
                     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0b8kHZFV0eqVi_d5a3J2W6QFucKZcY5I&callback=initMap">
             </script>
-
-            <script src="/js/slim.kickstart.min.js"></script>
         @endsection
     @endif
 @endif

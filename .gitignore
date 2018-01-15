@@ -10,20 +10,7 @@ Homestead.yaml
 npm-debug.log
 .env
 .DS_Store
-
-# Auth modified vendor files "signin/signout"
-vendor/*
-!vendor/laravel/
-vendor/laravel/*
-!vendor/laravel/framework/
-vendor/laravel/framework/*
-!vendor/laravel/framework/src/
-vendor/laravel/framework/src/*
-!vendor/laravel/framework/src/Illuminate/
-vendor/laravel/framework/src/Illuminate/*
-!vendor/laravel/framework/src/Illuminate/Foundation/
-vendor/laravel/framework/src/Illuminate/Foundation/*
-!vendor/laravel/framework/src/Illuminate/Foundation/Auth/
-vendor/laravel/framework/src/Illuminate/Foundation/Auth/*
-!vendor/laravel/framework/src/Illuminate/Foundation/Auth/AuthenticatesUsers.php
-!vendor/laravel/framework/src/Illuminate/Foundation/Auth/RegistersUsers.php
+vendor
+cert.conf
+lifecanvas.dev.crt
+lifecanvas.dev.key

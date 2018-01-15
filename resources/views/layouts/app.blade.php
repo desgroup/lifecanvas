@@ -21,6 +21,17 @@
         .mr-1 { margin-right: 1em; }
         .ml-1 { margin-left: 1em; }
         .mb-1 { margin-bottom: 1em; }
+
+        .mt-2 { margin-top: 2em; }
+        .mr-2 { margin-right: 2em; }
+        .ml-2 { margin-left: 2em; }
+        .mb-2 { margin-bottom: 2em; }
+
+        .btn-primary {
+            background-color: #A8DA17;
+            border-color: #A8DA17;
+        }
+
     </style>
 
     @yield('css_page')
@@ -37,7 +48,7 @@
         @endif
 
         @yield('content')
-            <flash message="{{ session('flash') }}"></flash>
+        <flash message="{{ session('flash') }}"></flash>
     </div>
 
     @yield('onPageCSS')

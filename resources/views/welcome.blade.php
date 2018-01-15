@@ -1,92 +1,86 @@
 @extends('layouts.app')
 
-@section('headcontent')
-    <link href='http://fonts.googleapis.com/css?family=ABeeZee' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
-@stop
-
 @section('content')
-    <!-- content -->
-    <div class="container content">
-        <div class="centered">
-            <h1 class="brand-font">Lifecanvas</h1>
-            <p class="subtitle">Capture your past, present and future</p>
-            <p class="main-buttons">
-                <a href="/login" class="well">Sign In</a>
-                <a href="#" class="well">Sign Up</a>
-            </p>
-        </div> <!-- end centered -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 mb-1 mt-2">
+                <img src="/assets/img/logos/lifecanvas_logo_home2.png" class="img-responsive center-block">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 mt-1">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Sign In</div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
+                            {{ csrf_field() }}
+
+                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+
+                                <div class="col-md-6">
+                                    <input id="email" type="email" class="form-control" name="email"
+                                           value="{{ old('email') }}" required autofocus>
+
+                                    @if ($errors->has('email'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                                <label for="password" class="col-md-4 control-label">Password</label>
+
+                                <div class="col-md-6">
+                                    <input id="password" type="password" class="form-control" name="password" required>
+
+                                    @if ($errors->has('password'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-4">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox"
+                                                   name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-8 col-md-offset-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        Sign In
+                                    </button>
+
+                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                                        Forgot Your Password?
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- end content -->
-@stop
+@endsection
 
 @section('onPageCSS')
     <style type="text/css">
 
-        h1 {
-
-            font-size: 100px;
-            color: white;
-            text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
-
+        body {
+            background-color: #FFFFFF;
+            background: #FFFFFF; /* Old browsers */
         }
 
-        .subtitle {
-            font-size: 35px;
-            padding-top: 0px;
-            letter-spacing:1px;
-            line-height: 40px;
-            color: white;
-        }
-
-        .centered {
-            margin-top: 15%;
-            margin-left: 10%;
-
-        }
-
-        a.well {
-            background: #63c918;
-            border: none;
-            border-bottom: 1px solid #b4e391;
-            box-shadow: inset 0 2px 5px #339900;
-            padding: 9px 12px;
-            font-size: 25px;
-            color: #fbfbfb;
-            margin-right: 30px;
-
-        }
-
-        .main-buttons {
-            margin-top: 70px;
-        }
-
-        .container {
-            position: absolute;
-            top: 0;
-            min-height: 100%;
-            height: 100%;
-            width: 100%;
-
-            background-color: #b4e391;
-            background: #b4e391; /* Old browsers */
-            background: -moz-radial-gradient(center, ellipse cover,  #b4e391 0%, #61c419 100%); /* FF3.6+ */
-            background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#b4e391), color-stop(100%,#61c419)); /* Chrome,Safari4+ */
-            background: -webkit-radial-gradient(center, ellipse cover,  #b4e391 0%,#61c419 100%); /* Chrome10+,Safari5.1+ */
-            background: -o-radial-gradient(center, ellipse cover,  #b4e391 0%,#61c419 100%); /* Opera 12+ */
-            background: -ms-radial-gradient(center, ellipse cover,  #b4e391 0%,#61c419 100%); /* IE10+ */
-            background: radial-gradient(ellipse at center,  #b4e391 0%,#61c419 100%); /* W3C */
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#61c419', endColorstr='#b4e391',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-
-        }
-
-        .bottom-nav {
-            margin: 0 15%;
-        }
-
-        .navbar-inner {
-            background: #63c918;
-            color: #fff;
-        }
     </style>
 @stop

@@ -12,8 +12,9 @@
                 <div class="slim"
                      data-service="async.php"
                      data-fetcher="/photo/fetch"
-                     data-max-file-size="10">
-                    <img src="/usr/1/org/1-55bfa9b56c0e28-14065503.jpg" alt=""/>
+                     data-max-file-size="10"
+                     data-internal-canvas-size="2048,2048">
+                    <img src="/usr/1/org/15a1b1bc2092dc1-50338003.jpg" alt=""/>
                     <input type="file" name="slim[]"/>
                 </div>
             </div>

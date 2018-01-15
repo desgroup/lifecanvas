@@ -25,7 +25,7 @@ class LandingPageTest extends TestCase
         $response = $this->get('/');
 
         // Go to lifecanvas.io
-        $response->assertSee('Sign Up');
+        $response->assertSee('Sign In');
     }
 
     /** @test */ // TODO-KGW This test needs to be completed, redirect is not working.
