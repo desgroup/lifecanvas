@@ -34,19 +34,19 @@ class DateTimeUtilities
 
         switch ($accuracy) {
             case '111111':
-                $displayDate = $date->format('l jS \\of F Y g:i:s A');
+                $displayDate = $date->format('l, F j, Y, g:i A');
                 break;
             case '111110':
-                $displayDate = $date->format('l jS \\of F Y g:i A');
+                $displayDate = $date->format('l, F j, Y, g:i A');
                 break;
             case '111100':
-                $displayDate = $date->format('l jS \\of F Y g A');
+                $displayDate = $date->format('l, F j, Y, g A');
                 break;
             case '111000':
-                $displayDate = $date->format('l jS \\of F Y');
+                $displayDate = $date->format('l, F j, Y');
                 break;
             case '110000':
-                $displayDate = $date->format('F Y');
+                $displayDate = $date->format('F, Y');
                 break;
             case '100000':
                 $displayDate = 'Year: ' . $date->format('Y');

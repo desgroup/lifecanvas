@@ -157,12 +157,13 @@ class ByteController extends Controller
         //dd($byte->place);
         //dd($byte->timezone->timezone_name);
         $lines = $byte->lines()->get();
+        $people = $byte->people()->get();
         if (!is_null($byte->byte_date) && !is_null($byte->timezone))
         $displayDate = DateTimeUtilities::formatFullDate(Carbon::createFromFormat('Y-m-d H:i:s',$byte->byte_date)->setTimeZone($byte->timezone->timezone_name), $byte->accuracy);
         //dd($byte->place_id);
         $place = Place::where('id', '=', $byte->place_id)->first();
         //dd($place);
-        return view('byte.show',compact('byte', 'displayDate', 'lines', 'place'));
+        return view('byte.show',compact('byte', 'displayDate', 'lines', 'people', 'place'));
     }
 
     /**
@@ -275,9 +276,12 @@ class ByteController extends Controller
             $place_id = $request->place_id;
             $timeZone = Place::where('id', '=', $place_id)->first()->timezone;
             //dd('From place: ' . $timeZone);
-        } elseif (!is_null($request->timezone_id) && $request->timezone_id <> "00") {
-            $timeZone = Timezone::where('id', '=', $request->timezone_id)->first();
-            //dd('From timzone: ' . $timeZone);
+        } else {
+            $place_id = $request->place_id;
+            if (!is_null($request->timezone_id) && $request->timezone_id <> "00") {
+                $timeZone = Timezone::where('id', '=', $request->timezone_id)->first();
+                //dd('From timzone: ' . $timeZone);
+            }
         }
 
         if (!isset($timeZone)) {
