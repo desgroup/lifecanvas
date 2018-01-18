@@ -27,7 +27,7 @@ class ImageUtilities
         $file->move($filePath . '/org/', $filename);
 
         // Grab the original image to use for the data it contains.
-        $img = Image::make($filePath . '/org/' . $filename);
+        $img = Image::make($filePath . '/org/' . $filename)->orientate();
 
         // Create different versions of the image at different sizes
         $image_sets = [
@@ -61,6 +61,8 @@ class ImageUtilities
             // Grab exif data from file if jpg or tiff
             if ($exif = exif_read_data($filePath . '/org/' . $filename)) {
                 //$exif = exif_read_data($filePath . '/org/' . $filename);
+
+                //dd($exif);
 
                 $size = array_key_exists('GPSLongitude', $exif) ? $exif['FileSize'] / 1000 : NULL;
                 $height = $exif['COMPUTED']['Height'] ?? NULL;
