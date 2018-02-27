@@ -17,31 +17,11 @@ Route::get('/info', function () {
 });
 
 Route::get('/develop', function () {
-    return view('develop', ['lat' => 43.438338, 'lng' => -79.686901, 'hidenav' => true]);
+    return view('develop', ['lat' => 43.438338, 'lng' => -79.686901]);
 });
-
-Route::get('/photo', function () {
-    return view('photo', ['lat' => 43.438338, 'lng' => -79.686901]);
-});
-
-Route::get('/photo/fetch', 'PhotosController@fetch');
 
 // Authentication Routes...
 Auth::routes();
-
-//Route::get('signin', 'Auth\SigninController@showSigninForm')->name('signin');
-//Route::post('signin', 'Auth\SigninController@login');
-//Route::post('signout', 'Auth\SigninController@logout')->name('signout');
-//
-//// Registration Routes...
-//Route::get('signup', 'Auth\SignupController@showSignupForm')->name('signup');
-//Route::post('signup', 'Auth\SignupController@signup');
-
-// Password Reset Routes...
-//Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-//Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-//Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-//Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 // Guest routes
 Route::get('/', function () {
@@ -58,9 +38,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('/lines', 'LineController');
     Route::resource('/people', 'PersonController');
     Route::resource('/places', 'PlaceController');
-    Route::resource('/profiles', 'ProfileController');
+    //Route::resource('/profiles', 'ProfileController');
     Route::delete('/comments/{comment}', 'CommentController@destroy');
-    Route::get('{user}', 'ProfileController@userProfile');
     Route::post('/bytes/{byte}/favorites', 'FavoriteController@store');
     Route::post('/bytes/{byte}/comment', 'CommentController@store');
+    Route::get('/{user}', 'ProfileController@userProfile');
+    Route::patch('/{user}', 'ProfileController@update');
+    Route::get('/{user}/edit', 'ProfileController@edit');
+    Route::post('/photo/async', 'PhotoController@async');
+    Route::post('/photo/fetch', 'PhotoController@fetch');
 });

@@ -1,21 +1,49 @@
-@extends('layouts.app')
+@extends('layouts.app2')
 
 @section('content')
+
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">My Bytes</h3>
-                    </div>
-                    <div class="panel-body">
-                        @foreach($bytes as $byte)
-                            @include('byte.byte')
-                        @endforeach
-                        {{ $bytes->links() }}
+            <div class="col-lg-3">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card card-primary animated zoomInUp animation-delay-7">
+                            <div class="card-header">
+                                <h3 class="card-title">Display Bytes as . . .</h3>
+                            </div>
+                            <div class="list-group">
+                                <a href="/bytes" class="list-group-item list-group-item-action withripple">
+                                    <i class="zmdi zmdi-view-list"></i> Timeline
+                                </a>
+                                <a href="javascript:void(0)" class="list-group-item list-group-item-action withripple">
+                                    <i class="zmdi zmdi-camera"></i> Images
+                                </a>
+                                <a href="javascript:void(0)" class="list-group-item list-group-item-action withripple">
+                                    <i class="zmdi zmdi-pin"></i>Map
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-9">
+                <ul class="ms-timeline">
+                    <li class="ms-timeline-item wow materialUp">
+                        @foreach($bytes as $byte)
+                            @include('byte.partials.card')
+                        @endforeach
+                    </li>
+                    <li>
+                        {{ $bytes->links() }}
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </div>
+    <!-- container -->
+
 @endsection
+
+@section('onPageCSS')
+@stop

@@ -1,11 +1,15 @@
-@extends('layouts.app')
+@extends('layouts.app2')
 
 @section('content')
     <div class="container">
         <div class="row">
             @if( !is_null($byte->asset))
             <div class="col-md-4">
-                <img src="{{ $byte->medium() }}" class="img-responsive center-block">
+                <a href="{{ $byte->medium() }}" class="img-thumbnail" data-lightbox="image-1" data-title="{{ $byte->title }}">
+                    <div class="thumbnail-container">
+                        <img src="{{ $byte->medium() }}" class="img-fluid">
+                    </div>
+                </a>
             @else
             <div class="col-md-2">
             @endif
@@ -66,16 +70,16 @@
                                         <div class="level">
                                             <form method="POST" action="/bytes/{{ $byte->id }}/favorites">
                                                 {{ csrf_field() }}
-                                                <button type="submit" class="btn btn-default mr-1" data-toggle="tooltip" data-placement="top" title="Favorite this byte" {{ $byte->isFavorited() ? 'disabled' : ''}}>
+                                                <button type="submit" class="btn-circle btn-circle-raised btn-circle-default mr-1" data-toggle="tooltip" data-placement="top" title="Favorite this byte" {{ $byte->isFavorited() ? 'disabled' : ''}}>
                                                     {{ $byte->favorites_count }} <i class="fa fa-heart"></i>
                                                 </button>
                                             </form>
                                             @if($byte->user_id == auth()->id())
-                                                <a href="{{ $byte->id }}/edit" class="btn btn-default mr-1" data-toggle="tooltip" data-placement="top" title="Edit this byte"><i class="fa fa-pencil"></i></a>
+                                                <a href="{{ $byte->id }}/edit" class="btn-circle btn-circle-raised btn-circle-default mr-1" data-toggle="tooltip" data-placement="top" title="Edit this byte"><i class="fa fa-pencil"></i></a>
                                                 <form action="{{ $byte->path() }}" method="POST">
                                                     {{ csrf_field() }}
                                                     {{ method_field('DELETE') }}
-                                                    <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Delete this byte"> <i class="fa fa-trash"></i> </button>
+                                                    <button type="submit" class="btn-circle btn-circle-raised btn-circle-default" data-toggle="tooltip" data-placement="top" title="Delete this byte"> <i class="fa fa-trash"></i> </button>
                                                 </form>
                                             @endif
                                         </div>
@@ -101,7 +105,7 @@
                             <textarea name="body" id="body" class="form-control" placeholder="Have something to say?"
                                       rows="3"></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary">Add Comment</button>
+                            <button type="submit" class="btn btn-raised btn-success">Add Comment</button>
                         </form>
                     </div>
                 </div>

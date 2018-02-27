@@ -17,6 +17,7 @@ class BytesViewTest extends TestCase
 
         $this->user = factory(\App\User::class)->create();
         $this->be($this->user);
+        create('App\Place', ['user_id' => auth()->id()]);
         $this->byte1 = factory(\App\Byte::class)->create([
             'user_id' => $this->user->id,
             'title' => 'This is my first byte'

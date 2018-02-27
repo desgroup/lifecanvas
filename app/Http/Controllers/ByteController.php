@@ -182,7 +182,7 @@ class ByteController extends Controller
         // Get the date information
         $fuzzy_date = new FuzzyDate();
 
-        if($byte->accuracy == "0000000") {
+        if($byte->accuracy == "0000000" || is_null($byte->byte_date)) {
 
             $formDate = $fuzzy_date->makeFormValues(null, "0000000");
 

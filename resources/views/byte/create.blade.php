@@ -1,12 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.app2')
 
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">Add a Byte</h3></div>
-
                     <div class="panel-body">
                         @if(count($errors))
                             <ul class="alert alert-danger">
@@ -16,6 +17,7 @@
                             </ul>
                         @endif
                         <form method="POST" action="/bytes" enctype="multipart/form-data">
+                            <fieldset>
                             {{ csrf_field() }}
                             <input type="hidden" name="usertimezone" id="usertimezone" value="">
                             <input type="hidden" name="year" id="year" value="">
@@ -37,30 +39,37 @@
 
                             <div class="row form-group">
                                 <!-- Image File -->
-                                <div class="col-md-4">
-                                    <label for="image">Image:</label>
+                                <div class="col-md-12">
+                                    <label class="control-label" for="image">Image</label>
+
                                     @if($agent->isMobile() || $agent->isTablet())
                                         <input type="file" name="image" id="image" accept="image/*;capture=camera">
                                     @else
+                                        <input type="text" readonly="" class="form-control" placeholder="Browse...">
                                         <input type="file" class="form-control-file" name="image" id="image">
                                     @endif
+                                </div>
+
+                            </div>
+
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                <label class="control-label" for="title">Title</label>
+                                <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" placeholder="Byte title" required autofocus>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="title">Title:</label>
-                                <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" placeholder="Byte title" required autofocus>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="story">Story:</label>
+                                <div class="col-md-12">
+                                <label class="control-label" for="story">Story</label>
                                 <textarea name="story" id="story" class="form-control" placeholder="Add a story or notes here" rows="4">{{ old('story') }}</textarea>
+                                </div>
                             </div>
 
                             <div class="row form-group">
                                 <div class="col-md-4">
-                                    <label for="rating">Rating:</label>
-                                    <select class="form-control" id="rating" name="rating">
+                                    <label class="control-label" for="rating">Rating</label>
+                                    <select class="form-control selectpicker" id="rating" name="rating" data-dropup-auto="false">
                                         <option value="0" {{ old('rating') == 0 ? 'selected' : '' }}>Unrated</option>
                                         <option value="1" {{ old('rating') == 1 ? 'selected' : '' }}>Hated it</option>
                                         <option value="2" {{ old('rating') == 2 ? 'selected' : '' }}>Didn&lsquo;t like it</option>
@@ -70,43 +79,43 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="repeat">Do it again:</label>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="repeat" id="repeat1" value="0" {{ old("repeat") == 0 ? "checked":"" }}>
+                                    <label class="control-label" for="repeat">Do it again</label>
+                                    <div class="radio radio-primary">
+                                        <label>
+                                            <input class="form-check-input" type="radio" name="repeat" id="repeat1" value="0" {{ old("repeat") == 0 && old("repeat") <> "" ? "checked":"" }}>
                                             Yes
                                         </label>
                                     </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
+                                    <div class="radio radio-primary">
+                                        <label>
                                             <input class="form-check-input" type="radio" name="repeat" id="repeat2" value="1" {{ old("repeat") == 1 ? "checked":"" }}>
                                             Maybe
                                         </label>
                                     </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
+                                    <div class="radio radio-primary">
+                                        <label>
                                             <input class="form-check-input" type="radio" name="repeat" id="repeat3" value="2" {{ old("repeat") == 2 ? "checked":"" }}>
                                             No
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="privacy">Privacy:</label>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="privacy" id="privacy1" value="0" {{ old("privacy") == 0 ? "checked":"" }}>
+                                    <label class="control-label" for="privacy">Privacy</label>
+                                    <div class="radio radio-primary">
+                                        <label>
+                                            <input class="form-check-input" type="radio" name="privacy" id="privacy1" value="0" {{ old("privacy", Auth::user()->privacy) == 0 ? "checked":"" }}>
                                             Myself only
                                         </label>
                                     </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="privacy" id="privacy2" value="1" {{ old("privacy") == 1 ? "checked":"" }}>
+                                    <div class="radio radio-primary">
+                                        <label>
+                                            <input class="form-check-input" type="radio" name="privacy" id="privacy2" value="1" {{ old("privacy", Auth::user()->privacy) == 1 ? "checked":"" }}>
                                             My Friends
                                         </label>
                                     </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="privacy" id="privacy3" value="2" {{ old("privacy") == 2 ? "checked":"" }}>
+                                    <div class="radio radio-primary">
+                                        <label>
+                                            <input class="form-check-input" type="radio" name="privacy" id="privacy3" value="2" {{ old("privacy", Auth::user()->privacy) == 2 ? "checked":"" }}>
                                             The World
                                         </label>
                                     </div>
@@ -114,8 +123,8 @@
                             </div>
                             <div class="row form-group">
                                 <div class="col-md-6">
-                                    <label for="place_id">Place:</label>
-                                    <select class="form-control" name="place_id" id="place_id">
+                                    <label class="control-label" for="place_id">Place:</label>
+                                    <select class="form-control selectpicker" name="place_id" id="place_id">
                                         <option value="00" {{ !old('place_id') ? 'selected' : '' }}>Select a place</option>
                                         @foreach($places as $key => $value)
                                             <option value="{{ $key }}" {{ (collect(old('place_id'))->contains($key)) ? 'selected' : '' }}>{{ $value }}</option>
@@ -127,16 +136,16 @@
                                 {{ old("lines->id") }}
                             <div class="row form-group">
                                 <div class="col-md-6">
-                                    <label for="people">People:</label>
-                                    <select multiple="multiple" class="form-control" name="people[]" id="people">
+                                    <label class="control-label" for="people">People:</label>
+                                    <select multiple="multiple" class="form-control selectpicker" name="people[]" id="people">
                                         @foreach($people as $key => $value)
                                             <option value="{{ $key }}" {{ (collect(old('people'))->contains($key)) ? 'selected':'' }}>{{ $value }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="lines">Lifeline:</label>
-                                    <select multiple="multiple" class="form-control" name="lines[]" id="lines">
+                                    <label class="control-label" for="lines">Lifeline:</label>
+                                    <select multiple="multiple" class="form-control selectpicker" name="lines[]" id="lines">
                                         @foreach($mylines as $line)
                                             <option value="{{ $line->id }}" {{ (collect(old('lines'))->contains($line->id)) ? 'selected':'' }}>{{ $line->name }}</option>
                                         @endforeach
@@ -144,9 +153,10 @@
                                 </div>
                             </div>
                             <div class='form-group'>
-                                <button type="submit" class="btn btn-primary">Add Byte</button>
+                                <button type="submit" class="btn btn-raised btn-primary">Add Byte</button>
                                 <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
                             </div>
+                            </fieldset>
                         </form>
                     </div>
                 </div>

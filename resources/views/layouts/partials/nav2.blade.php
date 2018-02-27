@@ -2,28 +2,18 @@
     <div class="container container-full">
         <div class="navbar-header">
             <a class="navbar-brand" href="{{ url('/feed') }}">
-                <img src="assets/img/logos/logo_header.png" height="36px">
+                <img src="/assets/img/logos/logo_header.png" height="36px">
             </a>
         </div>
 
         <div class="collapse navbar-collapse" id="ms-navbar">
             <ul class="navbar-nav">
             @if (Auth::check())
-                <li class="nav-item dropdown  {{ Request::is('bytes*') ? "active" : "" }}">
-                    <a href="#" class="nav-link dropdown-toggle animated fadeIn animation-delay-9" data-toggle="dropdown" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-name="bytes">Bytes
-                        <i class="zmdi zmdi-chevron-down"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="dropdown-item" href="/bytes/create">Add Byte</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="/bytes">Byte List</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="/map">Byte Map</a>
-                        </li>
-                    </ul>
+                <li class="nav-item dropdown {{ Request::is('bytes/create') ? "active" : "" }}">
+                    <a href="/bytes/create" class="nav-link dropdown-toggle animated fadeIn animation-delay-9" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-name="add">Add Byte <i class="zmdi zmdi-plus"></i></a>
+                </li>
+                <li class="nav-item dropdown {{ Request::is('bytes') ? "active" : "" }}">
+                    <a href="/bytes" class="nav-link dropdown-toggle animated fadeIn animation-delay-9" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-name="add">Bytes <i class="icon-byte-icon2"></i></a>
                 </li>
                 <li class="nav-item dropdown {{ Request::is('lines*') ? "active" : "" }}">
                     <a href="#" class="nav-link dropdown-toggle animated fadeIn animation-delay-9" data-toggle="dropdown" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-name="lines">Lines
@@ -66,6 +56,9 @@
                         <li>
                             <a class="dropdown-item" href="/places">My Places</a>
                         </li>
+                        <li>
+                            <a class="dropdown-item" href="/map">Byte Map</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown {{ Request::is('profile*') ? "active" : "" }}">
@@ -73,7 +66,8 @@
                         <i class="zmdi zmdi-chevron-down"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/profiles">Profile</a></li>
+                        <li><a class="dropdown-item" href="/{{ Auth::user()->username }}">Profile</a></li>
+                        <li><a class="dropdown-item" href="/{{ Auth::user()->username }}/edit">Update Profile</a></li>
                         <li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();

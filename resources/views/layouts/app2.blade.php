@@ -16,7 +16,8 @@
 
         <!-- Styles -->
 
-        <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/assets/font-awesome/css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="/fonts/iconmoon/style.css">
 
         <style>
             .level { display: flex; justify-content: flex-end; }
@@ -34,6 +35,10 @@
             .btn-primary {
                 background-color: #A8DA17;
                 border-color: #A8DA17;
+            }
+
+            body {
+                padding-bottom: 100px;
             }
         </style>
 
@@ -70,17 +75,15 @@
                 @if(!isset($hidenav))
                     @include('layouts.partials.nav2')
                 @endif
-                    @include('layouts.partials.nav2')
 
                 @yield('content')
 
+                <div>
+
+                </div>
+
                 <flash message="{{ session('flash') }}"></flash>
 
-                <footer class="ms-footer">
-                    <div class="container">
-                        <p>Copyright &copy; {{ config('app.name', 'Lifecanvas') }} 2018</p>
-                    </div>
-                </footer>
                 <div class="btn-back-top">
                     <a href="#" data-scroll id="back-top"
                        class="btn-circle btn-circle-primary btn-circle-sm btn-circle-raised ">

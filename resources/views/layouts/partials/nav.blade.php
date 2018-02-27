@@ -69,7 +69,8 @@
                             {{ Auth::user()->username }} <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="/profiles">Profile</a></li>
+                            <li><a href="/{{ Auth::user()->username }}">Profile</a></li>
+                            <li><a href="/{{ Auth::user()->username }}/edit">Update Profile</a></li>
                             <li>
                                 <a href="{{ route('logout') }}"
                                    onclick="event.preventDefault();

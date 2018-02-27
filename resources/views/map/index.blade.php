@@ -1,27 +1,31 @@
-@extends('layouts.app')
+@extends('layouts.app2')
 
 @section('content')
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Stats</h3>
-                </div>
-                <div class="panel-body">
-                    <h1>{{ $my_stats->cont_count }}/7</h1>
-                    Continents Visited ({{ round($my_stats->cont_count/7*100) }}%)<br>
-                    <h1>{{ $my_stats->count_count }}/249</h1>
-                    Countries Visited ({{ round($my_stats->count_count/249*100) }}%)
-                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Stats</h3>
+                    </div>
+                    <div class="card-block">
+                        <div class="text-center">
+                            <h3>Continents Visited</h3>
+                            <div class="circle" id="circles-1"></div>
+                            <h1>{{ $my_stats->cont_count }}/7</h1>
+                            <h3>Countries Visited</h3>
+                            <div class="circle" id="circles-2"></div>
+                            <h1>{{ $my_stats->count_count }}/249</h1>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-md-9">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">World View</h3>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">World View</h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-block">
                         <script type='text/javascript' src='https://www.google.com/jsapi'></script>
                         <script type='text/javascript'>google.load('visualization', '1', {'packages': ['geochart']});
                             google.setOnLoadCallback(drawVisualization);
@@ -33,13 +37,13 @@
                                 data.addColumn({type:'string', role:'tooltip'});var ivalue = new Array();
 
                                 @forEach($my_countries as $country)
-                                    data.addRows([[{v:'{{ $country->code }}',f:'{{ $country->name }}'},0,'{{ $country->name }}']]);
-                                    ivalue['{{ $country->code }}'] = '/map/{{ $country->code }}';
+                                    data.addRows([[{v:'{{ $country->code }}',f:'{{ $country->name }}'},0,'{{ $byteCount[$country->code] }} Bytes']]);
+                                    ivalue['{{ $country->code }}'] = '{{ in_array($country->code, $provincesSupported) ? "/map/$country->code" : "/bytes" }}';
                                 @endforeach
 
                                 var options = {
                                     backgroundColor: {fill:'#FFFFFF',stroke:'#FFFFFF' ,strokeWidth:0 },
-                                    colorAxis:  {minValue: 0, maxValue: 0,  colors: ['#6699CC']},
+                                    colorAxis:  {minValue: 0, maxValue: 0,  colors: ['#87CB12']},
                                     legend: 'none',
                                     backgroundColor: {fill:'#FFFFFF',stroke:'#FFFFFF' ,strokeWidth:0 },
                                     datalessRegionColor: '#f5f5f5',
@@ -71,4 +75,48 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('js_scripts')
+    <script>
+    $( document ).ready(function() {
+        var myCircle = Circles.create({
+        id: 'circles-1',
+        radius: 60,
+        value: {{ $my_stats->cont_count }},
+        maxValue: 7,
+        width: 8,
+        text: function(value) {
+        return value + '%';
+        },
+        colors: ['#f1f1f1', '#000'],
+        duration: 600,
+        wrpClass: 'circles-wrp',
+        textClass: 'circles-text',
+        valueStrokeClass: 'circles-valueStroke circle-primary',
+        maxValueStrokeClass: 'circles-maxValueStroke',
+        styleWrapper: true,
+        styleText: true
+        });
+
+        var myCircle2 = Circles.create({
+        id: 'circles-2',
+        radius: 60,
+        value: {{ $my_stats->count_count }},
+        maxValue: 249,
+        width: 8,
+        text: function(value) {
+        return value + '%';
+        },
+        colors: ['#f1f1f1', '#000'],
+        duration: 600,
+        wrpClass: 'circles-wrp',
+        textClass: 'circles-text',
+        valueStrokeClass: 'circles-valueStroke circle-primary',
+        maxValueStrokeClass: 'circles-maxValueStroke',
+        styleWrapper: true,
+        styleText: true
+        });
+    });
+    </script>
 @endsection

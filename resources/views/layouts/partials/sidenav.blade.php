@@ -3,20 +3,13 @@
     <div class="sb-slidebar-container">
         <ul class="ms-slidebar-menu" id="slidebar-menu" role="tablist" aria-multiselectable="true">
             @if (Auth::check())
-            <li class="card" role="tab" id="sch1">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#slidebar-menu" href="#sc1" aria-expanded="false" aria-controls="sc1">
-                    Bytes</a>
-                <ul id="sc1" class="card-collapse collapse" role="tabpanel" aria-labelledby="sch1">
-                    <li>
-                        <a href="/bytes/create">Add Byte</a>
-                    </li>
-                    <li>
-                        <a href="/bytes">Byte List</a>
-                    </li>
-                    <li>
-                        <a href="/map">Byte Map</a>
-                    </li>
-                </ul>
+            <li>
+                <a class="link" href="/bytes/create">
+                    <i class="zmdi zmdi-plus"></i> Add Byte</a>
+            </li>
+            <li>
+                <a class="link" href="/bytes">
+                    <i class="icon-byte-icon2"></i> Byte List</a>
             </li>
             <li class="card" role="tab" id="sch2">
                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#slidebar-menu" href="#sc2" aria-expanded="false" aria-controls="sc2">

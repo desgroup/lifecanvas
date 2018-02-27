@@ -85,7 +85,7 @@ class PlaceController extends Controller
      */
     public function show(Place $place)
     {
-        $bytes = $place->bytes()->latest()->get();
+        $bytes = $place->bytes()->latest('byte_date')->paginate();
         return view('place.show', compact('bytes', 'place'));
     }
 

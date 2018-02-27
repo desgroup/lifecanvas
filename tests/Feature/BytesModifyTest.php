@@ -65,7 +65,7 @@ class BytesModifyTest extends TestCase
         $this->patch($byte->path(), [
            'title' => 'Changed',
            'story' => 'Changed story.',
-            'privacy' => 1
+           'privacy' => 1
         ]);
 
         tap($byte->fresh(), function($byte) {

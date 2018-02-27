@@ -1,6 +1,9 @@
 <?php
 namespace App\Lifecanvas\Vendor;
 
+use App\User;
+use Illuminate\Support\Facades\Auth;
+
 abstract class SlimStatus {
     const FAILURE = 'failure';
     const SUCCESS = 'success';
@@ -131,7 +134,7 @@ class Slim {
     }
 
     // $path should have trailing slash
-    public static function saveFile($data, $name, $path = 'tmp/', $uid = true) {
+    public static function saveFile($data, $name, $path = "tmp/", $uid = true) {
 
         // Add trailing slash if omitted
         if (substr($path, -1) !== '/') {
@@ -150,6 +153,21 @@ class Slim {
         if ($uid) {
             $name = uniqid() . '_' . $name;
         }
+
+        // Just use this standard name
+
+        $avatar_id = User::where('id', Auth::user()->id)->pluck('avatar')[0];
+        //dd($avatar_id[0]);
+        //$avatar_id = $avatar_id[0];
+
+        if($avatar_id == NULL) {
+            $prefix = uniqid() . '-';
+            User::where('id', Auth::user()->id)->update(array('avatar' => $prefix));
+        } else {
+            $prefix = $avatar_id;
+        }
+
+        $name = $prefix . "avatar.jpg"; // TODO-KGW clean up the extra naming logic as it is not needed
 
         // Add name to path, we need the full path including the name to save the file
         $path = $path . $name;

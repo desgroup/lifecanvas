@@ -1,8 +1,10 @@
 <div class="media">
     @if( !is_null($byte->asset))
         <div class="media-left">
-            <a href="/bytes/{{ $byte->id }}">
-                <img class="media-object" src="{{ $byte->thumbnail() }}" alt="...">
+            <a href="/bytes/{{ $byte->id }}" class="img-thumbnail withripple">
+                <div class="thumbnail-container">
+                    <img class="img-fluid" src="{{ $byte->thumbnail() }}" alt="...">
+                </div>
             </a>
         </div>
     @endif

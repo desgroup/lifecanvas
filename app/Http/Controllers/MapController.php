@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Country;
+use App\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,7 +23,6 @@ class MapController extends Controller
             where b.`user_id` = $user_id
         ");
         $my_stats = array_shift($my_stats);
-        //dd($my_stats);
 
         $my_countries = DB::select("select distinct co.`country_name_en` as name, co.`id` as code
             from `bytes` as b RIGHT JOIN `places` as p
@@ -31,11 +32,44 @@ class MapController extends Controller
             where b.`user_id` = $user_id
             order by co.`country_name_en`
         ");
-        //dd($my_countries);
-        return view('map.index', compact('my_countries', 'my_stats'));
+
+        $byteCount = [];
+        foreach ($my_countries as $country) {
+            $byteCount[$country->code] = count(DB::select("
+                    SELECT *
+                    from `bytes` as b RIGHT JOIN `places` as p
+                    on b.`place_id`  = p.`id` 
+                    where b.`user_id` = $user_id and p.`country_code` = '$country->code'")
+            );
+        }
+        //dd($byteCount);
+
+        $provincesSupported = Province::select('country_code')->groupby('country_code')->pluck('country_code')->toArray();
+        //dd($provincesSupported);
+        return view('map.index', compact('my_countries', 'byteCount', 'my_stats', 'provincesSupported'));
     }
 
     public function country ($country_code) {
-        return view('map.country', compact('country_code'));
+
+        $user_id = auth()->id();
+
+        $my_provinces = DB::select("
+            select pr.`province_name_en`, pr.`province_code`, pr.`country_code`
+              from provinces as pr INNER JOIN (SELECT t1.province, t1.country_code
+                  FROM places AS t1 INNER JOIN bytes AS t2 ON t1.id = t2.place_id
+                  WHERE t2.`user_id` = $user_id and t1.`country_code` = '$country_code'
+                  group by t1.`province`) as list on pr.`province_code` = list.`province`
+        ");
+
+        $countryName = Country::where('id', $country_code)->pluck('country_name_en')[0];
+        $provinceCount = Province::where('country_code', $country_code)->count();
+        //$provinceCount = Province::where([['country_code', $country_code], ['type', 'P']])->count();
+        //$stateCount = Province::where([['country_code', $country_code], ['type', 'S']])->count();
+        //$totalCount = Province::where([['country_code', $country_code]])->count();
+        //$totalCount = $totalCount - $stateCount - $provinceCount;
+        $provinceVisitedCount = count($my_provinces);
+        //dd($provinceCount);
+
+        return view('map.country', compact('countryName', 'provinceCount', 'provinceVisitedCount', 'country_code', 'my_provinces'));
     }
 }

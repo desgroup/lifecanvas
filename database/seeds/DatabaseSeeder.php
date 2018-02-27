@@ -19,7 +19,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->tables = [
             'timezones',
-            'countries'
+            'countries',
+            'words',
+            'provinces'
         ];
 
         if(getenv('APP_ENV') == "local")
@@ -52,6 +54,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(TimezonesTableSeeder::class);
         $this->call(CountriesTableSeeder::class);
+        $this->call(WordsTableSeeder::class);
+        $this->call(ProvincesTableSeeder::class);
 
         if(getenv('APP_ENV') == "local") {
             $this->call(UsersTableSeeder::class);

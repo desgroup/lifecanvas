@@ -15,7 +15,13 @@ class LineController extends Controller
      */
     public function index()
     {
-        $lines = Auth::user()->myLines()->orderBy('name')->get();
+//        $lines = Auth::user()->myLines()->with(['bytes' => function ($query) {
+//            $query->whereNotNull('asset_id')->first();
+//        }])->get();
+        $lines = Auth::user()->myLines()->orderBy('name')->with('bytes')->get();
+        //$count = $lines->count();
+        //dd($count);
+        //$lines = Auth::user()->myLines()->orderBy('name')->get();
         return view('line.index', compact('lines'));
     }
 
@@ -58,7 +64,7 @@ class LineController extends Controller
      */
     public function show(Line $line)
     {
-        $bytes = $line->bytes()->latest()->get();
+        $bytes = $line->bytes()->latest('byte_date')->paginate();
         return view('line.show', compact('bytes', 'line'));
     }
 

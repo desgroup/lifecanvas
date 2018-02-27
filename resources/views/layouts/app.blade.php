@@ -41,25 +41,25 @@
 
 </head>
 <body style="padding-bottom: 100px;">
-    <div id="app">
+<div id="app">
 
-        @if(!isset($hidenav))
-            @include('layouts.partials.nav')
-        @endif
+    @if(!isset($hidenav))
+        @include('layouts.partials.nav')
+    @endif
 
-        @yield('content')
-        <flash message="{{ session('flash') }}"></flash>
-    </div>
+    @yield('content')
+    <flash message="{{ session('flash') }}"></flash>
+</div>
 
-    @yield('onPageCSS')
+@yield('onPageCSS')
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
-    @yield('js_scripts')
+<!-- Scripts -->
+<script src="{{ asset('js/app.js') }}"></script>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+@yield('js_scripts')
 </body>
 </html>

@@ -31,7 +31,7 @@ class ImageUtilities
 
         // Create different versions of the image at different sizes
         $image_sets = [
-            ['dir' => '/medium', 'width' => 1500, 'qual' => 90],
+            ['dir' => '/medium', 'width' => 1920, 'qual' => 90],
             ['dir' => '/small', 'width' => 240, 'qual' => 90],
             ['dir' => '/thumb', 'width' => 125, 'qual' => 70],
         ];
