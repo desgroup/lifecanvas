@@ -152,9 +152,11 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class='form-group'>
+                            <div class='row form-group'>
+                                <div class="col-md-12">
                                 <button type="submit" class="btn btn-raised btn-primary">Add Byte</button>
                                 <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
+                                </div>
                             </div>
                             </fieldset>
                         </form>

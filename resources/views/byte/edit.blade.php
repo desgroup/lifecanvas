@@ -93,7 +93,7 @@
                                 </div>
                             </div>
                             <div class="row form-group">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <label class="control-label" for="place_id">Place</label>
                                     <select class="form-control selectpicker" name="place_id" id="place_id">
                                         <option value="00" {{ !old('place_id', $byte->place_id) ? 'selected' : '' }}>Select a place</option>
@@ -102,7 +102,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <label class="control-label" for="timezone_id">Time Zone</label>
                                     <select class="form-control selectpicker" name="timezone_id" id="timezone_id" >
                                         <option value="00" {{ !old('timezone_id', $byte->timezone_id) ? 'selected':'' }}>Select a time zone</option>
@@ -178,9 +178,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class='form-group'>
+                            <div class='row form-group'>
+                                <div class="col-md-12">
                                 <button type="submit" class="btn btn-raised btn-primary">Update Byte</button>
                                 <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
+                                </div>
                             </div>
                         </form>
                     </div>
