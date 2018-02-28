@@ -1,7 +1,7 @@
 <li class="item ms-timeline-item wow materialUp">
     <div class="ms-timeline-date">
-        <time class="timeline-time" datetime="">{{ Carbon\Carbon::parse($byte->created_at)->format('D dS') }}
-            <span>{{ Carbon\Carbon::parse($byte->created_at)->format('F') }}</span>
+        <time class="timeline-time" datetime="">{{ Carbon\Carbon::parse($byte->byte_date)->format('D dS') }}
+            <span>{{ Carbon\Carbon::parse($byte->byte_date)->format('F') }}</span>
         </time>
         <i class="ms-timeline-point {{ $byte->user_id == Auth::user()->id ? 'bg-success' : 'bg-royal' }}"></i>
         <a href="{{ '/' . $byte->user()->pluck('username')[0] }}">

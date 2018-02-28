@@ -15,7 +15,7 @@ class PersonController extends Controller
      */
     public function index()
     {
-        $people = Auth::user()->myPeople()->orderBy('name')->get();
+        $people = Auth::user()->myPeople()->orderBy('name')->with('bytes')->get();
         //return $places;
         return view('person.index', compact('people'));
     }

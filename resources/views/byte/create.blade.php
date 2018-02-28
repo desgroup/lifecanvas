@@ -132,8 +132,6 @@
                                     </select>
                                 </div>
                             </div>
-
-                                {{ old("lines->id") }}
                             <div class="row form-group">
                                 <div class="col-md-6">
                                     <label class="control-label" for="people">People:</label>
