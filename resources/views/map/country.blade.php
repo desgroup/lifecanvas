@@ -74,8 +74,8 @@
             var myCircle = Circles.create({
                 id: 'circles-1',
                 radius: 60,
-                value: {{ $provinceVisitedCount }},
-                maxValue: {{ $provinceCount }},
+                value: {{ round ($provinceVisitedCount / $provinceCount * 100 , 0) }},
+                maxValue: 100,
                 width: 8,
                 text: function(value) {
                     return value + '%';

@@ -15,7 +15,7 @@ class MapController extends Controller
         //dd($user_id);
 
         $my_stats = DB::select("
-            select count(distinct c.`continent_id`) as cont_count, count(distinct c.`id`) as count_count
+            select count(distinct c.`continent_id`) as cont_count, count(distinct c.`id`) as contr_count
             from `bytes` as b RIGHT JOIN `places` as p
             on b.`place_id`  = p.`id`
             right join `countries` c
@@ -23,6 +23,8 @@ class MapController extends Controller
             where b.`user_id` = $user_id
         ");
         $my_stats = array_shift($my_stats);
+
+        //dd($my_stats);
 
         $my_countries = DB::select("select distinct co.`country_name_en` as name, co.`id` as code
             from `bytes` as b RIGHT JOIN `places` as p

@@ -15,7 +15,7 @@
                             <h1>{{ $my_stats->cont_count }}/7</h1>
                             <h3>Countries Visited</h3>
                             <div class="circle" id="circles-2"></div>
-                            <h1>{{ $my_stats->count_count }}/249</h1>
+                            <h1>{{ $my_stats->contr_count }}/249</h1>
                         </div>
                     </div>
                 </div>
@@ -83,11 +83,11 @@
         var myCircle = Circles.create({
         id: 'circles-1',
         radius: 60,
-        value: {{ $my_stats->cont_count }},
-        maxValue: 7,
+        value: {{ round( $my_stats->cont_count / 7 * 100 ,0) }},
+        maxValue: 100,
         width: 8,
         text: function(value) {
-        return value + '%';
+            return value + '%';
         },
         colors: ['#f1f1f1', '#000'],
         duration: 600,
@@ -102,8 +102,8 @@
         var myCircle2 = Circles.create({
         id: 'circles-2',
         radius: 60,
-        value: {{ $my_stats->count_count }},
-        maxValue: 249,
+        value: {{ round( $my_stats->contr_count / 249 * 100 ,0) }},
+        maxValue: 100,
         width: 8,
         text: function(value) {
         return value + '%';
