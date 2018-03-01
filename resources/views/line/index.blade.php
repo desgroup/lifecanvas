@@ -15,10 +15,10 @@
                                 <div class="card">
                                     <a href="/lines/{{ $line->id }}">
                                     <div class="image-container" style="display: flex; align-items: center; justify-content: center; background-color: #F2F2F2">
-                                        @if(is_null($line->byteImage()) && isset($line->byteImage()))
+                                        @if(is_null($line->byteImage()))
                                             <i class="icon-byte-icon2" style="font-size: 100px; color: #87cb12; "></i>
                                         @else
-                                            <img src="{{ $line->byteImage()->medium() }}" alt="" class="img-fluid">
+                                            <img src="{{ $line->byteImage() }}" alt="" class="img-fluid">
                                         @endif
                                     </div>
                                     </a>
