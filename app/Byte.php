@@ -110,11 +110,6 @@ class Byte extends Model
         return '/usr/' . auth()->id() . '/medium/' . $this->asset->file_name;
     }
 
-    public function org()
-    {
-        return '/usr/' . auth()->id() . '/org/' . $this->asset->file_name;
-    }
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */

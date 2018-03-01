@@ -13,7 +13,7 @@
                             @forelse($people as $person)
                                 <div class="col-md-3">
                                     <div class="card">
-                                        <a href="/lines/{{ $person->id }}">
+                                        <a href="/people/{{ $person->id }}">
                                             <div class="image-container" style="display: flex; align-items: center; justify-content: center; background-color: #F2F2F2">
                                                 @if(is_null($person->byteImage()))
                                                     <i class="icon-byte-icon2" style="font-size: 100px; color: #87cb12; "></i>
@@ -23,7 +23,7 @@
                                             </div>
                                         </a>
                                         <div class="card-body text-center">
-                                            <h4 class="color-primary"><a href="/lines/{{ $person->id }}">{{ $person->name }}</a></h4>
+                                            <h4 class="color-primary"><a href="/people/{{ $person->id }}">{{ $person->name }}</a></h4>
                                         </div>
                                     </div>
                                 </div>
