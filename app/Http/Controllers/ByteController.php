@@ -361,7 +361,7 @@ class ByteController extends Controller
 
     public function images ()
     {
-        $bytes = Auth::user()->myByteImages()->latest('byte_date')->paginate();
+        $bytes = Auth::user()->myByteImages()->latest('byte_date')->paginate(40);
 
         return view('byte.images',compact('bytes'));
     }

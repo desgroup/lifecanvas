@@ -18,7 +18,7 @@
                                 <a href="/bytes/images" class="list-group-item list-group-item-action withripple">
                                     <i class="zmdi zmdi-camera"></i> Images
                                 </a>
-                                <a href="javascript:void(0)" class="list-group-item list-group-item-action withripple">
+                                <a href="/map" class="list-group-item list-group-item-action withripple">
                                     <i class="zmdi zmdi-pin"></i>Map
                                 </a>
                             </div>

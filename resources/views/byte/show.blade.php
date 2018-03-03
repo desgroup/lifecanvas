@@ -76,11 +76,34 @@
                                             </form>
                                             @if($byte->user_id == auth()->id())
                                                 <a href="{{ $byte->id }}/edit" class="btn-circle btn-circle-raised btn-circle-default mr-1" data-toggle="tooltip" data-placement="top" title="Edit this byte"><i class="fa fa-pencil"></i></a>
-                                                <form action="{{ $byte->path() }}" method="POST">
-                                                    {{ csrf_field() }}
-                                                    {{ method_field('DELETE') }}
-                                                    <button type="submit" class="btn-circle btn-circle-raised btn-circle-default" data-toggle="tooltip" data-placement="top" title="Delete this byte"> <i class="fa fa-trash"></i> </button>
-                                                </form>
+                                                    <button type="button" class="btn-circle btn-circle-raised btn-circle-default" data-toggle="modal tooltip" data-placement="top" data-target="#myModal7" title="Delete this byte"> <i class="fa fa-trash"></i> </button>
+                                                    <!-- Modal -->
+                                                    <div class="modal modal-danger" id="myModal7" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7">
+                                                        <div class="modal-dialog animated zoomIn animated-3x" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h3 class="modal-title" id="myModalLabel7">Are you sure you want to delete this byte?</h3>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">
+                                                                          <i class="zmdi zmdi-close"></i>
+                                                                        </span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>{{ $byte->title }}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <form action="{{ $byte->path() }}" method="POST">
+                                                                        {{ csrf_field() }}
+                                                                        {{ method_field('DELETE') }}
+                                                                        <button type="submit" class="btn btn-danger btn-raised" data-toggle="tooltip" data-placement="top" title="Delete this byte"> Delete Byte </button>
+                                                                    </form>
+                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                             @endif
                                         </div>
                                     </div>
