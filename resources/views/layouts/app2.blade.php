@@ -40,6 +40,9 @@
             body {
                 padding-bottom: 100px;
             }
+            .panel-body {
+                background-color: white;
+            }
         </style>
 
         @yield('css_page')
