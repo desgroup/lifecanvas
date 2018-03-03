@@ -59,7 +59,7 @@ class PersonController extends Controller
      */
     public function show(Person $person)
     {
-        $bytes = $person->bytes()->latest()->get();
+        $bytes = $person->bytes()->latest('byte_date')->paginate();
         return view('person.show', compact('bytes', 'person'));
     }
 

@@ -18,7 +18,7 @@
                                         @if(is_null($line->byteImage()))
                                             <i class="icon-byte-icon2" style="font-size: 100px; color: #87cb12; "></i>
                                         @else
-                                            <img src="{{ $line->byteImage() }}" alt="" class="img-fluid">
+                                            <img src="{{ $line->byteImage()->medium() }}" alt="" class="img-fluid">
                                         @endif
                                     </div>
                                     </a>

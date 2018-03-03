@@ -35,6 +35,7 @@ class PeopleTagBytesTest extends TestCase
     {
         // Authenticate a user
         $this->signIn();
+        create('App\Place', ['user_id' => auth()->id()]);
 
         // With bytes with places
         $personFiltered = create('App\Person', ['name' => 'Test1', 'user_id' => auth()->id()]);

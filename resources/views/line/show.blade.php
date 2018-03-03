@@ -1,26 +1,47 @@
-@extends('layouts.app')
+@extends('layouts.app2')
 
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{ $line->name }}</h3>
-                    </div>
-                    <div class="panel-body">
-                        @forelse($bytes as $byte)
-                            @include('byte.byte')
-                        @empty
-                            <p>There are no bytes in this lifeline.</p>
-                        @endforelse
+            <div class="col-lg-3">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card card-primary animated zoomInUp animation-delay-7">
+                            <div class="card-header">
+                                <h3 class="card-title">Display lifebytes as . . .</h3>
+                            </div>
+                            <div class="list-group">
+                                <a href="/lines/{{ $line->id }}" class="list-group-item list-group-item-action withripple">
+                                    <i class="zmdi zmdi-view-list"></i> Timeline
+                                </a>
+                                <a href="javascript:void(0)" class="list-group-item list-group-item-action withripple">
+                                    <i class="zmdi zmdi-camera"></i> Images
+                                </a>
+                                <a href="javascript:void(0)" class="list-group-item list-group-item-action withripple">
+                                    <i class="zmdi zmdi-pin"></i>Map
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-lg-9">
+                <h2 style="text-transform: uppercase;">{{ $line->name }}</h2>
+                <h3>{{ $bytes->count() }} lifebytes</h3>
+                <ul class="ms-timeline">
+                    <li class="ms-timeline-item wow materialUp">
+                        @foreach($bytes as $byte)
+                            @include('byte.partials.card')
+                        @endforeach
+                    </li>
+                    <li>
+                        {{ $bytes->links() }}
+                    </li>
+                </ul>
             </div>
+
         </div>
     </div>
+    <!-- container -->
+
 @endsection

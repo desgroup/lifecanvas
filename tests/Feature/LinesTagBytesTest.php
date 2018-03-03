@@ -34,6 +34,7 @@ class LinesTagBytesTest extends TestCase
     {
         // Authenticate a user
         $this->signIn();
+        create('App\Place', ['user_id' => auth()->id()]);
 
         // With bytes with lifelines
         $lineFiltered = create('App\Line', ['name' => 'Test1', 'user_id' => auth()->id()]);

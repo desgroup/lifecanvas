@@ -15,7 +15,7 @@
                                 <a href="/bytes" class="list-group-item list-group-item-action withripple">
                                     <i class="zmdi zmdi-view-list"></i> Timeline
                                 </a>
-                                <a href="javascript:void(0)" class="list-group-item list-group-item-action withripple">
+                                <a href="/bytes/images" class="list-group-item list-group-item-action withripple">
                                     <i class="zmdi zmdi-camera"></i> Images
                                 </a>
                                 <a href="javascript:void(0)" class="list-group-item list-group-item-action withripple">
@@ -29,18 +29,21 @@
             <div class="col-lg-9">
                 <h2>All Lifebytes</h2>
                 <h3>{{ $bytes->count() }} lifebytes</h3>
-                <ul class="ms-timeline">
-                    <li class="ms-timeline-item wow materialUp">
-                        @foreach($bytes as $byte)
-                            @include('byte.partials.card')
-                        @endforeach
-                    </li>
-                    <li>
-                        {{ $bytes->links() }}
-                    </li>
-                </ul>
-            </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="row masonry-container">
 
+                            @foreach($bytes as $byte)
+                                @if($byte->asset_id > 0)
+                                    @include('byte.partials.image')
+                                @endif
+                            @endforeach
+
+                        </div>
+                        {{ $bytes->links() }}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- container -->

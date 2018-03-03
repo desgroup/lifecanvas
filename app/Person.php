@@ -17,7 +17,7 @@ class Person extends Model
 
     public function byteImage ()
     {
-        return $this->bytes()->whereNotNull('asset_id')->orderBy('created_at', 'ASC')->first();
+        return $this->bytes()->whereNotNull('asset_id')->orderBy('created_at', 'DESC')->first();
     }
 
 }

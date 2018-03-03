@@ -359,4 +359,11 @@ class ByteController extends Controller
         return redirect('/bytes');
     }
 
+    public function images ()
+    {
+        $bytes = Auth::user()->myByteImages()->latest('byte_date')->paginate();
+
+        return view('byte.images',compact('bytes'));
+    }
+
 }

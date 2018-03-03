@@ -95,4 +95,6 @@ class BytesViewTest extends TestCase
         $response = $this->get('/bytes/' . $this->byte1->id);
         $response->assertSee($comment->body);
     }
+
+
 }

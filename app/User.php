@@ -37,6 +37,13 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
+    public function myByteImages() {
+        return $this->hasMany('App\Byte')->whereNotNull('asset_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function myLines() {
         return $this->hasMany('App\Line');
     }

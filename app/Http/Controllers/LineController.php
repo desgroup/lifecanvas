@@ -15,10 +15,10 @@ class LineController extends Controller
      */
     public function index()
     {
-//        $lines = Auth::user()->myLines()->with(['bytes' => function ($query) {
-//            $query->whereNotNull('asset_id')->first();
-//        }])->get();
-        $lines = Auth::user()->myLines()->orderBy('name')->with('bytes')->get();
+        $lines = Auth::user()->myLines()->orderBy('name')->with(['bytes' => function ($query) {
+            $query->orderBy('created_at', 'ASC')->first();
+        }])->get();
+        //$lines = Auth::user()->myLines()->orderBy('name')->with('bytes')->get();
         //$count = $lines->count();
         //dd($count);
         //$lines = Auth::user()->myLines()->orderBy('name')->get();
