@@ -27,4 +27,13 @@ class FriendController extends Controller
             ->with('flash', 'You have un-friended @' . $recipient->username);
     }
 
+    public function index ()
+    {
+        $friends = Auth::user()->getAllFriendships();
+
+        //dd($friends);
+
+        return view('person.friends', compact('friends'));
+    }
+
 }

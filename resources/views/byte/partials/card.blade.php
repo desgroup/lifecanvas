@@ -9,7 +9,7 @@
         </a>
     </div>
     <a href="/bytes/{{ $byte->id }}">
-        <div class="card {{ $byte->user_id == Auth::user()->id ? 'card-success' : 'card-royal' }}">
+        <div class="card {{ $byte->user_id == Auth::user()->id ? 'card-success' : 'card-info' }}">
             <div class="card-header">
                 <h3 class="card-title">{{ $byte->title }}</h3>
             </div>

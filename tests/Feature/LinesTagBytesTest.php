@@ -112,9 +112,9 @@ class LinesTagBytesTest extends TestCase
     /** @test */
     function a_line_requires_a_unique_name()
     {
-        $this->addLine(['name' => 'Test']);
+        $this->addLine(['name' => 'Test', 'user_id' => 1]);
 
-        $this->addLine(['name' => 'Test'])
+        $this->post('/lines', ['name' => 'Test', 'user_id' => 1])
             ->assertSessionHasErrors('name');
     }
 

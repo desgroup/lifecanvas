@@ -36,7 +36,7 @@ class FriendshipsTest extends TestCase
     /** @test */
     function authenticated_users_can_friend_a_user ()
     {
-        $sender = factory(\App\User::class)->create();
+        $sender = createUser();
         $this->be($sender);
         $recipient = createUser();
 
@@ -49,7 +49,7 @@ class FriendshipsTest extends TestCase
     /** @test */
     function authenticated_users_can_unfriend_a_user ()
     {
-        $sender = factory(\App\User::class)->create();
+        $sender = createUser();
         $this->be($sender);
         $recipient = createUser();
 
@@ -57,6 +57,30 @@ class FriendshipsTest extends TestCase
 
         $this->assertCount(0, $sender->getAllFriendships());
         $this->assertCount(0, $recipient->getAllFriendships());
+    }
+
+    /** @test */
+    function authenticated_users_can_see_a_list_of_their_friends ()
+    {
+        $sender = createUser();
+        $this->be($sender);
+        $recipient = createUser();
+        $userNotFriend = createUser();
+
+        $this->post('/friend/' . $recipient->username);
+
+        $response = $this->get('/friends');
+
+        $response->assertSee($recipient->username);
+        $response->assertDontSee($userNotFriend->username);
+    }
+
+    /** @test */
+    function unauthenticated_users_cannot_see_a_friends_list()
+    {
+        $this->withExceptionHandling()
+            ->get('/friends')
+            ->assertRedirect('login');
     }
 
     /** Test from script maker hootlex */

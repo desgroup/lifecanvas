@@ -31,6 +31,7 @@ Route::get('/', function () {
 
 // Authentication routes
 Route::group(['middleware' => ['auth']], function() {
+    Route::get('/friends', 'FriendController@index');
     Route::post('/friend/{recipient}', 'FriendController@friend');
     Route::post('/unfriend/{recipient}', 'FriendController@unfriend');
     Route::post('/photo/async', 'PhotoController@async');

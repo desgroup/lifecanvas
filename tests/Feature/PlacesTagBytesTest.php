@@ -110,9 +110,9 @@ class PlacesTagBytesTest extends TestCase
     /** @test */
     function a_place_requires_a_unique_name()
     {
-        $this->addPlace(['name' => 'Test']);
+        $this->addPlace(['name' => 'Test', 'user_id' => 1]);
 
-        $this->addPlace(['name' => 'Test'])
+        $this->post('/places', ['name' => 'Test', 'user_id' => 1])
             ->assertSessionHasErrors('name');
     }
 

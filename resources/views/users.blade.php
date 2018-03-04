@@ -27,7 +27,7 @@
                                             @if($user->isFriendWith($currentUser))
                                                 <form method="POST" action="/unfriend/{{ $user->username }}">
                                                     {{ csrf_field() }}
-                                                    <button type="submit" class="btn-circle btn-circle-success btn-circle-raised btn-card-float right wow zoomInDown index-2" data-toggle="tooltip" data-placement="top" title="Friend">
+                                                    <button type="submit" class="btn-circle btn-circle-success btn-circle-raised btn-card-float right wow zoomInDown index-2" data-toggle="tooltip" data-placement="top" title="Un-Friend">
                                                         <i class="fa fa-users"></i>
                                                     </button>
                                                 </form>
