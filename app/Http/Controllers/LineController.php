@@ -43,8 +43,10 @@ class LineController extends Controller
      */
     public function store(Request $request)
     {
+        $request['user_id'] = auth()->id();
+
         $this->validate($request, [
-            'name' => 'required|unique:lines',
+            'name' => 'required|unique_with:lines, user_id',
         ]);
 
         $line = Line::create([

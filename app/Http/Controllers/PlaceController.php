@@ -43,8 +43,10 @@ class PlaceController extends Controller
      */
     public function store(Request $request)
     {
+        $request['user_id'] = auth()->id();
+
         $this->validate($request, [
-            'name' => 'required|unique:places',
+            'name' => 'required|unique_with:places, user_id',
         ]);
 
         $input = array_add($request->all(), 'user_id', Auth::id());

@@ -38,8 +38,10 @@ class PersonController extends Controller
      */
     public function store(Request $request)
     {
+        $request['user_id'] = auth()->id();
+
         $this->validate($request, [
-            'name' => 'required|unique:people',
+            'name' => 'required|unique_with:people, user_id',
         ]);
 
         $person = Person::create([
