@@ -31,8 +31,6 @@ class FriendController extends Controller
     {
         $friends = Auth::user()->getAllFriendships();
 
-        //dd($friends);
-
         return view('person.friends', compact('friends'));
     }
 
