@@ -36,4 +36,13 @@ class PagesController extends Controller // TODO-KGW Maybe deal with this contro
 
         return view('feed', compact('bytes','user','birthdate','aliveTime','byteCount'));
     }
+
+    public function users ()
+    {
+        $currentUser = Auth::user();
+        $users = User::where('id', '<>', Auth::user()->id)->orderBy('username')->get();
+        //dd($users);
+
+        return view('users', compact('users', 'currentUser'));
+    }
 }

@@ -10,14 +10,6 @@ class LinesTagBytesTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    function unauthenticated_users_cannot_see_the_a_line_list()
-    {
-        $this->withExceptionHandling()
-            ->get('/lines')
-            ->assertRedirect('login');
-    }
-
-    /** @test */
     function authenticated_users_can_see_a_list_of_lifelines()
     {
         $this->signIn();
@@ -27,6 +19,14 @@ class LinesTagBytesTest extends TestCase
 
         $this->get('/lines')
             ->assertSee($line->name);
+    }
+
+    /** @test */
+    function unauthenticated_users_cannot_see_the_lifeline_list()
+    {
+        $this->withExceptionHandling()
+            ->get('/lines')
+            ->assertRedirect('login');
     }
 
     /** @test */

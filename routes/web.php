@@ -31,6 +31,11 @@ Route::get('/', function () {
 
 // Authentication routes
 Route::group(['middleware' => ['auth']], function() {
+    Route::post('/friend/{recipient}', 'FriendController@friend');
+    Route::post('/unfriend/{recipient}', 'FriendController@unfriend');
+    Route::post('/photo/async', 'PhotoController@async');
+    Route::post('/photo/fetch', 'PhotoController@fetch');
+    Route::get('/users', 'PagesController@users');
     Route::get('/feed', 'PagesController@feed');
     Route::get('/map', 'MapController@index');
     Route::get('/map/{country}', 'MapController@country');
@@ -46,6 +51,4 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/{user}', 'ProfileController@userProfile');
     Route::patch('/{user}', 'ProfileController@update');
     Route::get('/{user}/edit', 'ProfileController@edit');
-    Route::post('/photo/async', 'PhotoController@async');
-    Route::post('/photo/fetch', 'PhotoController@fetch');
 });
