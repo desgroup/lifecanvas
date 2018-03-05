@@ -167,8 +167,7 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
-        Jenssegers\Agent\AgentServiceProvider::class,
+
 
         /*
          * Application Service Providers...
@@ -182,6 +181,10 @@ return [
 
         // Lifecanvas Service Providers
         App\Providers\AgentServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        Jenssegers\Agent\AgentServiceProvider::class,
+        Hootlex\Friendships\FriendshipsServiceProvider::class,
+        Felixkiss\UniqueWithValidator\ServiceProvider::class,
 
     ],
 

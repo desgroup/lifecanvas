@@ -43,8 +43,6 @@ class BytesAddTest extends TestCase
 
         $byte = create('App\Byte', ['user_id' => auth()->id()]);
         $byteArray = $byte->toArray();
-        //dd($byteArray);
-
 
         $line1 = create('App\Line', ['name' => 'Test1', 'user_id' => auth()->id()]);
         $line2 = create('App\Line', ['name' => 'Test2', 'user_id' => auth()->id()]);

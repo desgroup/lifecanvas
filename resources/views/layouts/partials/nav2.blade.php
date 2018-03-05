@@ -43,6 +43,12 @@
                         <li>
                             <a class="dropdown-item" href="/people">My People</a>
                         </li>
+                        <li>
+                            <a class="dropdown-item" href="/users">Users</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/friends">Friends</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown {{ Request::is('places*') ? "active" : "" }}">

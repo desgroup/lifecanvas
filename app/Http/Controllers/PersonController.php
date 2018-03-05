@@ -16,7 +16,7 @@ class PersonController extends Controller
     public function index()
     {
         $people = Auth::user()->myPeople()->orderBy('name')->with('bytes')->get();
-        //return $places;
+
         return view('person.index', compact('people'));
     }
 
@@ -38,8 +38,10 @@ class PersonController extends Controller
      */
     public function store(Request $request)
     {
+        $request['user_id'] = auth()->id();
+
         $this->validate($request, [
-            'name' => 'required|unique:people',
+            'name' => 'required|unique_with:people, user_id',
         ]);
 
         $person = Person::create([

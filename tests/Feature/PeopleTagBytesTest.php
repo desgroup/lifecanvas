@@ -95,9 +95,9 @@ class PeopleTagBytesTest extends TestCase
     /** @test */
     function a_person_requires_a_unique_name()
     {
-        $this->addPerson(['name' => 'Test']);
+        $this->addPerson(['name' => 'Test', 'user_id' => 1]);
 
-        $this->addPerson(['name' => 'Test'])
+        $this->post('/people', ['name' => 'Test', 'user_id' => 1])
             ->assertSessionHasErrors('name');
     }
 

@@ -54,7 +54,7 @@
                     <div class="col-sm-4">
                         <a href="/friends">
                             <div class="card card-info card-block text-center wow zoomInUp animation-delay-5">
-                                <h2 class="color-info">64</h2>
+                                <h2 class="color-info">{{ $user->getFriendsCount() }}</h2>
                                 <i class="fa fa-4x fa-users color-info"></i>
                                 <p class="mt-2 no-mb lead small-caps color-info">friends</p>
                             </div>

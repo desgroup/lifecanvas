@@ -19,9 +19,24 @@ class PagesController extends Controller // TODO-KGW Maybe deal with this contro
 
     public function feed()
     {
-        $user = User::where('id', Auth::user()->id)->first();
+        $user = Auth::user();
 
-        $bytes = Byte::latest()->paginate(30);
+        //$bytes = Byte::latest()->paginate(30);
+
+        $count = 1;
+        $users = array($user->id);
+        $friends = $user->getAllFriendships();
+
+        foreach ($friends as $friend) {
+            if ($friend->sender->id == $user->id) {
+                $users[$count] = $friend->recipient->id;
+            } else {
+                $users[$count] = $friend->sender->id;
+            }
+            $count++;
+        }
+
+        $bytes = Byte::whereIn('user_id', $users)->latest()->paginate(30);
 
         if( !is_null($user->birthdate)) {
             list($year, $month, $day) = explode("-", $user->birthdate);
@@ -35,5 +50,14 @@ class PagesController extends Controller // TODO-KGW Maybe deal with this contro
         //dd($count);
 
         return view('feed', compact('bytes','user','birthdate','aliveTime','byteCount'));
+    }
+
+    public function users ()
+    {
+        $currentUser = Auth::user();
+        $users = User::where('id', '<>', Auth::user()->id)->orderBy('username')->get();
+        //dd($users);
+
+        return view('users', compact('users', 'currentUser'));
     }
 }
