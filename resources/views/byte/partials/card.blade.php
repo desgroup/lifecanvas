@@ -3,7 +3,7 @@
         <time class="timeline-time" datetime="">{{ Carbon\Carbon::parse($byte->byte_date)->format('D dS') }}
             <span>{{ Carbon\Carbon::parse($byte->byte_date)->format('F') }}</span>
         </time>
-        <i class="ms-timeline-point {{ $byte->user_id == Auth::user()->id ? 'bg-success' : 'bg-royal' }}"></i>
+        <i class="ms-timeline-point {{ $byte->user_id == Auth::user()->id ? 'bg-success' : 'bg-info' }}"></i>
         <a href="{{ '/' . $byte->user()->pluck('username')[0] }}">
             <img src="{{ is_null($byte->user()->pluck('avatar')[0]) ? '/assets/img/silhouette.png' : '/usr/' . $byte->user_id . '/avatar/' . $byte->user()->pluck('avatar')[0] . 'avatar.jpg' }}" class="ms-timeline-point-img">
         </a>

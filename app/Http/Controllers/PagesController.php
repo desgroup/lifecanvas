@@ -7,6 +7,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PagesController extends Controller // TODO-KGW Maybe deal with this controller in just the routes file
 {
@@ -21,10 +22,8 @@ class PagesController extends Controller // TODO-KGW Maybe deal with this contro
     {
         $user = Auth::user();
 
-        //$bytes = Byte::latest()->paginate(30);
-
-        $count = 1;
-        $users = array($user->id);
+        $count = 0;
+        $users = array();
         $friends = $user->getAllFriendships();
 
         foreach ($friends as $friend) {
@@ -36,7 +35,14 @@ class PagesController extends Controller // TODO-KGW Maybe deal with this contro
             $count++;
         }
 
-        $bytes = Byte::whereIn('user_id', $users)->latest()->paginate(30);
+        $bytes = Byte::select()
+            ->where('user_id', $user->id)
+            ->orWhere(function($q) use ($users) {
+                $q->where('privacy','>', 0);
+                $q->whereIn('user_id', $users);
+            })
+            ->orderBy('created_at')
+            ->paginate();
 
         if( !is_null($user->birthdate)) {
             list($year, $month, $day) = explode("-", $user->birthdate);
