@@ -41,7 +41,7 @@ class PagesController extends Controller // TODO-KGW Maybe deal with this contro
                 $q->where('privacy','>', 0);
                 $q->whereIn('user_id', $users);
             })
-            ->orderBy('created_at')
+            ->orderBy('created_at', 'desc')
             ->paginate();
 
         if( !is_null($user->birthdate)) {
