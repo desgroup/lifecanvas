@@ -11,25 +11,26 @@
                     <section class="ms-component-section">
                         <div class="row">
                             @foreach($friends as $rr)
+                                @php ($friend = $rr->sender->id == Auth::user()->id ? $rr->recipient : $rr->sender)
                                 <div class="col-md-3">
                                     <div class="card">
-                                        <a href="/{{ $rr->sender->id == Auth::user()->id ? $rr->recipient->username : $rr->sender->username }}">
+                                        <a href="/{{ $friend->username }}">
                                             <div class="image-container" style="display: flex; align-items: center; justify-content: center; background-color: #F2F2F2">
-                                                @if(is_null($rr->sender->id))
+                                                @if(is_null($friend->avatar))
                                                     <i class="icon-byte-icon2" style="font-size: 100px; color: #87cb12; "></i>
                                                 @else
-                                                    <img src="{{ $rr->sender->id }}" alt="" class="img-fluid">
+                                                    <img src="/usr/{{ $friend->id }}/avatar/{{ $friend->avatar }}avatar.jpg" alt="" class="img-fluid">
                                                 @endif
                                             </div>
                                         </a>
                                         <div class="card-body text-center">
-                                            <form method="POST" action="/unfriend/{{ $rr->sender->id == Auth::user()->id ? $rr->recipient->username : $rr->sender->username }}">
+                                            <form method="POST" action="/unfriend/{{ $friend->username }}">
                                                 {{ csrf_field() }}
                                                 <button type="submit" class="btn-circle btn-circle-success btn-circle-raised btn-card-float right wow zoomInDown index-2" data-toggle="tooltip" data-placement="top" title="Un-Friend">
                                                     <i class="fa fa-users"></i>
                                                 </button>
                                             </form>
-                                            <h4 class="color-primary"><a href="/{{ ($rr->sender->id == Auth::user()->id) ? $rr->recipient->username : $rr->sender->username }}">{{ '@' . (($rr->sender->id == Auth::user()->id) ? $rr->recipient->username : $rr->sender->username) }}</a></h4>
+                                            <h4 class="color-primary"><a href="/{{ $friend->username }}">{{ '@' . ($friend->username) }}</a></h4>
                                         </div>
                                     </div>
                                 </div>

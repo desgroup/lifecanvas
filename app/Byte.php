@@ -97,17 +97,17 @@ class Byte extends Model
 
     public function thumbnail()
     {
-        return '/usr/' . auth()->id() . '/thumb/' . $this->asset->file_name;
+        return '/usr/' . $this->user_id . '/thumb/' . $this->asset->file_name;
     }
 
     public function small()
     {
-        return '/usr/' . auth()->id() . '/small/' . $this->asset->file_name;
+        return '/usr/' . $this->user_id . '/small/' . $this->asset->file_name;
     }
 
     public function medium()
     {
-        return '/usr/' . auth()->id() . '/medium/' . $this->asset->file_name;
+        return '/usr/' . $this->user_id . '/medium/' . $this->asset->file_name;
     }
 
     /**
@@ -127,5 +127,4 @@ class Byte extends Model
             $this->favorites()->create(['user_id' => auth()->id()]);
         }
     }
-
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use CountriesTableSeeder;
 use PlacesTableSeeder;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -96,5 +97,19 @@ class BytesViewTest extends TestCase
         $response->assertSee($comment->body);
     }
 
+    /** @test */
+    function authenticated_users_can_see_their_bytes_by_country ()
+    {
+        $this->signIn();
+
+        $seeder = new CountriesTableSeeder();
+        $seeder->run();
+
+        $place = create('App\Place', ['name' => 'Test', 'user_id' => auth()->id(), 'country_code' => 'US']);
+        $byte = create('App\Byte', ['user_id' => auth()->id(), 'place_id' => $place->id]);
+
+        $this->get('/bytes/country/US')
+            ->assertSee($byte->title);
+    }
 
 }

@@ -65,12 +65,7 @@ class MapController extends Controller
 
         $countryName = Country::where('id', $country_code)->pluck('country_name_en')[0];
         $provinceCount = Province::where('country_code', $country_code)->count();
-        //$provinceCount = Province::where([['country_code', $country_code], ['type', 'P']])->count();
-        //$stateCount = Province::where([['country_code', $country_code], ['type', 'S']])->count();
-        //$totalCount = Province::where([['country_code', $country_code]])->count();
-        //$totalCount = $totalCount - $stateCount - $provinceCount;
         $provinceVisitedCount = count($my_provinces);
-        //dd($provinceCount);
 
         return view('map.country', compact('countryName', 'provinceCount', 'provinceVisitedCount', 'country_code', 'my_provinces'));
     }

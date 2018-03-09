@@ -53,7 +53,6 @@ class PagesController extends Controller // TODO-KGW Maybe deal with this contro
         }
 
         $byteCount = Byte::where('user_id',$user->id)->count();
-        //dd($count);
 
         return view('feed', compact('bytes','user','birthdate','aliveTime','byteCount'));
     }

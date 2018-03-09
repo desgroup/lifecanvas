@@ -76,7 +76,7 @@
                                             </form>
                                             @if($byte->user_id == auth()->id())
                                                 <a href="{{ $byte->id }}/edit" class="btn-circle btn-circle-raised btn-circle-default mr-1" data-toggle="tooltip" data-placement="top" title="Edit this byte"><i class="fa fa-pencil"></i></a>
-                                                    <button type="button" class="btn-circle btn-circle-raised btn-circle-default" data-toggle="modal tooltip" data-placement="top" data-target="#myModal7" title="Delete this byte"> <i class="fa fa-trash"></i> </button>
+                                                    <button type="button" class="btn-circle btn-circle-raised btn-circle-default" data-toggle="modal" data-placement="top" data-target="#myModal7" title="Delete this byte"> <i class="fa fa-trash"></i> </button>
                                                     <!-- Modal -->
                                                     <div class="modal modal-danger" id="myModal7" tabindex="-1" role="dialog" aria-labelledby="myModalLabel7">
                                                         <div class="modal-dialog animated zoomIn animated-3x" role="document">

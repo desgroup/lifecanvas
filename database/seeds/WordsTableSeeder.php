@@ -419,6 +419,7 @@ class WordsTableSeeder extends Seeder
             array('id' => '403', 'word' => 'yourname','created_at' => Carbon::now()->format('Y-m-d H:i:s'),'updated_at' => Carbon::now()->format('Y-m-d H:i:s')),
             array('id' => '404', 'word' => 'yoursite','created_at' => Carbon::now()->format('Y-m-d H:i:s'),'updated_at' => Carbon::now()->format('Y-m-d H:i:s')),
             array('id' => '405', 'word' => 'yourusername','created_at' => Carbon::now()->format('Y-m-d H:i:s'),'updated_at' => Carbon::now()->format('Y-m-d H:i:s')),
+            array('id' => '406', 'word' => 'country','created_at' => Carbon::now()->format('Y-m-d H:i:s'),'updated_at' => Carbon::now()->format('Y-m-d H:i:s')),
         ));
     }
 }

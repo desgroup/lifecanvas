@@ -38,7 +38,7 @@
 
                                 @forEach($my_countries as $country)
                                     data.addRows([[{v:'{{ $country->code }}',f:'{{ $country->name }}'},0,'{{ $byteCount[$country->code] }} Bytes']]);
-                                    ivalue['{{ $country->code }}'] = '{{ in_array($country->code, $provincesSupported) ? "/map/$country->code" : "/bytes" }}';
+                                    ivalue['{{ $country->code }}'] = '{{ in_array($country->code, $provincesSupported) && $byteCount[$country->code] > 10 ? "/map/$country->code" : "/bytes/country/$country->code" }}';
                                 @endforeach
 
                                 var options = {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Country;
 use App\Person;
 use App\Place;
 use App\Byte;
@@ -24,9 +25,10 @@ class ByteController extends Controller
     public function index()
     {
         //dd(Timezone::where('id', '=', 1)->first());
-        $bytes = Auth::user()->myBytes()->latest('byte_date')->paginate();
+        $bytes = Auth::user()->myBytes()->latest('byte_date')->paginate(30);
+        $byteCount = Auth::user()->myBytes()->count();
 
-        return view('byte.index',compact('bytes'));
+        return view('byte.index',compact('bytes', 'byteCount'));
     }
 
     /**
@@ -359,11 +361,49 @@ class ByteController extends Controller
         return redirect('/bytes');
     }
 
+    public function country($code)
+    {
+
+        $bytes = Auth::user()->bytes()
+            ->whereHas('place', function ($query) use ($code) {
+                $query->where('country_code', $code);
+            })
+            ->latest('byte_date')
+            ->paginate(40);
+
+        $byteCount = Auth::user()->bytes()
+            ->whereHas('place', function ($query) use ($code) {
+                $query->where('country_code', $code);
+            })->count();
+
+        $country = Country::where('id', $code)->first();
+
+        return view('byte.country', compact('bytes', 'byteCount', 'code', 'country'));
+    }
+
     public function images ()
     {
         $bytes = Auth::user()->myByteImages()->latest('byte_date')->paginate(40);
 
-        return view('byte.images',compact('bytes'));
+        return view('byte.images', compact('bytes'));
     }
 
+    public function imagesCountry ($code)
+    {
+        $bytes = Auth::user()->bytes()
+            ->whereHas('place', function ($query) use ($code) {
+                $query->where('country_code', $code);
+            })
+            ->latest('byte_date')
+            ->paginate(40);
+
+        $byteCount = Auth::user()->bytes()
+            ->whereHas('place', function ($query) use ($code) {
+                $query->where('country_code', $code);
+            })->count();
+
+        $country = Country::where('id', $code)->first();
+
+        return view('byte.imagesCountry', compact('bytes', 'byteCount', 'code', 'country'));
+    }
 }
