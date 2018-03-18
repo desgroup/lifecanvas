@@ -93,16 +93,16 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="control-label" for="extant">Extant</label>
+                                    <label class="control-label" for="extant">Extant {{ old("extant") }}</label>
                                     <div class="radio radio-primary">
                                         <label>
-                                            <input class="form-check-input" type="radio" name="extant" id="extant1" value="0" {{ old("extant") == 1 ? "checked":"" }}>
+                                            <input class="form-check-input" type="radio" name="extant" id="extant1" value="0" {{ old("extant") == 1 || old("extant") == "" ? "checked":"" }}>
                                             Yes
                                         </label>
                                     </div>
                                     <div class="radio radio-primary">
                                         <label>
-                                            <input class="form-check-input" type="radio" name="extant" id="extant2" value="1" {{ old("extant") == 0 ? "checked":"" }}>
+                                            <input class="form-check-input" type="radio" name="extant" id="extant2" value="1" {{ old("extant") == 0 && old("extant") <> "" ? "checked":"" }}>
                                             No
                                         </label>
                                     </div>

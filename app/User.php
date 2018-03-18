@@ -52,6 +52,13 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
+    public function myLists() {
+        return $this->hasMany('App\Lifelist');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function myPlaces() {
         return $this->hasMany('App\Place');
     }

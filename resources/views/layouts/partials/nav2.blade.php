@@ -32,6 +32,25 @@
                         @endforeach
                     </ul>
                 </li>
+                <li class="nav-item dropdown {{ Request::is('lists*') ? "active" : "" }}">
+                    <a href="#" class="nav-link dropdown-toggle animated fadeIn animation-delay-9" data-toggle="dropdown" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-name="lines">Goals
+                        <i class="zmdi zmdi-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="/goals/create">Add Goal</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/goals">My Goals</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/lists/create">Add Lifelists</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/lists">My Lifelists</a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item dropdown {{ Request::is('people*') ? "active" : "" }}">
                     <a href="#" class="nav-link dropdown-toggle animated fadeIn animation-delay-9" data-toggle="dropdown" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-name="people">People
                         <i class="zmdi zmdi-chevron-down"></i>

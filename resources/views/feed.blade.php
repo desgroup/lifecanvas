@@ -63,7 +63,7 @@
                     <div class="col-sm-4">
                         <a href="/goals">
                             <div class="card card-royal card-block text-center wow zoomInUp animation-delay-4">
-                                <h2 class="color-royal">600</h2>
+                                <h2 class="color-royal">{{ $goalCount }}</h2>
                                 <i class="fa fa-4x fa-check-circle color-royal"></i>
                                 <p class="mt-2 no-mb lead small-caps color-royal">goals</p>
                             </div>

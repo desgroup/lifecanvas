@@ -33,6 +33,28 @@ $factory->define(App\Line::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Lifelist::class, function (Faker\Generator $faker) {
+
+    $userIds = App\User::pluck('id')->toArray();
+
+    return [
+        'name' => $faker->word,
+        'privacy' => 1,
+        'user_id' => $faker->randomElement($userIds)
+    ];
+});
+
+$factory->define(App\Goal::class, function (Faker\Generator $faker) {
+
+    $userIds = App\User::pluck('id')->toArray();
+
+    return [
+        'name' => $faker->word,
+        'privacy' => 1,
+        'user_id' => $faker->randomElement($userIds)
+    ];
+});
+
 $factory->define(App\Place::class, function (Faker\Generator $faker) {
 
     $timezones = [];

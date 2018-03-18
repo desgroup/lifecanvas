@@ -19,6 +19,7 @@ Route::get('/info', function () {
 Route::get('/develop', function () {
     return view('develop', ['lat' => 43.438338, 'lng' => -79.686901]);
 });
+Route::get('/find', 'SearchController@find');
 
 // Authentication Routes...
 Auth::routes();
@@ -47,6 +48,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/bytes/{byte}/comment', 'CommentController@store');
     Route::resource('/bytes', 'ByteController');
     Route::resource('/lines', 'LineController');
+    Route::resource('/lists', 'LifelistController');
+    Route::post('/goals/completed/{goal}/{byte}', 'GoalController@completed');
+    Route::resource('/goals', 'GoalController');
     Route::resource('/people', 'PersonController');
     Route::resource('/places', 'PlaceController');
     Route::delete('/comments/{comment}', 'CommentController@destroy');

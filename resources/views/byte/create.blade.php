@@ -78,6 +78,7 @@
                                         <option value="5" {{ old('rating') == 5 ? 'selected' : '' }}>Loved it</option>
                                     </select>
                                 </div>
+
                                 <div class="col-md-4">
                                     <label class="control-label" for="repeat">Do it again</label>
                                     <div class="radio radio-primary">
@@ -99,6 +100,7 @@
                                         </label>
                                     </div>
                                 </div>
+
                                 <div class="col-md-4">
                                     <label class="control-label" for="privacy">Privacy</label>
                                     <div class="radio radio-primary">
@@ -121,6 +123,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row form-group">
                                 <div class="col-md-6">
                                     <label class="control-label" for="place_id">Place:</label>
@@ -132,6 +135,7 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="row form-group">
                                 <div class="col-md-6">
                                     <label class="control-label" for="people">People:</label>

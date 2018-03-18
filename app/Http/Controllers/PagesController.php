@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Byte;
+use App\Goal;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -52,9 +53,11 @@ class PagesController extends Controller // TODO-KGW Maybe deal with this contro
             $birthdate = NULL;
         }
 
-        $byteCount = Byte::where('user_id',$user->id)->count();
+        $byteCount = Byte::where('user_id', $user->id)->count();
 
-        return view('feed', compact('bytes','user','birthdate','aliveTime','byteCount'));
+        $goalCount = Goal::where('user_id', $user->id)->count();
+
+        return view('feed', compact('bytes','user','birthdate','aliveTime','byteCount', 'goalCount'));
     }
 
     public function users ()

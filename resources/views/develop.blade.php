@@ -1,55 +1,75 @@
-@extends('layouts.app2')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Laravel and Typeahead Tutorial</title>
 
-@section('content')
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
-    <div class="container">
-        <div class="row">
-            <h1>Lifebytes</h1>
-            <div class="row">
-            <div class="col-lg-3">
-
-                <div class="card card-primary animated zoomInUp animation-delay-7">
-                    <div class="card-header">
-                        <h3 class="card-title">Display Bytes as . . .</h3>
-                    </div>
-                    <div class="list-group">
-                        <a href="javascript:void(0)" class="list-group-item list-group-item-action withripple">
-                            <i class="zmdi zmdi-view-list"></i> Timeline
-                        </a>
-                        <a href="javascript:void(0)" class="list-group-item list-group-item-action withripple">
-                            <i class="zmdi zmdi-camera"></i> Images
-                        </a>
-                        <a href="javascript:void(0)" class="list-group-item list-group-item-action withripple">
-                            <i class="zmdi zmdi-pin"></i>Map
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-           <div class="col-lg-9">
-                <ul class="ms-timeline">
-                    <li class="ms-timeline-item wow materialUp">
-                        <div class="ms-timeline-date">
-                            <time class="timeline-time" datetime="">2016
-                                <span>October</span>
-                            </time>
-                            <i class="ms-timeline-point"></i>
-                        </div>
-                        <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title">Simple text event in Timeline</h3>
-                            </div>
-                            <div class="card-body"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus officiis autem magni et, nisi eveniet nulla magnam tenetur voluptatem dolore, assumenda delectus error porro animi architecto dolorum quod veniam nesciunt. </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            </div>
-        </div>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<h1>Laravel and Typeahead Tutorial</h1>
+<hr>
+<form class="typeahead" role="search" action="/search/bytes" method="post">
+    <div class="form-group">
+        <input type="search" name="q" class="form-control search-input" placeholder="Search" autocomplete="off">
+        <button class="button btn-primary">Go</button>
     </div>
-    <!-- container -->
+</form>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins  and Typeahead) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<!-- Typeahead.js Bundle -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+<!-- Typeahead Initialization -->
+<script>
+    jQuery(document).ready(function($) {
+        // Set the Options for "Bloodhound" suggestion engine
+        var engine = new Bloodhound({
+            remote: {
+                url: '/find?q=%QUERY%',
+                wildcard: '%QUERY%'
+            },
+            datumTokenizer: Bloodhound.tokenizers.whitespace('q'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace
+        });
 
-@endsection
+        $(".search-input").typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            source: engine.ttAdapter(),
 
-@section('onPageCSS')
-@stop
+            // This will be appended to "tt-dataset-" to form the class name of the suggestion menu.
+            name: 'usersList',
+
+            display: 'title',
+
+            // the key from the array we want to display (name,id,email,etc...)
+            templates: {
+                empty: [
+                    '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
+                ],
+                header: [
+                    '<div class="list-group search-results-dropdown">'
+                ],
+                suggestion: function (data) {
+                    return '<a href="/bytes/' + data.id + '" class="list-group-item">' + data.title + '</a>'
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -3,22 +3,31 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Byte extends Model
 {
     use Favoriteable, RecordsActivity;
+    use SearchableTrait;
 
     protected $guarded = [];
 
     protected $with = ['creator'];
 
+    protected $searchable = [
+        'columns' => [
+            'title' => 10,
+            'story' => 5
+        ]
+    ];
+
     protected static function boot()
     {
         parent::boot();
 
-        static::addGlobalScope('commentCount', function ($buiilder) {
-            $buiilder->withCount('comments');
-        });
+//        static::addGlobalScope('commentCount', function ($buiilder) {
+//            $buiilder->withCount('comments');
+//        });
 
         static::deleting(function ($thread) {
             $thread->comments->each->delete();

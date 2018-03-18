@@ -53,7 +53,11 @@
                                     <label class="control-label" for="repeat">Do it again</label>
                                     <div class="radio radio-primary">
                                         <label>
-                                            <input class="form-check-input" type="radio" name="repeat" id="repeat1" value="0" {{ old("repeat", $byte->repeat) == 0 && old("repeat", $byte->repeat) <> "" ? "checked":"" }}>
+                                            @if(is_null(old("repeat", $byte->repeat)))
+                                                <input class="form-check-input" type="radio" name="repeat" id="repeat1" value="0">
+                                            @else
+                                                <input class="form-check-input" type="radio" name="repeat" id="repeat1" value="0" {{ old("repeat", $byte->repeat) == 0 ? "checked":"" }}>
+                                            @endif
                                             Yes
                                         </label>
                                     </div>

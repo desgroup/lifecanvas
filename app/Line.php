@@ -12,7 +12,7 @@ class Line extends Model
 
     public function bytes()
     {
-        return $this->belongsToMany(Byte::class);
+        return $this->belongsToMany(Byte::class)->withTimestamps();
     }
 
     public function byteImage ()
