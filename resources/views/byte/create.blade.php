@@ -41,7 +41,6 @@
                                 <!-- Image File -->
                                 <div class="col-md-12">
                                     <label class="control-label" for="image">Image</label>
-
                                     @if($agent->isMobile() || $agent->isTablet())
                                         <input type="file" name="image" id="image" accept="image/*;capture=camera">
                                     @else
@@ -49,7 +48,6 @@
                                         <input type="file" class="form-control-file" name="image" id="image">
                                     @endif
                                 </div>
-
                             </div>
 
                             <div class="row form-group">

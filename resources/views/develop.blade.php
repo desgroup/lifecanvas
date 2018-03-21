@@ -25,6 +25,10 @@
         <button class="button btn-primary">Go</button>
     </div>
 </form>
+<?php
+$string = "Hillard O'Hara";
+echo htmlentities ($string);
+?>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins  and Typeahead) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <!-- Bootstrap JS -->

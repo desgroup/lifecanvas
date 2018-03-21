@@ -93,6 +93,7 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="/{{ Auth::user()->username }}">Profile</a></li>
                         <li><a class="dropdown-item" href="/{{ Auth::user()->username }}/edit">Update Profile</a></li>
+                        <li><a class="dropdown-item" href="/changePassword">Change Password</a></li>
                         <li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();

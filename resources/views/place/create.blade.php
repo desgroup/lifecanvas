@@ -108,6 +108,31 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label class="control-label" for="privacy">Privacy</label>
+                                    <div class="radio radio-primary">
+                                        <label>
+                                            <input class="form-check-input" type="radio" name="privacy" id="privacy1" value="0" {{ old("privacy", Auth::user()->privacy) == 0 ? "checked":"" }}>
+                                            Myself only
+                                        </label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <label>
+                                            <input class="form-check-input" type="radio" name="privacy" id="privacy2" value="1" {{ old("privacy", Auth::user()->privacy) == 1 ? "checked":"" }}>
+                                            My Friends
+                                        </label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <label>
+                                            <input class="form-check-input" type="radio" name="privacy" id="privacy3" value="2" {{ old("privacy", Auth::user()->privacy) == 2 ? "checked":"" }}>
+                                            The World
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class='form-group'>
                                 <button type="submit" class="btn btn-raised btn-primary">Add Place</button>
                                 <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>

@@ -80,6 +80,7 @@ $factory->define(App\Place::class, function (Faker\Generator $faker) {
         'province' => $faker->stateAbbr,
         'country_code' => $cc,
         'extant' => 1,
+        'privacy' => $faker->numberBetween(0, 2),
         'url_place' => $faker->url,
         'url_wikipedia' => $faker->url,
         'lat' => $faker->latitude,

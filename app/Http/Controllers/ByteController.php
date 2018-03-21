@@ -76,13 +76,33 @@ class ByteController extends Controller
         } else {
             if (!is_null($lat) && !is_null($lng)) {
                 $distance = 2;
+                $count = 0;
+
+                $user = Auth::user();
+                $users = array();
+                $friends = $user->getAllFriendships();
+                foreach ($friends as $friend) {
+                    if ($friend->sender->id == $user->id) {
+                        $users[$count] = $friend->recipient->id;
+                    } else {
+                        $users[$count] = $friend->sender->id;
+                    }
+                    $count++;
+                }
+
                 $place = DB::table('places')
                     ->selectRaw("places.*, ACOS(COS(RADIANS(lat)) * COS(RADIANS(lng)) * COS(RADIANS($lat)) * COS(RADIANS($lng)) + COS(RADIANS(lat)) * SIN(RADIANS(lng)) * COS(RADIANS($lat)) * SIN(RADIANS($lng)) + SIN(RADIANS(lat)) * SIN(RADIANS($lat))) * 3963.1 AS Distance")
-                    ->whereRaw('1')
                     ->where('user_id', '=', auth()->id())
+                    ->orWhere('privacy', '=', 2)
+                    ->orWhere(function($q) use ($users) {
+                        $q->where('privacy','>', 0);
+                        $q->whereIn('user_id', $users);
+                    })
                     ->havingRaw("Distance <= $distance")
                     ->orderBy('Distance')
                     ->first(); // use toSql() to see the sql output
+
+                //dd($place);
 
                 $placeId = $place->id ?? NULL;
             }

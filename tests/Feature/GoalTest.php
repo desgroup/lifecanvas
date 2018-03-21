@@ -48,11 +48,13 @@ class GoalTest extends TestCase
         $this->signIn();
 
         $listFiltered = create('App\Lifelist', ['user_id' => auth()->id()]);
-        $goalToSee = create('App\Goal', ['user_id' => auth()->id()]);
+        $goalToSee = create('App\Goal', ['user_id' => auth()->id(),
+            'name' => 'aabbccddee']);
         $goalToSee->lists()->attach($listFiltered);
 
         $listNotFiltered = create('App\Lifelist', ['user_id' => auth()->id()]);
-        $goalToNotSee = create('App\Goal', ['user_id' => auth()->id()]);
+        $goalToNotSee = create('App\Goal', ['user_id' => auth()->id(),
+            'name' => 'ffgghhiijj']);
         $goalToNotSee->lists()->attach($listNotFiltered);
 
         $this->get('/lists/' . $listFiltered->id)

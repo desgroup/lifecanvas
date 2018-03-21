@@ -41,7 +41,7 @@ class BytesAddTest extends TestCase
         $seeder = new PlacesTableSeeder();
         $seeder->run();
 
-        $byte = create('App\Byte', ['user_id' => auth()->id()]);
+        $byte = make('App\Byte', ['user_id' => auth()->id()]);
         $byteArray = $byte->toArray();
 
         $line1 = create('App\Line', ['name' => 'Test1', 'user_id' => auth()->id()]);

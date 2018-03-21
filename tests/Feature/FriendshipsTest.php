@@ -15,7 +15,7 @@ class FriendshipsTest extends TestCase
     /** @test */
     function authenticated_users_can_see_a_list_of_users_to_friend ()
     {
-        $user = factory(\App\User::class)->create();
+        $user = createUser();
         $this->be($user);
         $otherUser = createUser();
 

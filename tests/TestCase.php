@@ -43,4 +43,15 @@ abstract class TestCase extends BaseTestCase
         $this->app->instance(ExceptionHandler::class, $this->oldExceptionHandler);
         return $this;
     }
+
+    function seeIsAuthenticatedAs ($user)
+    {
+        //return true;
+        return $user->id == \Auth::user()->id;
+    }
+
+    function dontSeeIsAuthenticated ()
+    {
+        return \Auth::guest();
+    }
 }

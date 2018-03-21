@@ -72,6 +72,7 @@ class PlaceController extends Controller
             'image_id' => $input['image_id'],
             'timezone_id' => $input['timezone_id'] == "00" ? null : $input['timezone_id'],
             'extant' => (integer) $input['extant'],
+            'privacy' => (integer) $input['privacy'],
             'user_id' => $input['user_id']
         ]);
 
