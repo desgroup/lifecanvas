@@ -6,8 +6,11 @@
             <div class="col-md-2">
             </div>
             <div class="col-md-8">
-                <div class="page-title">
-                    <h2 class="left" style="text-transform: uppercase;">GOAL: {{ $goal->name }}</h2><a href="/goals/{{ $goal->id }}/edit" class="ms-icon ms-icon-circle ms-icon-sm"><i class="fa fa-pencil"></i></a>
+                <div class="">
+                    <h2 class="left" style="text-transform: uppercase;">GOAL: {{ $goal->name }}</h2>
+                    <div class="edit">
+                        <a href="/goals/{{ $goal->id }}/edit" class="ms-icon ms-icon-circle ms-icon-sm" data-toggle="tooltip" data-placement="top" title="Edit this goal"><i class="fa fa-pencil"></i></a>
+                    </div>
                 </div>
                 @include('goal.item')
 
@@ -16,7 +19,6 @@
                     <div class="row">
                         <div class="col-md-12">
 
-
                             <a href="/bytes/{{ $byte->id }}">
                                 <div class="card {{ $byte->user_id == Auth::user()->id ? 'card-success' : 'card-info' }}">
                                     <div class="card-header">
@@ -24,8 +26,8 @@
                                         <form method="POST" action="/goals/removeByte/{{ $goal->id }}">
                                             {{ csrf_field() }}
                                             <input type="hidden" name="byte_id" id="byte_id" value="{{ $byte->id }}">
-                                            <button class="">
-                                                <i class="zmdi zmdi-close"></i>
+                                            <button class="x" data-toggle="tooltip" data-placement="top" title="Remove this byte">
+                                                <i class="fa fa-close"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -45,7 +47,7 @@
                                                 <div class="col-sm-9">
                                                     <p style="color: #212529">{{ $byte->story }}</p>
                                                     @if ($byte->place_id > 0)
-                                                        {{ $byte->place()->name }}<br>
+                                                        {{ $byte->place->name }}<br>
                                                     @endif
                                                     <div>@include('byte.partials.rating')  @include('byte.partials.repeat')</div>
                                                 </div>
@@ -95,6 +97,21 @@
 
         .left {
             margin-right:auto;
+        }
+
+        .x {
+            position: absolute;
+            background: #87cb12;
+            color: white;
+            border:none;
+            top: 10px;
+            right: 0px;
+        }
+
+        .edit {
+            position: absolute;
+            top: 20px;
+            right: 10px;
         }
 
     </style>
