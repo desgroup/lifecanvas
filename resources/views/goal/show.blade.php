@@ -6,7 +6,9 @@
             <div class="col-md-2">
             </div>
             <div class="col-md-8">
-                <h2 style="text-transform: uppercase;">GOAL: {{ $goal->name }}</h2>
+                <div class="page-title">
+                    <h2 class="left" style="text-transform: uppercase;">GOAL: {{ $goal->name }}</h2><a href="/goals/{{ $goal->id }}/edit" class="ms-icon ms-icon-circle ms-icon-sm"><i class="fa fa-pencil"></i></a>
+                </div>
                 @include('goal.item')
 
                 @forelse($bytes as $byte)
@@ -81,6 +83,18 @@
         .mt-12{
             margin-top:120px!important;
             margin-top:12rem!important
+        }
+
+        .page-title {
+            display:-webkit-flex;
+            display:flex;
+            list-style-type:none;
+            padding:0;
+            justify-content:flex-end;
+        }
+
+        .left {
+            margin-right:auto;
         }
 
     </style>

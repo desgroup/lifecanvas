@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Byte;
 use App\Goal;
+use App\Lifelist;
 use App\Person;
 use App\Place;
 use Illuminate\Http\Request;
 use App\Lifecanvas\Utilities\ImageUtilities;
+use PhpParser\Node\Expr\List_;
 
 class GoalController extends Controller
 {
@@ -74,8 +76,6 @@ class GoalController extends Controller
             $page = '/goals';
         }
 
-        //dd($page);
-
         return redirect($page)
             ->with('flash', 'Your goal has been added');
     }
@@ -86,7 +86,7 @@ class GoalController extends Controller
      * @param  \App\Goal  $goal
      * @return \Illuminate\Http\Response
      */
-    public function show(Goal $goal)
+    public function show (Goal $goal)
     {
         $bytes = $goal->bytes()->get();
 
@@ -101,7 +101,22 @@ class GoalController extends Controller
      */
     public function edit(Goal $goal)
     {
-        //
+        $places = Place::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
+        $people = Person::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
+        $lists = Lifelist::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
+        //dd($lists);
+
+        $listData = $goal->lists()->select('id', 'name')->get();
+        //dd($listData);
+
+        $listDataArray = [];
+
+        foreach ($listData as $list)
+        {
+            $listDataArray[$list->id] = $list->name;
+        }
+
+        return view('goal.edit', compact('goal', 'places', 'people', 'lists', 'listDataArray'));
     }
 
     /**
@@ -113,7 +128,32 @@ class GoalController extends Controller
      */
     public function update(Request $request, Goal $goal)
     {
-        //
+        $request['user_id'] = auth()->id();
+
+        $this->validate($request, [
+            'name' => 'required',
+        ]);
+
+        $image_data = [];
+
+        if ($request->hasFile('image')) {
+            $imageUtilities = new ImageUtilities();
+            $image_data = $imageUtilities->processImage($request->file('image')); // TODO-KGW Need to check if it is really and image
+        }
+
+        $goal->update([
+            'user_id' => auth()->id(),
+            'name' => request('name'),
+            'privacy' => request('privacy'),
+            'place_id' => request('place_id'),
+            'person_id' => request('person_id'),
+            'asset_id' => $image_data['id'] ?? NULL
+        ]);
+
+        $goal->lists()->sync($request->lists);
+
+        return redirect('/goals/' . $goal->id)
+            ->with('flash', 'Your goal has been updated');
     }
 
     /**

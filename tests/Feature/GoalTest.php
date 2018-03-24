@@ -61,4 +61,26 @@ class GoalTest extends TestCase
             ->assertSee($goalToSee->name)
             ->assertDontSee($goalToNotSee->name);
     }
+
+    /** @test */
+    function authenticated_users_can_edit_a_goal ()
+    {
+        $this->signIn();
+
+        $goal = create('App\Goal', ['user_id' => auth()->id(), 'name' => 'aabbccdd']);
+
+        $response = $this->get('/goals/' . $goal->id . '/edit');
+
+        $response->assertSee($goal->name);
+        $response->assertSee('Update Goal');
+
+        $goalChanged = $goal->toArray();
+
+        $goalChanged['name'] = 'eeffgghh';
+
+        $this->patch('/goals/' . $goal->id, $goalChanged);
+
+        $this->get('/goals/' . $goal->id . '/edit')
+            ->assertSee($goalChanged['name']);
+    }
 }
