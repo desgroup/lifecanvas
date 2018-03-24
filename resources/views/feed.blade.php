@@ -74,13 +74,10 @@
                 <div class="row">
                     <div class="col-lg-12" id="news">
                         <ul class="ms-timeline" id="items">
-                            <div class="bytelist" data-infinite-scroll='{ "path": ".next", "append": ".byte", "history": false }'>
+                            <div class="bytelist">
                                 @foreach($bytes as $byte)
                                     @include('byte.partials.card')
                                 @endforeach
-                                <li>
-                                    {{ $bytes->links() }}
-                                </li>
                             </div>
                         </ul>
                     </div>
@@ -114,11 +111,10 @@
                 img: "/assets/img/ajax-loader.gif"
             };
 
-            $('#items').infinitescroll({
-                loading : loading_options,
-                navSelector : "#news .pagination",
-                nextSelector : "#news .pagination li.active + li a",
-                itemSelector : "#items li.item"
+            $('#items').infiniteScroll({
+                path: '/feed?page=@{{#}}',
+                append: '.item',
+                history: false
             });
         })();
 

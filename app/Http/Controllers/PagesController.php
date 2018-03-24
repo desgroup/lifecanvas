@@ -43,7 +43,7 @@ class PagesController extends Controller // TODO-KGW Maybe deal with this contro
                 $q->whereIn('user_id', $users);
             })
             ->orderBy('created_at', 'desc')
-            ->paginate();
+            ->paginate(10);
 
         if( !is_null($user->birthdate)) {
             list($year, $month, $day) = explode("-", $user->birthdate);
