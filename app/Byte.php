@@ -127,13 +127,16 @@ class Byte extends Model
         return $this->morphMany(Favorite::class, 'favorited');
     }
 
-    /**
-     *
-     */
+
     public function favorite()
     {
         if(! $this->favorites()->where(['user_id' => auth()->id()])->exists()) {
             $this->favorites()->create(['user_id' => auth()->id()]);
         }
+    }
+
+    public function goals()
+    {
+        return $this->belongsToMany(Goal::class)->withTimestamps();
     }
 }

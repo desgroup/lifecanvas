@@ -48,6 +48,9 @@
                                     <label class="control-label" for="country_code">Country</label>
                                     <select class="form-control selectpicker" name="country_code" id="country_code">
                                         <option value="00" {{ !old('country_code') ? 'selected' : '' }}>Select a country</option>
+                                        @if(!is_null($home_country))
+                                            <option value="{{ key($home_country) }}">{{ reset($home_country) }}</option>
+                                        @endif
                                         @foreach($countries as $key => $value)
                                             <option value="{{ $key }}" {{ (collect(old('country_code'))->contains($key)) ? 'selected' : '' }}>{{ $value }}</option>
                                         @endforeach

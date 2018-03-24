@@ -117,8 +117,8 @@ $factory->define(App\Byte::class, function (Faker\Generator $faker) {
     $userId = $faker->randomElement($userIds);
     $places = DB::table('places')->where('user_id', '=', $userId)->get()->toArray();
     if($places == []) {
-        $place_id = 1;
-        $place_tz = 1;
+        $place_id = NULL;
+        $place_tz = NULL;
     } else {
         $place = $faker->randomElement($places);
         $place_id = $place->id;

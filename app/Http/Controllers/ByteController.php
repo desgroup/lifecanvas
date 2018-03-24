@@ -108,7 +108,6 @@ class ByteController extends Controller
             }
         }
 
-
         // set timezone
         // set to NULL by default
         $timeZone_id = NULL;
@@ -163,6 +162,10 @@ class ByteController extends Controller
 
         $byte->lines()->attach($request->lines);
         $byte->people()->attach($request->people);
+
+        if($request->goal_id > 0) {
+            $byte->goals()->attach($request->goal_id);
+        }
 
         return redirect($byte->path())
             ->with('flash', 'Your byte has been added');

@@ -36,9 +36,8 @@ class Goal extends Model
         return '/usr/' . $this->user_id . '/medium/' . $this->asset->file_name;
     }
 
-    public function byte()
+    public function bytes()
     {
         return $this->belongsToMany(Byte::class)->withTimestamps();
     }
-
 }

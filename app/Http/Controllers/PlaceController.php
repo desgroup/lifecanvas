@@ -32,7 +32,11 @@ class PlaceController extends Controller
         $countries = Country::orderBy('country_name_en')->pluck('country_name_en', 'id')->toArray();
         $timezones = Timezone::orderBy('timezone_name')->pluck('timezone_name', 'id')->toArray();
 
-        return view('place.create', compact('countries', 'timezones'));
+        $home_country = Country::where('id', Auth::user()->home_country_code)->pluck('country_name_en', 'id')->toArray();
+
+        //dd(value($home_country));
+
+        return view('place.create', compact('countries', 'timezones', 'home_country'));
     }
 
     /**

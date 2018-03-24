@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Activity;
+use App\Country;
 use App\User;
 use App\Profile;
 use Carbon\Carbon;
@@ -27,7 +28,9 @@ class ProfileController extends Controller
             $birthdate = NULL;
         }
 
-        return view('profile.edit', compact('user','birthdate','aliveTime'));
+        $countries = Country::orderBy('country_name_en')->pluck('country_name_en', 'id')->toArray();
+
+        return view('profile.edit', compact('user','birthdate','aliveTime', 'countries'));
     }
 
     /**
@@ -58,9 +61,10 @@ class ProfileController extends Controller
                 'last_name' => $request->last_name ?? NULL,
                 'email' => $request->email ?? $user->email,
                 'privacy' => $request->privacy ?? $user->privacy,
+                'home_country_code' => $request->home_country_code ?? NULL
             ]);
 
-        return redirect('/' . $user->username)
+        return redirect('/' . $user->username . '/edit')
             ->with('flash', 'Your profile has been updated');
     }
 

@@ -101,6 +101,17 @@
                                     <div class="col-md-9">
                                         <input name="confirm_email" type="email" class="form-control" id="inputConfirmEmail" value="{{ old('email_confirm', $user->email) }}" placeholder="Retype Email"> </div>
                                 </div>
+                                <div class="row form-group">
+                                    <label class="col-lg-2 control-label" for="home_country_code">Country</label>
+                                    <div class="col-md-9">
+                                    <select class="form-control selectpicker" name="home_country_code" id="home_country_code">
+                                        <option value="00" {{ !old('home_country_code') ? 'selected' : '' }}>Select a country</option>
+                                        @foreach($countries as $key => $value)
+                                            <option value="{{ $key }}" {{ (collect(old('home_country_code', $user->home_country_code))->contains($key)) ? 'selected' : '' }}>{{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                    </div>
+                                </div>
                                 <div class="form-group row">
                                     <label for="privacy" class="col-lg-2 control-label">Default Privacy</label>
                                     <div class="col-md-9">

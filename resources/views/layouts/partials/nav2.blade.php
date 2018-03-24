@@ -26,10 +26,6 @@
                         <li>
                             <a class="dropdown-item" href="/lines">My Lifelines</a>
                         </li>
-                        <li class="dropdown-divider"></li>
-                        @foreach($mylines as $myline)
-                            <li><a class="dropdown-item" href="/lines/{{ $myline->id }}">{{ $myline->name }}</a></li>
-                        @endforeach
                     </ul>
                 </li>
                 <li class="nav-item dropdown {{ Request::is('lists*') ? "active" : "" }}">

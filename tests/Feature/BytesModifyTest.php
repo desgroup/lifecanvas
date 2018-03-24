@@ -19,12 +19,14 @@ class BytesModifyTest extends TestCase
     }
 
     /** @test */
-    function an_authenticated_user_sees_an_editable_form_when_selecting_to_edit_a_byte_they_own()
+    function authenticated_users_see_an_editable_form_when_selecting_to_edit_a_byte_they_own ()
     {
         $this->signIn();
 
         $seeder = new TimezonesTableSeeder();
         $seeder->run();
+
+        create('App\Place', ['user_id' => auth()->id()]);
 
         $byte = create('App\Byte', ['user_id' => auth()->id()]);
 

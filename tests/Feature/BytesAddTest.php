@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Timezone;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use PlacesTableSeeder;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -10,7 +11,7 @@ use TimezonesTableSeeder;
 
 class BytesAddTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     function unauthenticated_users_cannot_see_the_create_byte_page()
@@ -51,7 +52,7 @@ class BytesAddTest extends TestCase
 
         $this->post('/bytes', $byteArray);
 
-        $this->get('/bytes')
+        $this->get('/bytes/1')
             ->assertSee($byte->title)
             ->assertSee($byte->story)
             ->assertSee($line1->name)

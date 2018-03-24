@@ -66,9 +66,17 @@ class GoalController extends Controller
             'asset_id' => $image_data['id'] ?? NULL
         ]);
 
-        $goal->lists()->attach($request->lifelist_id);
+        if(strpos($request->path(), 'goals') == false)
+        {
+            $goal->lists()->attach($request->lifelist_id);
+            $page = '/lists/' . $request->lifelist_id;
+        } else {
+            $page = '/goals';
+        }
 
-        return redirect('/lists/' . $request->lifelist_id)
+        //dd($page);
+
+        return redirect($page)
             ->with('flash', 'Your goal has been added');
     }
 
@@ -80,7 +88,9 @@ class GoalController extends Controller
      */
     public function show(Goal $goal)
     {
-        //
+        $bytes = $goal->bytes()->get();
+
+        return view('goal.show', compact('goal', 'bytes'));
     }
 
     /**
@@ -117,12 +127,29 @@ class GoalController extends Controller
         //
     }
 
-    public function completed (Goal $goal, Byte $byte)
+    public function complete (Goal $goal)
     {
-        $goal->byte()->attach($byte->id);
+        $places = Place::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
+        $people = Person::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
+        $bytes = Byte::where('user_id', '=', auth()->id())->orderBy('title')->pluck('title', 'id')->toArray();
 
-        return redirect()
-            ->back()
+        return view('goal.complete', compact('goal', 'places', 'people', 'bytes'));
+    }
+
+    public function completed (Goal $goal, Request $request)
+    {
+        //dd($request);
+        $goal->bytes()->attach($request->byte_id);
+
+        return redirect('/goals/' . $goal->id)
             ->with('flash', 'Your goal has been completed');
+    }
+
+    public function detachByte (Goal $goal, Request $request)
+    {
+        $goal->bytes()->detach($request->byte_id);
+
+        return redirect('/goals/' . $goal->id)
+            ->with('flash', 'A byte has been unlinked from your goal');
     }
 }

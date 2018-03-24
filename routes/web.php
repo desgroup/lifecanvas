@@ -51,7 +51,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('/bytes', 'ByteController');
     Route::resource('/lines', 'LineController');
     Route::resource('/lists', 'LifelistController');
-    Route::post('/goals/completed/{goal}/{byte}', 'GoalController@completed');
+    Route::get('/goals/complete/{goal}', 'GoalController@complete');
+    Route::post('/goals/completed/{goal}', 'GoalController@completed');
+    Route::post('/goals/removeByte/{goal}', 'GoalController@detachByte');
+    Route::post('/goals/completed/{goal}', 'GoalController@completed');
     Route::resource('/goals', 'GoalController');
     Route::resource('/people', 'PersonController');
     Route::resource('/places', 'PlaceController');
