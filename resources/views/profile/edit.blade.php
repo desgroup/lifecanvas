@@ -102,7 +102,7 @@
                                         <input name="confirm_email" type="email" class="form-control" id="inputConfirmEmail" value="{{ old('email_confirm', $user->email) }}" placeholder="Retype Email"> </div>
                                 </div>
                                 <div class="row form-group">
-                                    <label class="col-lg-2 control-label" for="home_country_code">Country</label>
+                                    <label class="col-lg-2 control-label" for="home_country_code">Home Country</label>
                                     <div class="col-md-9">
                                     <select class="form-control selectpicker" name="home_country_code" id="home_country_code">
                                         <option value="00" {{ !old('home_country_code') ? 'selected' : '' }}>Select a country</option>

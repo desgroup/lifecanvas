@@ -17,11 +17,11 @@ class LifelistController extends Controller
      */
     public function index()
     {
-//        $lists = Auth::user()->myLists()->orderBy('name')->with(['bytes' => function ($query) {
-//            $query->orderBy('created_at', 'ASC')->first();
-//        }])->get();
+        //$lists = Lifelist::where('user_id', auth()->id())->with('goals')->orderBy('name')->get();
 
-        $lists = Auth::user()->myLists()->orderBy('name')->get();
+        $lists = Lifelist::where('user_id', auth()->id())->orderBy('name')->get();
+
+        //dd($lists);
 
         return view('list.index', compact('lists'));
     }
@@ -68,12 +68,13 @@ class LifelistController extends Controller
      */
     public function show(Lifelist $list)
     {
-        $goals = $list->goals()->orderBy('name')->paginate();
+        $goals = $list->goals()->orderBy('name')->paginate(10);
         $places = Place::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
         $people = Person::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
 
+        $goalsCount = $list->goals()->count();
 
-        return view('list.show', compact('goals', 'list', 'places', 'people'));
+        return view('list.show', compact('goals', 'list', 'places', 'people', 'goalsCount'));
     }
 
     /**

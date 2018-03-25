@@ -70,6 +70,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Person');
     }
 
+    public function myGoals() {
+        return $this->hasMany('App\Goal');
+    }
+
     public function bytes()
     {
         return $this->hasMany(Byte::class)->latest();

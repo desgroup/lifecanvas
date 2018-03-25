@@ -27,21 +27,36 @@
             </div>
             <div class="col-lg-9">
                 <h2 style="text-transform: uppercase;">{{ $line->name }}</h2>
-                <h3>{{ $bytes->count() }} lifebytes</h3>
-                <ul class="ms-timeline">
-                    <li class="ms-timeline-item wow materialUp">
-                        @foreach($bytes as $byte)
-                            @include('byte.partials.card')
-                        @endforeach
-                    </li>
-                    <li>
-                        {{ $bytes->links() }}
-                    </li>
+                <h3>{{ $byteCount }} lifebytes</h3>
+                <ul class="ms-timeline" id="items">
+                    @foreach($bytes as $byte)
+                        @include('byte.partials.card')
+                    @endforeach
                 </ul>
             </div>
-
         </div>
     </div>
     <!-- container -->
 
+@endsection
+
+@section('js_scripts')
+    <script src="/js/infinite-scroll-3-0-3.js"></script>
+    <script>
+        (function(){
+
+            var loading_options = {
+                finishedMsg: "<div class='end-msg'>Congratulations! You've reached the end of the internet</div>",
+                msgText: "<div class='center'>Loading news items...</div>",
+                img: "/assets/img/ajax-loader.gif"
+            };
+
+            $('#items').infiniteScroll({
+                path: '/lines/{{ $line->id }}?page=@{{#}}',
+                append: '.item',
+                history: false
+            });
+        })();
+
+    </script>
 @endsection

@@ -66,8 +66,10 @@ class LineController extends Controller
      */
     public function show(Line $line)
     {
-        $bytes = $line->bytes()->latest('byte_date')->paginate();
-        return view('line.show', compact('bytes', 'line'));
+        $bytes = $line->bytes()->latest('byte_date')->paginate(10);
+        $byteCount = $line->bytes()->count();
+
+        return view('line.show', compact('bytes', 'line', 'byteCount'));
     }
 
     /**

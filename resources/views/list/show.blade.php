@@ -30,11 +30,10 @@
             </div>
             <div class="col-lg-9">
                 <h2 style="text-transform: uppercase;">{{ $list->name }}</h2>
-                <h3>{{ $goals->count() }} lifeGoals</h3>
+                <h3>{{ $goalsCount }} lifeGoals</h3>
                 @foreach($goals as $goal)
                     @include('goal.item')
                 @endforeach
-                {{ $goals->links() }}
             </div>
         </div>
     </div>
@@ -53,4 +52,25 @@
             object-fit: cover;
         }
     </style>
+@endsection
+
+@section('js_scripts')
+    <script src="/js/infinite-scroll-3-0-3.js"></script>
+    <script>
+        (function(){
+
+            var loading_options = {
+                finishedMsg: "<div class='end-msg'>Congratulations! You've reached the end of the internet</div>",
+                msgText: "<div class='center'>Loading news items...</div>",
+                img: "/assets/img/ajax-loader.gif"
+            };
+
+            $('#items').infiniteScroll({
+                path: '/lists/{{ $list->id }}?page=@{{#}}',
+                append: '.item',
+                history: false
+            });
+        })();
+
+    </script>
 @endsection

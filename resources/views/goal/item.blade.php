@@ -1,4 +1,4 @@
-<div class="card">
+<li class="card item">
     <div class="row">
         <div class="col-lg-3 checkbox-container">
             @if(!$goal->bytes()->count())
@@ -27,4 +27,4 @@
             </div>
         </div>
     </div>
-</div>
+</li>

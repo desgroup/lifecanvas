@@ -12,4 +12,11 @@ class Lifelist extends Model
     {
         return $this->belongsToMany(Goal::class)->withTimestamps();
     }
+
+    public function listImage ()
+    {
+        return $this->with(['goals' => function ($query) {
+            $query->whereNotNull('asset_id')->orderBy('created_at', 'DESC');
+        }])->first();
+    }
 }

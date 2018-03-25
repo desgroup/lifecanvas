@@ -1,4 +1,4 @@
-<li class="item ms-timeline-item">
+<div class="item ms-timeline-item">
     <div class="ms-timeline-date">
         <time class="timeline-time" datetime="">{{ Carbon\Carbon::parse($byte->byte_date)->format('D dS') }}
             <span>{{ Carbon\Carbon::parse($byte->byte_date)->format('F') }}</span>
@@ -38,4 +38,4 @@
             </div>
         </div>
     </a>
-</li>
+</div>

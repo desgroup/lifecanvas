@@ -9,6 +9,7 @@ use App\Person;
 use App\Place;
 use Illuminate\Http\Request;
 use App\Lifecanvas\Utilities\ImageUtilities;
+use Illuminate\Support\Facades\Auth;
 use PhpParser\Node\Expr\List_;
 
 class GoalController extends Controller
@@ -20,7 +21,7 @@ class GoalController extends Controller
      */
     public function index()
     {
-        $goals = Goal::select()->orderBy('name')->paginate();
+        $goals = Auth::user()->myGoals()->orderBy('name')->paginate();
 
         return view('goal.index', compact('goals'));
     }
@@ -134,8 +135,6 @@ class GoalController extends Controller
             'name' => 'required',
         ]);
 
-        $image_data = [];
-
         if ($request->hasFile('image')) {
             $imageUtilities = new ImageUtilities();
             $image_data = $imageUtilities->processImage($request->file('image')); // TODO-KGW Need to check if it is really and image
@@ -147,7 +146,7 @@ class GoalController extends Controller
             'privacy' => request('privacy'),
             'place_id' => request('place_id'),
             'person_id' => request('person_id'),
-            'asset_id' => $image_data['id'] ?? NULL
+            'asset_id' => $image_data->id ?? $goal->asset_id ?? NULL
         ]);
 
         $goal->lists()->sync($request->lists);
