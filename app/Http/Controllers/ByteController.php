@@ -406,9 +406,10 @@ class ByteController extends Controller
 
     public function images ()
     {
-        $bytes = Auth::user()->myByteImages()->latest('byte_date')->paginate(40);
+        $bytes = Auth::user()->myByteImages()->latest('byte_date')->paginate(50);
+        $byteCount = Auth::user()->myByteImages()->count();
 
-        return view('byte.images', compact('bytes'));
+        return view('byte.images', compact('bytes', 'byteCount'));
     }
 
     public function imagesCountry ($code)

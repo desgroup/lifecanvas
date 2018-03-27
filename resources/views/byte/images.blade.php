@@ -28,10 +28,10 @@
             </div>
             <div class="col-lg-9">
                 <h2>All Lifebytes</h2>
-                <h3>{{ $bytes->count() }} lifebytes</h3>
+                <h3>{{ $byteCount }} lifebytes</h3>
                 <div class="row">
                     <div class="col">
-                        <div class="row masonry-container">
+                        <div class="row masonry-container" id="items">
 
                             @foreach($bytes as $byte)
                                 @if($byte->asset_id > 0)
@@ -40,7 +40,7 @@
                             @endforeach
 
                         </div>
-                        {{ $bytes->links() }}
+                        {{  $bytes->links() }}
                     </div>
                 </div>
             </div>
@@ -52,3 +52,28 @@
 
 @section('onPageCSS')
 @stop
+
+@section('js_scripts')
+    <script src="/js/infinite-scroll-3-0-3.js"></script>
+    <script>
+        (function(){
+
+            var loading_options = {
+                finishedMsg: "<div class='end-msg'>Congratulations! You've reached the end of the internet</div>",
+                msgText: "<div class='center'>Loading news items...</div>",
+                img: "/assets/img/ajax-loader.gif"
+            };
+
+            var $grid = $('#items').masonry({ itemSelector: '.item' });
+            var msnry = $grid.data('masonry');
+
+            $('#items').infiniteScroll({
+                path: '/bytes/images?page=@{{#}}',
+                append: '.item',
+                history: false,
+                outlayer: msnry
+            });
+        })();
+
+    </script>
+@endsection

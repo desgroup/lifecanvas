@@ -21,9 +21,10 @@ class GoalController extends Controller
      */
     public function index()
     {
-        $goals = Auth::user()->myGoals()->orderBy('name')->paginate();
+        $goals = Auth::user()->myGoals()->orderBy('name')->paginate(10);
+        $goalCount = Auth::user()->myGoals()->count();
 
-        return view('goal.index', compact('goals'));
+        return view('goal.index', compact('goals', 'goalCount'));
     }
 
     /**
