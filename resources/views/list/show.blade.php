@@ -31,9 +31,12 @@
             <div class="col-lg-9">
                 <h2 style="text-transform: uppercase;">{{ $list->name }}</h2>
                 <h3>{{ $goalsCount }} lifeGoals</h3>
-                @foreach($goals as $goal)
-                    @include('goal.item')
-                @endforeach
+                <div id="items">
+                    @foreach($goals as $goal)
+                        @include('goal.item')
+                    @endforeach
+                </div>
+                {{--{{ $goals->links() }}--}}
             </div>
         </div>
     </div>
