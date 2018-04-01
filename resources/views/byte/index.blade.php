@@ -4,38 +4,43 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-3">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card card-primary animated zoomInUp animation-delay-7">
-                            <div class="card-header">
-                                <h3 class="card-title">Display lifebytes as . . .</h3>
-                            </div>
-                            <div class="list-group">
-                                <a href="/bytes" class="list-group-item list-group-item-action withripple">
-                                    <i class="zmdi zmdi-view-list"></i> Timeline
-                                </a>
-                                <a href="/bytes/images" class="list-group-item list-group-item-action withripple">
-                                    <i class="zmdi zmdi-camera"></i> Images
-                                </a>
-                                <a href="/map" class="list-group-item list-group-item-action withripple">
-                                    <i class="zmdi zmdi-pin"></i>Map
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+            <div class="col-12">
+                <h2 class="">All lifebytes</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="hidden-sm hidden-xs">
+                    <hr class="mt-1 mb-1">
+                        <ul class="menu-box">
+                            <li class="menu-item">{{ $byteCount . " " . str_plural('lifebyte', $byteCount)}}</li>
+                            <li class="menu-item"><a href="/bytes"><i class="zmdi zmdi-view-list"></i> Timeline</a></li>
+                            <li class="menu-item"><a href="/bytes/images"><i class="zmdi zmdi-camera"></i> Images</a></li>
+                            <li class="menu-item"><a href="/map"><i class="zmdi zmdi-pin"></i> Map</a></li>
+                            <li class="menu-item"></li>
+                            <li class="menu-item"></li>
+                            <li class="menu-item"></li>
+                            <li class="menu-item"></li>
+                            <li class="menu-item"></li>
+                            <li class="menu-item"></li>
+                            <li class="menu-item"></li>
+                            <li class="menu-item"></li>
+                        </ul>
+                    <hr class="mt-1 mb-3">
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-lg-9">
-                <h2>All Lifebytes</h2>
-                <h3>{{ $byteCount }} lifebytes</h3>
                 <ul class="ms-timeline" id="items">
                     @foreach($bytes as $byte)
                         @include('byte.partials.card')
                     @endforeach
                 </ul>
             </div>
-
+            <div class="col-lg-3">
+                @include('adverts.sidebar')
+            </div>
         </div>
     </div>
     <!-- container -->
@@ -43,6 +48,36 @@
 @endsection
 
 @section('onPageCSS')
+    <style>
+        .menu-box {
+            display: flex;
+            align-items: stretch; /* Default */
+            justify-content: space-around;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .menu-item {
+            display: block;
+            flex: 0 1 auto; /* Default */
+            list-style-type: none;
+        }
+        .panel-body {
+            padding: 1rem 2rem  !important;
+        }
+
+        .image-container {
+
+            width: 100%;
+            overflow: hidden;
+            resize: both;
+        }
+        .image-container img {
+            object-fit: contain;
+
+            width: 100%;
+        }
+    </style>
 @stop
 
 @section('js_scripts')

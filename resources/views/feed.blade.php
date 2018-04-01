@@ -22,14 +22,12 @@
                                 @endif
                             </div>
                             <div class="card-block pt-4 text-center">
-                                <h3 class="color-primary">Stats</h3>
-                                <div class="text-left">
-                                    Lifer Since: {{ $user->created_at->diffForHumans() }} ({{$user->created_at}})<br>
-                                    @if(isset($aliveTime))
-                                        Alive for: {{ $aliveTime }}
-                                    @endif
-                                </div>
-                                <p></p>
+                                <h3 style="margin-bottom: 0rem" class="color-primary"><i class="fa fa-calendar"></i> Lifer Since</h3>
+                                <h4 style="margin-top: 0.5rem">{{ $user->created_at->diffForHumans() }} ({{Carbon\Carbon::parse($user->created_at)->format('d M, Y')}})</h4>
+                                @if(isset($aliveTime))
+                                    <h3 style="margin-bottom: 0rem" class="color-primary"><i class="fa fa-clock-o"></i> Alive for</h3>
+                                    <h4 style="margin-top: 0.5rem">{{ $aliveTime }}</h4>
+                                @endif
                             </div>
                         </div>
                     </div>

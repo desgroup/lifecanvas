@@ -10,7 +10,7 @@
         <meta name="viewport"
               content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta name="theme-color" content="#333">
-        <meta name="description" content="Material Style Theme">
+        <meta name="description" content="Lifecanvas is a web site for those that want to get the most out of life.">
 
         <title>{{ config('app.name', 'Lifecanvas') }}</title>
 
@@ -42,6 +42,34 @@
             }
             .panel-body {
                 background-color: white;
+            }
+
+            .fixed-navbar {
+                margin-bottom: 15px !important;
+            }
+
+            @media (max-width: 767px) {
+                .hidden-xs {
+                    display: none !important;
+                }
+            }
+
+            @media (min-width: 768px) and (max-width: 991px) {
+                .hidden-sm {
+                    display: none !important;
+                }
+            }
+
+            @media (min-width: 992px) and (max-width: 1199px) {
+                .hidden-md {
+                    display: none !important;
+                }
+            }
+
+            @media (min-width: 1200px) {
+                .hidden-lg {
+                    display: none !important;
+                }
             }
         </style>
 

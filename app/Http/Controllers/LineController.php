@@ -66,7 +66,7 @@ class LineController extends Controller
      */
     public function show(Line $line)
     {
-        $bytes = $line->bytes()->latest('byte_date')->paginate(10);
+        $bytes = $line->bytes()->latest('byte_date')->paginate(10);  // TODO-KGW filter to make sure it is just that users bytes
         $byteCount = $line->bytes()->count();
 
         return view('line.show', compact('bytes', 'line', 'byteCount'));

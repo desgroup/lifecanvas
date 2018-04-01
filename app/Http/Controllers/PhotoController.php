@@ -128,7 +128,7 @@ class PhotoController extends Controller
         // Should always be one image (when posting async), so we'll use the first on in the array (if available)
         $image = array_shift($images);
 
-        // Something was posted but no images were found
+        // Something was posted but no img were found
         if (!isset($image)) {
 
             // Possible solutions
@@ -137,7 +137,7 @@ class PhotoController extends Controller
 
             Slim::outputJSON(array(
                 'status' => SlimStatus::FAILURE,
-                'message' => 'No images found'
+                'message' => 'No img found'
             ));
 
             return;

@@ -72,9 +72,15 @@ class LifelistController extends Controller
         $places = Place::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
         $people = Person::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
 
-        $goalsCount = $list->goals()->count();
+        $goalCount = $list->goals()->count();
+        $goalsCompletedCount = \DB::table('lifelists')
+            ->join('goal_lifelist','lifelists.id','=','goal_lifelist.lifelist_id')
+            ->join('goals','goal_lifelist.goal_id','=','goals.id')
+            ->join('byte_goal','goals.id','=','byte_goal.goal_id')
+            ->join('bytes','byte_goal.byte_id','=','bytes.id')
+            ->select('bytes.*')->where('lifelists.id','=',$list->id)->count();
 
-        return view('list.show', compact('goals', 'list', 'places', 'people', 'goalsCount'));
+        return view('list.show', compact('goals', 'list', 'places', 'people', 'goalCount', 'goalsCompletedCount'));
     }
 
     /**

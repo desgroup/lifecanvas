@@ -3,11 +3,35 @@
 @section('content')
     <div class="container">
         <div class="row">
+            <div class="col-12">
+                <h2 class="">All lifebytes with a place</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="hidden-sm hidden-xs">
+                    <hr class="mt-1 mb-1">
+                    <ul class="menu-box">
+                        <li class="menu-item">{{ $byteCount }} lifebytes</li>
+                        <li class="menu-item"><a href="/bytes"><i class="zmdi zmdi-view-list"></i> Timeline</a></li>
+                        <li class="menu-item"><a href="/bytes/images"><i class="zmdi zmdi-camera"></i> Images</a></li>
+                        <li class="menu-item"><a href="/map"><i class="zmdi zmdi-pin"></i> Map</a></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                    </ul>
+                    <hr class="mt-1 mb-3">
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-3">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Stats</h3>
-                    </div>
                     <div class="card-block">
                         <div class="text-center">
                             <h3>Continents Visited</h3>
@@ -22,9 +46,6 @@
             </div>
             <div class="col-md-9">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">World View</h3>
-                    </div>
                     <div class="card-block">
                         <script type='text/javascript' src='https://www.google.com/jsapi'></script>
                         <script type='text/javascript'>google.load('visualization', '1', {'packages': ['geochart']});
@@ -37,8 +58,8 @@
                                 data.addColumn({type:'string', role:'tooltip'});var ivalue = new Array();
 
                                 @forEach($my_countries as $country)
-                                    data.addRows([[{v:'{{ $country->code }}',f:'{{ $country->name }}'},0,'{{ $byteCount[$country->code] }} Bytes']]);
-                                    ivalue['{{ $country->code }}'] = '{{ in_array($country->code, $provincesSupported) && $byteCount[$country->code] > 10 ? "/map/$country->code" : "/bytes/country/$country->code" }}';
+                                    data.addRows([[{v:'{{ $country->code }}',f:'{{ $country->name }}'},0,'{{ $byteCountryCount[$country->code] . " " . str_plural('Byte', $byteCountryCount[$country->code]) }}']]);
+                                    ivalue['{{ $country->code }}'] = '{{ in_array($country->code, $provincesSupported) && $byteCountryCount[$country->code] > 2 ? "/map/$country->code" : "/bytes/country/$country->code" }}';
                                 @endforeach
 
                                 var options = {
@@ -76,6 +97,39 @@
         </div>
     </div>
 @endsection
+
+@section('onPageCSS')
+    <style>
+        .menu-box {
+            display: flex;
+            align-items: stretch; /* Default */
+            justify-content: space-around;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .menu-item {
+            display: block;
+            flex: 0 1 auto; /* Default */
+            list-style-type: none;
+        }
+        .panel-body {
+            padding: 1rem 2rem  !important;
+        }
+
+        .image-container {
+
+            width: 100%;
+            overflow: hidden;
+            resize: both;
+        }
+        .image-container img {
+            object-fit: contain;
+
+            width: 100%;
+        }
+    </style>
+@stop
 
 @section('js_scripts')
     <script>

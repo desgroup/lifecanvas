@@ -2,41 +2,45 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card card-primary animated zoomInUp animation-delay-7">
-                            <div class="card-header">
-                                <h3 class="card-title">Menu</h3>
-                            </div>
-                            <div class="list-group">
-                                <a href="/lines/" class="list-group-item list-group-item-action withripple">
-                                    <i class="zmdi zmdi-view-list"></i> All Goals
-                                </a>
-                                <a href="javascript:void(0)" class="list-group-item list-group-item-action withripple">
-                                    <i class="zmdi zmdi-camera"></i> Completed Goals
-                                </a>
-                                <a href="javascript:void(0)" class="list-group-item list-group-item-action withripple">
-                                    <i class="zmdi zmdi-pin"></i> Open Goals
-                                </a>
-                                <a href="javascript:void(0)" class="list-group-item list-group-item-action withripple" data-toggle="modal" data-target="#myModal7" >
-                                    <i class="zmdi zmdi-plus"></i> Add a Goal
-                                </a>
-                            </div>
-                        </div>
+            <div class="row">
+                <div class="col-12">
+                    <h2>{{ $list->name }} lifegoals</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="hidden-sm hidden-xs">
+                        <hr class="mt-1 mb-1">
+                        <ul class="menu-box">
+                            <li class="menu-item">{{ $goalCount . " " . str_plural('lifegoal', $goalCount)}} ({{ $goalsCompletedCount }} completed)</li>
+                            <li class="menu-item"><a href="/lists/{{ $list->id }}"><i class="fa fa-check-circle"></i> All Goals</a></li>
+                            <li class="menu-item"><a href="#"><i class="fa fa-check-circle"></i> Completed Goals</a></li>
+                            <li class="menu-item"><a href="#"><i class="fa fa-check-circle-o"></i> Uncompleted Goals</a></li>
+                            <li class="menu-item"><a href="javascript:void(0)" data-toggle="modal" data-target="#myModal7"><i class="zmdi zmdi-plus"></i> Add a Goal</a></li>
+                            <li class="menu-item"></li>
+                            <li class="menu-item"></li>
+                            <li class="menu-item"></li>
+                            <li class="menu-item"></li>
+                            <li class="menu-item"></li>
+                            <li class="menu-item"></li>
+                            <li class="menu-item"></li>
+                        </ul>
+                        <hr class="mt-1 mb-3">
                     </div>
                 </div>
             </div>
-            <div class="col-lg-9">
-                <h2 style="text-transform: uppercase;">{{ $list->name }}</h2>
-                <h3>{{ $goalsCount }} lifeGoals</h3>
-                <div id="items">
-                    @foreach($goals as $goal)
-                        @include('goal.item')
-                    @endforeach
+            <div class="row">
+                <div class="col-lg-9">
+                    <div id="items">
+                        @foreach($goals as $goal)
+                            @include('goal.item')
+                        @endforeach
+                    </div>
+                    {{--{{ $goals->links() }}--}}
                 </div>
-                {{--{{ $goals->links() }}--}}
+                <div class="col-lg-3">
+                    @include('adverts.sidebar')
+                </div>
             </div>
         </div>
     </div>
@@ -51,8 +55,37 @@
             align-items: center;
         }
 
-        .image-container img {
+        .image-container2 img {
             object-fit: cover;
+        }
+
+        .menu-box {
+            display: flex;
+            align-items: stretch; /* Default */
+            justify-content: space-around;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .menu-item {
+            display: block;
+            flex: 0 1 auto; /* Default */
+            list-style-type: none;
+        }
+        .panel-body {
+            padding: 1rem 2rem  !important;
+        }
+
+        .image-container {
+
+            width: 100%;
+            overflow: hidden;
+            resize: both;
+        }
+        .image-container img {
+            object-fit: contain;
+
+            width: 100%;
         }
     </style>
 @endsection

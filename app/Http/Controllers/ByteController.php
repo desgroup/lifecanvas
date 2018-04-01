@@ -115,11 +115,8 @@ class ByteController extends Controller
         if (isset($image_data['timezone_id']) && !is_null($image_data['timezone_id'])) {
             $timeZone_id = $image_data['timezone_id'];
         } elseif (!is_null($request->place_id) && $request->place_id <> '00') {
-            //dd($request->place_id);
             $timeZone = Place::where('id', '=', $request->place_id)->first()->timezone;
-            //dd(Place::where('id', '=', $request->place_id)->first()->timezone);
             if(!is_null($timeZone)) {
-                //dd($timeZone->id);
                 $timeZone_id = $timeZone->id;
             }
         } else {
@@ -134,6 +131,8 @@ class ByteController extends Controller
         } else {
             $byte_date = FuzzyDate::createTimestamp($request);
         }
+
+        $timeZone_id = $timeZone_id ?? request('timezone_id') ?? NULL; // check if data is coming from a grab
 
         // Set date time
         if(is_null($timeZone_id)) {
@@ -153,11 +152,12 @@ class ByteController extends Controller
             'timezone_id' => $timeZone_id,
             'byte_date' => $datetime,
             'accuracy' => $byte_date['accuracy'],
-            'lat' => $lat ?? NULL,
-            'lng' => $lng ?? NULL,
-            'asset_id' => $image_data['id'] ?? NULL,
+            'lat' => $lat ?? request('lat') ?? NULL,
+            'lng' => $lng ?? request('lng') ?? NULL,
+            'asset_id' => $image_data['id'] ?? request('asset_id') ?? NULL,
             'place_id' => $placeId ?? NULL,
-            'user_id' => auth()->id()
+            'user_id' => auth()->id(),
+            'parent_byte_id' => request('parent_byte_id') ?? NULL
         ]);
 
         $byte->lines()->attach($request->lines);
@@ -264,7 +264,7 @@ class ByteController extends Controller
             $imageUtilities = new ImageUtilities();
             $image_data = $imageUtilities->processImage($request->file('image')); // TODO-KGW Need to check if it is really and image
 
-            if ($request->use_image_time == "on") { // TODO-KGW Need to address wrong timezone images here and in store above save UTC
+            if ($request->use_image_time == "on") { // TODO-KGW Need to address wrong timezone img here and in store above save UTC
                 if (!is_null($image_data->asset_date_local) && !is_null($image_data->timezone_id)) {
                     $datetime = DateTimeUtilities::toUtcTime($image_data->asset_date_local, $image_data->timezone->timezone_name);
                     $byte_date = array("datetime" => $datetime, "accuracy" => '111111');
@@ -429,5 +429,50 @@ class ByteController extends Controller
         $country = Country::where('id', $code)->first();
 
         return view('byte.imagesCountry', compact('bytes', 'byteCount', 'code', 'country'));
+    }
+
+    public function grab (Byte $byte, Request $request)
+    {
+        // Gather that the menu items
+        $places = Place::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
+        $people = Person::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
+        $timezones = Timezone::orderBy('timezone_name')->pluck('timezone_name', 'id')->toArray();
+
+        // Get the date information
+        $fuzzy_date = new FuzzyDate();
+
+        if($byte->accuracy == "0000000" || is_null($byte->byte_date)) {
+
+            $formDate = $fuzzy_date->makeFormValues(null, "0000000");
+
+        } else {
+
+            $timeZone = Timezone::where('id', '=', $byte->timezone_id)->first();
+
+            $timestamp = Carbon::createFromFormat('Y-m-d H:i:s',
+                $byte->byte_date, 'UTC');
+
+            $formDate = $fuzzy_date->makeFormValues($timestamp->setTimezone($timeZone->timezone_name), $byte->accuracy);
+        }
+
+        $peopleData = $byte->people()->select('id', 'name')->get();
+
+        $peopleDataArray = [];
+
+        foreach ($peopleData as $person)
+        {
+            $peopleDataArray[$person->id] = $person->name;
+        }
+
+        $linesData = $byte->lines()->select('id', 'name')->get();
+
+        $linesDataArray = [];
+
+        foreach ($linesData as $line)
+        {
+            $linesDataArray[$line->id] = $line->name;
+        }
+
+        return view('byte.grab', compact('byte', 'places', 'people', 'timezones', 'formDate', 'peopleDataArray', 'linesDataArray'));
     }
 }

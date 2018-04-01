@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md  navbar-static ms-navbar ms-navbar-white navbar-mode">
+<nav class="navbar navbar-expand-md  navbar-static ms-navbar ms-navbar-white navbar-mode fixed-navbar">
     <div class="container container-full">
         <div class="navbar-header">
             <a class="navbar-brand" href="{{ url('/feed') }}">
@@ -6,7 +6,7 @@
             </a>
         </div>
 
-        <div class="collapse navbar-collapse" id="ms-navbar">
+        <div class="collapse navbar-collapse" id="ms-navbar" style="margin-right: -15px !important;">
             <ul class="navbar-nav">
             @if (Auth::check())
                 <li class="nav-item dropdown {{ Request::is('bytes/create') ? "active" : "" }}">
@@ -113,9 +113,11 @@
             @endif
             </ul>
         </div>
-        <a href="javascript:void(0)" class="ms-toggle-left btn-navbar-menu">
-            <i class="zmdi zmdi-menu"></i>
-        </a>
+        <div class="hidden-sm hidden-md hidden-lg">
+            <a href="javascript:void(0)" class="ms-toggle-left btn-navbar-menu">
+                <i class="hidden-md-up zmdi zmdi-menu"></i>
+            </a>
+        </div>
     </div>
     <!-- container -->
 </nav>

@@ -103,7 +103,13 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
+                                            @else
+                                                <form method="POST" action="/bytes/grab/{{ $byte->id }}">
+                                                    {{ csrf_field() }}
+                                                    <button type="submit" class="btn-circle btn-circle-raised btn-circle-default mr-1" data-toggle="tooltip" data-placement="top" title="Grab this byte">
+                                                        <i class="fa fa-mail-forward"></i>
+                                                    </button>
+                                                </form>
                                             @endif
                                         </div>
                                     </div>

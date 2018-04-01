@@ -23,10 +23,28 @@
                     </li>
                 </ul>
             </li>
-            <li class="card" role="tab" id="sch3">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#slidebar-menu" href="#sc3" aria-expanded="false" aria-controls="sc3">
+                <li class="card" role="tab" id="sch3">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#slidebar-menu" href="#sc3" aria-expanded="false" aria-controls="sc3">
+                        Goals</a>
+                    <ul id="sc3" class="card-collapse collapse" role="tabpanel" aria-labelledby="sch3">
+                        <li>
+                            <a href="/goals/create">Add Goal</a>
+                        </li>
+                        <li>
+                            <a href="/goals">My Goals</a>
+                        </li>
+                        <li>
+                            <a href="/lists/create">Add Lifelist</a>
+                        </li>
+                        <li>
+                            <a href="/lists">My Lifelists</a>
+                        </li>
+                    </ul>
+                </li>
+            <li class="card" role="tab" id="sch4">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#slidebar-menu" href="#sc4" aria-expanded="false" aria-controls="sc4">
                     People</a>
-                <ul id="sc3" class="card-collapse collapse" role="tabpanel" aria-labelledby="sch3">
+                <ul id="sc4" class="card-collapse collapse" role="tabpanel" aria-labelledby="sch4">
                     <li>
                         <a href="/people/create">Add Person</a>
                     </li>
@@ -35,10 +53,10 @@
                     </li>
                 </ul>
             </li>
-            <li class="card" role="tab" id="sch4">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#slidebar-menu" href="#sc4" aria-expanded="false" aria-controls="sc4">
+            <li class="card" role="tab" id="sch5">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#slidebar-menu" href="#sc5" aria-expanded="false" aria-controls="sc5">
                     Places</a>
-                <ul id="sc4" class="card-collapse collapse" role="tabpanel" aria-labelledby="sch4">
+                <ul id="sc5" class="card-collapse collapse" role="tabpanel" aria-labelledby="sch5">
                     <li>
                         <a href="/places/create">Add Place</a>
                     </li>
@@ -47,17 +65,29 @@
                     </li>
                 </ul>
             </li>
-            <li>
-                <a class="link" href="{{ route('logout') }}"
-                   onclick="event.preventDefault();
-                                   document.getElementById('logout-form').submit();">
-                    Logout
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    {{ csrf_field() }}
-                </form>
-            </li>
 
+            <li class="card" role="tab" id="sch6">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#slidebar-menu" href="#sc6" aria-expanded="false" aria-controls="sc6">
+                    Account</a>
+                <ul id="sc6" class="card-collapse collapse" role="tabpanel" aria-labelledby="sch6">
+                    <li>
+                        <a class="dropdown-item" href="/{{ Auth::user()->username }}/edit">Update Profile</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="/changePassword">Change Password</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                               document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
+                    </li>
+                </ul>
+            </li>
             @else
             <li>
                 <a class="link" href="{{ route('login') }}">

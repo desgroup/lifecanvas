@@ -35,20 +35,23 @@ class MapController extends Controller
             order by co.`country_name_en`
         ");
 
-        $byteCount = [];
+        $byteCountryCount = [];
         foreach ($my_countries as $country) {
-            $byteCount[$country->code] = count(DB::select("
+            $byteCountryCount[$country->code] = count(DB::select("
                     SELECT *
                     from `bytes` as b RIGHT JOIN `places` as p
                     on b.`place_id`  = p.`id` 
                     where b.`user_id` = $user_id and p.`country_code` = '$country->code'")
             );
         }
+
+        $byteCount = array_sum($byteCountryCount);
+        //dd($byteCountryCount);
         //dd($byteCount);
 
         $provincesSupported = Province::select('country_code')->groupby('country_code')->pluck('country_code')->toArray();
         //dd($provincesSupported);
-        return view('map.index', compact('my_countries', 'byteCount', 'my_stats', 'provincesSupported'));
+        return view('map.index', compact('my_countries', 'byteCount', 'byteCountryCount', 'my_stats', 'provincesSupported'));
     }
 
     public function country ($country_code) {
