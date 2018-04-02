@@ -66,10 +66,29 @@ class MapController extends Controller
                   group by t1.`province`) as list on pr.`province_code` = list.`province`
         ");
 
-        $countryName = Country::where('id', $country_code)->pluck('country_name_en')[0];
+        $byteProvinceCount = [];
+        foreach ($my_provinces as $province) {
+            $byteProvinceCount[$province->province_code] = count(DB::select("
+                    SELECT *
+                    from `bytes` as b RIGHT JOIN `places` as p
+                    on b.`place_id`  = p.`id` 
+                    where b.`user_id` = $user_id and p.`province` = '$province->province_code'")
+            );
+        }
+
+        $byteCount = count(DB::select("
+                    SELECT *
+                    from `bytes` as b RIGHT JOIN `places` as p
+                    on b.`place_id`  = p.`id` 
+                    where b.`user_id` = $user_id and p.`country_code` = '$country_code'")
+        );
+
+        $byteCount = array_sum($byteProvinceCount);
+
+        $country = Country::where('id', $country_code)->first();
         $provinceCount = Province::where('country_code', $country_code)->count();
         $provinceVisitedCount = count($my_provinces);
 
-        return view('map.country', compact('countryName', 'provinceCount', 'provinceVisitedCount', 'country_code', 'my_provinces'));
+        return view('map.country', compact('country', 'country_code', 'byteCount', 'byteProvinceCount', 'provinceCount', 'provinceVisitedCount', 'my_provinces', 'byteCount'));
     }
 }

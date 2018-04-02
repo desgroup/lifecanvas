@@ -3,15 +3,40 @@
 @section('content')
     <div class="container">
         <div class="row">
+            <div class="col-12">
+                <h2 class="">{{ $country->country_name_en}} lifebytes</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="hidden-sm hidden-xs">
+                    <hr class="mt-1 mb-1">
+                    <ul class="menu-box">
+                        <li class="menu-item">{{ $byteCount }} lifebytes</li>
+                        <li class="menu-item"><a href="/bytes/country/{{ $country_code }}"><i class="zmdi zmdi-view-list"></i> Timeline</a></li>
+                        <li class="menu-item"><a href="/bytes/images/country/{{ $country_code }}"><i class="zmdi zmdi-camera"></i> Images</a></li>
+                        <li class="menu-item"><a href="/map/{{ $country_code }}"><i class="zmdi zmdi-pin"></i> Map</a></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                    </ul>
+                    <hr class="mt-1 mb-3">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="col-md-3">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Stats</h3>
-                    </div>
                     @if($provinceCount > 0)
                     <div class="card-block">
                         <div class="text-center">
-                            <h3>Provinces Visited</h3>
+                            <h3>{{ $country->province_label_en }} Visited</h3>
                             <div class="circle" id="circles-1"></div>
                             <h1>{{ $provinceVisitedCount }}/{{ $provinceCount }}</h1>
                         </div>
@@ -21,9 +46,6 @@
             </div>
             <div class="col-md-9">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">{{ $countryName }}</h3>
-                    </div>
                     <div class="card-block">
                         <script type='text/javascript' src='https://www.google.com/jsapi'></script>
                         <script type='text/javascript'>google.load('visualization', '1', {'packages': ['geochart']});
@@ -36,7 +58,7 @@
                                 data.addColumn({type:'string', role:'tooltip'});var ivalue = new Array();
 
                                 @forEach($my_provinces as $province)
-                                    data.addRows([[{v:'{{ $province->country_code }}-{{ $province->province_code }}',f:'{{ $province->province_name_en }}'},0,'{{ $province->province_name_en }}']]);
+                                    data.addRows([[{v:'{{ $province->country_code }}-{{ $province->province_code }}',f:'{{ $province->province_name_en }}'},0,'{{ $byteProvinceCount[$province->province_code] . " " . str_plural('Byte', $byteProvinceCount[$province->province_code]) }}']]);
                                     ivalue['{{ $province->country_code }}-{{ $province->province_code }}'] = '/bytes';
                                 @endforeach
 
@@ -67,6 +89,39 @@
         </div>
     </div>
 @endsection
+
+@section('onPageCSS')
+    <style>
+        .menu-box {
+            display: flex;
+            align-items: stretch; /* Default */
+            justify-content: space-around;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .menu-item {
+            display: block;
+            flex: 0 1 auto; /* Default */
+            list-style-type: none;
+        }
+        .panel-body {
+            padding: 1rem 2rem  !important;
+        }
+
+        .image-container {
+
+            width: 100%;
+            overflow: hidden;
+            resize: both;
+        }
+        .image-container img {
+            object-fit: contain;
+
+            width: 100%;
+        }
+    </style>
+@stop
 
 @section('js_scripts')
     <script>
