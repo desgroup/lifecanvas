@@ -419,7 +419,7 @@ class ByteController extends Controller
                 $query->where('country_code', $code);
             })
             ->latest('byte_date')
-            ->paginate(40);
+            ->paginate(50);
 
         $byteCount = Auth::user()->bytes()
             ->whereHas('place', function ($query) use ($code) {

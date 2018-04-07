@@ -19,6 +19,11 @@ Route::get('/info', function () {
 Route::get('/develop', function () {
     return view('develop', ['lat' => 43.438338, 'lng' => -79.686901]);
 });
+
+Route::get('/develop2', function () {
+    return view('develop2', ['lat' => 43.438338, 'lng' => -79.686901]);
+});
+
 Route::get('/find', 'SearchController@find');
 
 // Authentication Routes...

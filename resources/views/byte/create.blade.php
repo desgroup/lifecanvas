@@ -34,7 +34,6 @@
                                 document.getElementById('day').value = myDate.getDate();
                                 document.getElementById('hour').value = myDate.getHours();
                                 document.getElementById('minute').value = myDate.getMinutes();
-                                document.getElementById('second').value = myDate.getSeconds();
                             </script>
 
                             <div class="row form-group">

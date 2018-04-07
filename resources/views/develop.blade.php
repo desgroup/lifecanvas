@@ -2,78 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Uploader</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Laravel and Typeahead Tutorial</title>
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/uploader/css/pe-icon-7-stroke.css">
+    <link rel="stylesheet" href="/assets/uploader/css/drop_uploader.css">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <!--script src="js/jquery-2.2.4.min.js"></script-->
+    <script src="/assets/uploader/js/jquery-3.2.1.js"></script>
+    <script src="/assets/uploader/js/drop_uploader.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('input[type=file]').drop_uploader({
+                uploader_text: '',
+                browse_text: 'Browse',
+                only_one_error_text: 'Only one file allowed',
+                not_allowed_error_text: 'File type is not allowed',
+                big_file_before_error_text: 'Files, bigger than',
+                big_file_after_error_text: 'is not allowed',
+                allowed_before_error_text: 'Only',
+                allowed_after_error_text: 'files allowed',
+                browse_css_class: 'button button-primary',
+                browse_css_selector: 'file_browse',
+                uploader_icon: '<i class="pe-7s-cloud-upload"></i>',
+                file_icon: '<i class="pe-7s-file"></i>',
+                time_show_errors: 5,
+                layout: 'thumbnails',
+                method: 'normal',
+                url: 'ajax_upload.php',
+                delete_url: 'ajax_delete.php',
+            });
+        });
+    </script>
+
 </head>
-<body>
-<h1>Laravel and Typeahead Tutorial</h1>
-<hr>
-<form class="typeahead" role="search" action="/search/bytes" method="post">
-    <div class="form-group">
-        <input type="search" name="q" class="form-control search-input" placeholder="Search" autocomplete="off">
-        <button class="button btn-primary">Go</button>
-    </div>
-</form>
-<?php
-$string = "Hillard O'Hara";
-echo htmlentities ($string);
-?>
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins  and Typeahead) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<!-- Bootstrap JS -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<!-- Typeahead.js Bundle -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
-<!-- Typeahead Initialization -->
-<script>
-    jQuery(document).ready(function($) {
-        // Set the Options for "Bloodhound" suggestion engine
-        var engine = new Bloodhound({
-            remote: {
-                url: '/find?q=%QUERY%',
-                wildcard: '%QUERY%'
-            },
-            datumTokenizer: Bloodhound.tokenizers.whitespace('q'),
-            queryTokenizer: Bloodhound.tokenizers.whitespace
-        });
+<body style="background: #fff;">
+<div class="container">
+    <form method="POST" action="upload.php" enctype="multipart/form-data">
+        <div class="row">
+            <div class="twelve column" style="margin-top: 5%">
+                <h4>Single File Upload Form</h4>
 
-        $(".search-input").typeahead({
-            hint: true,
-            highlight: true,
-            minLength: 1
-        }, {
-            source: engine.ttAdapter(),
+                <input type="file" name="file" accept="image/*" data-maxfilesize="10000000">
+                <input class="button-primary" type="submit" value="Submit">
 
-            // This will be appended to "tt-dataset-" to form the class name of the suggestion menu.
-            name: 'usersList',
-
-            display: 'title',
-
-            // the key from the array we want to display (name,id,email,etc...)
-            templates: {
-                empty: [
-                    '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
-                ],
-                header: [
-                    '<div class="list-group search-results-dropdown">'
-                ],
-                suggestion: function (data) {
-                    return '<a href="/bytes/' + data.id + '" class="list-group-item">' + data.title + '</a>'
-                }
-            }
-        });
-    });
-</script>
+            </div>
+        </div>
+    </form>
+</div>
 </body>
 </html>
