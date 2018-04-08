@@ -209,11 +209,15 @@ class ByteController extends Controller
         $timezones = Timezone::orderBy('timezone_name')->pluck('timezone_name', 'id')->toArray();
         $home_country = Country::where('id', Auth::user()->home_country_code)->pluck('country_name_en', 'id')->toArray();
 
-        //dd($places);
+        if ($this->urlExists('https://maps.googleapis.com')) {
+            $timezoneInfo = json_decode(
+                file_get_contents(
+                    "https://maps.googleapis.com/maps/api/timezone/json?location=$byte->lat,$byte->lng&timestamp=1458000000&key=AIzaSyAAegLHNSxBaOM-V_4tM1Uuq_S8Atr2t1c")
+                , true);
+            $timezone = Timezone::where('timezone_name', '=', $timezoneInfo['timeZoneId'])->first();
+        }
 
-        //$placeId = $place->id ?? NULL;
-
-        return view('byte.selectPlace', compact('byte', 'places', 'timezones', 'countries', 'home_country'));
+        return view('byte.selectPlace', compact('byte', 'places', 'timezones', 'countries', 'home_country', 'timezone'));
     }
 
     public function addPlace(Byte $byte, Request $request)
@@ -605,4 +609,15 @@ class ByteController extends Controller
             return view('deny_access', compact('message', 'heading'));
         }
     }
+
+    private function urlExists($url)
+    {
+        if (@file_get_contents($url, 0, NULL, 0, 1)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 }
