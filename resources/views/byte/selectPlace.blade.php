@@ -7,7 +7,7 @@
             </div>
             <div class="col-md-8">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><h3 class="panel-title">Add a Place</h3></div>
+                    <div class="panel-heading"><h3 class="panel-title">Select a Place for {{ $byte->title }}</h3></div>
                     <div class="panel-body">
                         @if(count($errors))
                             <ul class="alert alert-danger">
@@ -16,8 +16,54 @@
                                 @endforeach
                             </ul>
                         @endif
-                        <form method="POST" action="/places">
+                        <form method="POST" action="/bytes/addPlace/{{ $byte->id }}">
                             {{ csrf_field() }}
+                            <input type="hidden" name="type" value="select">
+                            <div class="col-md-8">
+                                <label class="place_selected_code" for="place_selected_code">Related Place</label>
+                                <select class="form-control selectpicker" name="place_selected_code" id="place_selected_code">
+                                    <option value="00" {{ !old('place_selected_code') ? 'selected' : '' }}>No place selected</option>
+                                    @foreach($places as $place)
+                                        <option value="{{ $place->id }}" {{ (collect(old('place_selected_code'))->contains($place->id)) ? 'selected' : '' }}>{{ $place->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class='form-group'>
+                                <button type="submit" class="btn btn-raised btn-primary">Select a Place</button>
+                                <a class="btn btn-default" href="/bytes/{{ $byte->id }}">Skip</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 mt-1 mb-1" style="text-align: center">
+                <span class="ms-icon ms-icon-circle">
+                    OR
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">Add a Place to {{ $byte->title }}</h3></div>
+                    <div class="panel-body">
+                        @if(count($errors))
+                            <ul class="alert alert-danger">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                        <form method="POST" action="/bytes/addPlace/{{ $byte->id }}">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="type" value="add">
                             <input type="hidden" name="usertimezone" id="usertimezone" value="">
                             <script>
                                 timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -25,14 +71,14 @@
                             </script>
                             <div class="form-group">
                                 <div class="col-md-12">
-                                <label class="control-label" for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" placeholder="Place name" required autofocus>
+                                    <label class="control-label" for="name">Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" placeholder="Place name" required autofocus>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-12">
-                                <label class="control-label" for="address">Address</label>
-                                <input type="text" class="form-control" id="address" name="address" value="{{ old('address') }}" placeholder="Street address for place">
+                                    <label class="control-label" for="address">Address</label>
+                                    <input type="text" class="form-control" id="address" name="address" value="{{ old('address') }}" placeholder="Street address for place">
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -70,11 +116,11 @@
                             <div class="row form-group">
                                 <div class="col-md-4">
                                     <label class="control-label" for="lat">Latitude</label>
-                                    <input type="text" class="form-control" name="lat" id="lat" value="{{ old('lat') }}" placeholder="In this form: 43.002178">
+                                    <input type="text" class="form-control" name="lat" id="lat" value="{{ old('lat', $byte->lat) }}" placeholder="In this form: 43.002178">
                                 </div>
                                 <div class="col-md-4">
                                     <label class="control-label" for="lng">Longitude</label>
-                                    <input type="text" class="form-control" name="lng" id="lng" value="{{ old('lng') }}" placeholder="In this form: -71.002178">
+                                    <input type="text" class="form-control" name="lng" id="lng" value="{{ old('lng', $byte->lng) }}" placeholder="In this form: -71.002178">
                                 </div>
                                 <div class="col-md-4">
                                     <label class="control-label" for="map_zoom">Map Zoom Level</label>
@@ -138,7 +184,7 @@
 
                             <div class='form-group'>
                                 <button type="submit" class="btn btn-raised btn-primary">Add Place</button>
-                                <a class="btn btn-default" href="{{ URL::previous() }}">Cancel</a>
+                                <a class="btn btn-default" href="/bytes/{{ $byte->id }}">Skip</a>
                             </div>
                         </form>
                     </div>

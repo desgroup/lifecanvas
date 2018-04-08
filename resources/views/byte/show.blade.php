@@ -5,9 +5,9 @@
         <div class="row">
             @if( !is_null($byte->asset))
             <div class="col-md-4">
-                <a href="{{ $byte->medium() }}" class="img-thumbnail" data-lightbox="image-1" data-title="{{ $byte->title }}">
+                <a href="{{ $byte->medium($parent_byte->user_id ?? $byte->user_id) }}" class="img-thumbnail" data-lightbox="image-1" data-title="{{ $byte->title }}">
                     <div class="thumbnail-container">
-                        <img src="{{ $byte->medium() }}" class="img-fluid">
+                        <img src="{{ $byte->medium($parent_byte->user_id ?? $byte->user_id) }}" class="img-fluid">
                     </div>
                 </a>
             @else

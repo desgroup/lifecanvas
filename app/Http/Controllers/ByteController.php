@@ -28,7 +28,7 @@ class ByteController extends Controller
         $bytes = Auth::user()->myBytes()->latest('byte_date')->paginate(10);
         $byteCount = Auth::user()->myBytes()->count();
 
-        return view('byte.index',compact('bytes', 'byteCount'));
+        return view('byte.index', compact('bytes', 'byteCount'));
     }
 
     /**
@@ -45,11 +45,10 @@ class ByteController extends Controller
         return view('byte.create', compact('places', 'people', 'timezones'));
     }
 
-
     /**
      * Store a newly created byte in the storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -73,40 +72,41 @@ class ByteController extends Controller
 
         if ($request->place_id <> "00") {
             $placeId = $request->place_id;
-        } else {
-            if (!is_null($lat) && !is_null($lng)) {
-                $distance = 2;
-                $count = 0;
-
-                $user = Auth::user();
-                $users = array();
-                $friends = $user->getAllFriendships();
-                foreach ($friends as $friend) {
-                    if ($friend->sender->id == $user->id) {
-                        $users[$count] = $friend->recipient->id;
-                    } else {
-                        $users[$count] = $friend->sender->id;
-                    }
-                    $count++;
-                }
-
-                $place = DB::table('places')
-                    ->selectRaw("places.*, ACOS(COS(RADIANS(lat)) * COS(RADIANS(lng)) * COS(RADIANS($lat)) * COS(RADIANS($lng)) + COS(RADIANS(lat)) * SIN(RADIANS(lng)) * COS(RADIANS($lat)) * SIN(RADIANS($lng)) + SIN(RADIANS(lat)) * SIN(RADIANS($lat))) * 3963.1 AS Distance")
-                    ->where('user_id', '=', auth()->id())
-                    ->orWhere('privacy', '=', 2)
-                    ->orWhere(function($q) use ($users) {
-                        $q->where('privacy','>', 0);
-                        $q->whereIn('user_id', $users);
-                    })
-                    ->havingRaw("Distance <= $distance")
-                    ->orderBy('Distance')
-                    ->first(); // use toSql() to see the sql output
-
-                //dd($place);
-
-                $placeId = $place->id ?? NULL;
-            }
         }
+//        } else {
+//            if (!is_null($lat) && !is_null($lng)) {
+//                $distance = 2;
+//                $count = 0;
+//
+//                $user = Auth::user();
+//                $users = array();
+//                $friends = $user->getAllFriendships();
+//                foreach ($friends as $friend) {
+//                    if ($friend->sender->id == $user->id) {
+//                        $users[$count] = $friend->recipient->id;
+//                    } else {
+//                        $users[$count] = $friend->sender->id;
+//                    }
+//                    $count++;
+//                }
+//
+//                $place = DB::table('places')
+//                    ->selectRaw("places.*, ACOS(COS(RADIANS(lat)) * COS(RADIANS(lng)) * COS(RADIANS($lat)) * COS(RADIANS($lng)) + COS(RADIANS(lat)) * SIN(RADIANS(lng)) * COS(RADIANS($lat)) * SIN(RADIANS($lng)) + SIN(RADIANS(lat)) * SIN(RADIANS($lat))) * 3963.1 AS Distance")
+//                    ->where('user_id', '=', auth()->id())
+//                    ->orWhere('privacy', '=', 2)
+//                    ->orWhere(function($q) use ($users) {
+//                        $q->where('privacy','>', 0);
+//                        $q->whereIn('user_id', $users);
+//                    })
+//                    ->havingRaw("Distance <= $distance")
+//                    ->orderBy('Distance')
+//                    ->first(); // use toSql() to see the sql output
+//
+//                //dd($place);
+//
+//                $placeId = $place->id ?? NULL;
+//            }
+//        }
 
         // set timezone
         // set to NULL by default
@@ -114,11 +114,11 @@ class ByteController extends Controller
 
         if (isset($image_data['timezone_id']) && !is_null($image_data['timezone_id'])) {
             $timeZone_id = $image_data['timezone_id'];
-        } elseif (!is_null($request->place_id) && $request->place_id <> '00') {
-            $timeZone = Place::where('id', '=', $request->place_id)->first()->timezone;
-            if(!is_null($timeZone)) {
-                $timeZone_id = $timeZone->id;
-            }
+//        } elseif (!is_null($request->place_id) && $request->place_id <> '00') {
+//            $timeZone = Place::where('id', '=', $request->place_id)->first()->timezone;
+//            if(!is_null($timeZone)) {
+//                $timeZone_id = $timeZone->id;
+//            }
         } else {
             if (!is_null($request->usertimezone)) {
                 $timeZone_id = Timezone::where('timezone_name', '=', $request->usertimezone)->first(['id'])->id;
@@ -135,7 +135,7 @@ class ByteController extends Controller
         $timeZone_id = $timeZone_id ?? request('timezone_id') ?? NULL; // check if data is coming from a grab
 
         // Set date time
-        if(is_null($timeZone_id)) {
+        if (is_null($timeZone_id)) {
             $datetime = NULL;
             $byte_date['accuracy'] = '000000';
         } else {
@@ -163,18 +163,124 @@ class ByteController extends Controller
         $byte->lines()->attach($request->lines);
         $byte->people()->attach($request->people);
 
-        if($request->goal_id > 0) {
+        if ($request->goal_id > 0) {
             $byte->goals()->attach($request->goal_id);
         }
 
-        return redirect($byte->path())
-            ->with('flash', 'Your byte has been added');
+        if ($request->place_id == "00" && !is_null($lat) && !is_null($lng)) {
+            return redirect('/bytes/selectPlace/' . $byte->id)
+                ->with('flash', 'Your byte has been added');
+        } else {
+            return redirect($byte->path())
+                ->with('flash', 'Your byte has been added');
+        }
+    }
+
+    public function selectPlace(Byte $byte)
+    {
+        $distance = .250;
+        $count = 0;
+
+        $user = Auth::user();
+        $users = array();
+        $friends = $user->getAllFriendships();
+        foreach ($friends as $friend) {
+            if ($friend->sender->id == $user->id) {
+                $users[$count] = $friend->recipient->id;
+            } else {
+                $users[$count] = $friend->sender->id;
+            }
+            $count++;
+        }
+
+        $places = DB::table('places')
+            ->selectRaw("places.*, ACOS(COS(RADIANS(lat)) * COS(RADIANS(lng)) * COS(RADIANS($byte->lat)) * COS(RADIANS($byte->lng)) + COS(RADIANS(lat)) * SIN(RADIANS(lng)) * COS(RADIANS($byte->lat)) * SIN(RADIANS($byte->lng)) + SIN(RADIANS(lat)) * SIN(RADIANS($byte->lat))) * 3963.1 AS Distance")
+            ->where('user_id', '=', auth()->id())
+            ->orWhere('privacy', '=', 2)
+            ->orWhere(function ($q) use ($users) {
+                $q->where('privacy', '>', 0);
+                $q->whereIn('user_id', $users);
+            })
+            ->havingRaw("Distance <= $distance")
+            ->orderBy('Distance')
+            ->get(); // use toSql() to see the sql output
+
+        $countries = Country::orderBy('country_name_en')->pluck('country_name_en', 'id')->toArray();
+        $timezones = Timezone::orderBy('timezone_name')->pluck('timezone_name', 'id')->toArray();
+        $home_country = Country::where('id', Auth::user()->home_country_code)->pluck('country_name_en', 'id')->toArray();
+
+        //dd($places);
+
+        //$placeId = $place->id ?? NULL;
+
+        return view('byte.selectPlace', compact('byte', 'places', 'timezones', 'countries', 'home_country'));
+    }
+
+    public function addPlace(Byte $byte, Request $request)
+    {
+        if ($request->type == "select" && $request->place_selected_code <> "00") {
+
+            $byte->update([
+                'place_id' => $request->place_selected_code ?? NULL,
+            ]);
+
+            return redirect($byte->path())
+                ->with('flash', 'A place has been added to your byte');
+
+        } elseif ($request->type == "add") {
+
+            $this->validate($request, [
+                'name' => 'required'
+            ]);
+
+            //$request['user_id'] = auth()->id();
+
+            $input = array_add($request->all(), 'user_id', Auth::id());
+
+            // TODO-KGW Check if you need this one, I may be handling null values below.
+            foreach ($input as $key => $value) {
+                $input[$key] = $input[$key] == "" ? null : $input[$key];
+            }
+
+            $place = Place::create([
+                'user_id' => auth()->id(),
+                'name' => $input['name'],
+                'address' => $input['address'],
+                'city' => $input['city'],
+                'province' => $input['province'],
+                'country_code' => $input['country_code'] == "00" ? null : $input['country_code'],
+                'url_place' => $input['url_place'],
+                'url_wikipedia' => $input['url_wikipedia'],
+                'lat' => $input['lat'],
+                'lng' => $input['lng'],
+                'map_zoom' => $input['map_zoom'],
+                'image_id' => $input['image_id'],
+                'timezone_id' => $input['timezone_id'] == "00" ? null : $input['timezone_id'],
+                'extant' => (integer)$input['extant'],
+                'privacy' => (integer)$input['privacy'],
+                'user_id' => $input['user_id']
+            ]);
+
+            $byte->update([
+                'place_id' => $place->id ?? NULL,
+            ]);
+
+            return redirect($byte->path())
+                ->with('flash', 'A place has been created and added to your byte');
+
+        } else {
+
+            return redirect($byte->path())
+                ->with('flash', 'No place was added');
+
+        }
+        return $request;
     }
 
     /**
      * Display a specific byte.
      *
-     * @param  \App\Byte  $byte
+     * @param  \App\Byte $byte
      * @return \Illuminate\Http\Response
      */
     public function show(Byte $byte)
@@ -183,18 +289,22 @@ class ByteController extends Controller
         //dd($byte->timezone->timezone_name);
         $lines = $byte->lines()->get();
         $people = $byte->people()->get();
-        if (!is_null($byte->byte_date) && !is_null($byte->timezone))
-        $displayDate = DateTimeUtilities::formatFullDate(Carbon::createFromFormat('Y-m-d H:i:s',$byte->byte_date)->setTimeZone($byte->timezone->timezone_name), $byte->accuracy);
+        if (!is_null($byte->byte_date) && !is_null($byte->timezone)) {
+            $displayDate = DateTimeUtilities::formatFullDate(Carbon::createFromFormat('Y-m-d H:i:s', $byte->byte_date)->setTimeZone($byte->timezone->timezone_name), $byte->accuracy);
+        }
         //dd($byte->place_id);
         $place = Place::where('id', '=', $byte->place_id)->first();
-        //dd($place);
-        return view('byte.show',compact('byte', 'displayDate', 'lines', 'people', 'place'));
+        if ($byte->parent_byte_id > 0) {
+            $parent_byte = Byte::where('id', $byte->parent_byte_id)->first();
+        }
+        //dd($parent_byte);
+        return view('byte.show', compact('byte', 'displayDate', 'lines', 'people', 'place', 'parent_byte'));
     }
 
     /**
      * Show the form for editing a byte.
      *
-     * @param  \App\Byte  $byte
+     * @param  \App\Byte $byte
      * @return \Illuminate\Http\Response
      */
     public function edit(Byte $byte)
@@ -207,7 +317,7 @@ class ByteController extends Controller
         // Get the date information
         $fuzzy_date = new FuzzyDate();
 
-        if($byte->accuracy == "0000000" || is_null($byte->byte_date)) {
+        if ($byte->accuracy == "0000000" || is_null($byte->byte_date)) {
 
             $formDate = $fuzzy_date->makeFormValues(null, "0000000");
 
@@ -225,8 +335,7 @@ class ByteController extends Controller
 
         $peopleDataArray = [];
 
-        foreach ($peopleData as $person)
-        {
+        foreach ($peopleData as $person) {
             $peopleDataArray[$person->id] = $person->name;
         }
 
@@ -234,8 +343,7 @@ class ByteController extends Controller
 
         $linesDataArray = [];
 
-        foreach ($linesData as $line)
-        {
+        foreach ($linesData as $line) {
             $linesDataArray[$line->id] = $line->name;
         }
 
@@ -245,8 +353,8 @@ class ByteController extends Controller
     /**
      * Update the specified byte in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Byte  $byte
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Byte $byte
      * @return Byte
      */
     public function update(Request $request, Byte $byte)
@@ -322,15 +430,15 @@ class ByteController extends Controller
 
         //dd('Hello World');
 
-       /* if (!isset($timeZone)) {
-            if (!is_null($request->timezone_id) && $request->timezone_id <> "00") {
-                $timeZone = Timezone::where('id', '=', $request->timezone_id)->first();
-            } elseif (!is_null($request->usertimezone)) {
-                $timeZone = Timezone::where('timezone_name', '=', $request->usertimezone)->first();
-            } else {
-                $timeZone = Timezone::where('id', '=', 90)->first();
-            }
-        }*/
+        /* if (!isset($timeZone)) {
+             if (!is_null($request->timezone_id) && $request->timezone_id <> "00") {
+                 $timeZone = Timezone::where('id', '=', $request->timezone_id)->first();
+             } elseif (!is_null($request->usertimezone)) {
+                 $timeZone = Timezone::where('timezone_name', '=', $request->usertimezone)->first();
+             } else {
+                 $timeZone = Timezone::where('id', '=', 90)->first();
+             }
+         }*/
 
         $byte->update([
             'title' => request('title'),
@@ -350,7 +458,7 @@ class ByteController extends Controller
 
         $byte->lines()->sync($request->lines);
         $byte->people()->sync($request->people);
-        
+
         return redirect($byte->path())
             ->with('flash', 'Your byte has been updated');
     }
@@ -358,7 +466,7 @@ class ByteController extends Controller
     /**
      * Remove the specified byte from storage.
      *
-     * @param  \App\Byte  $byte
+     * @param  \App\Byte $byte
      * @return \Illuminate\Http\Response
      */
     public function destroy(Byte $byte)
@@ -376,8 +484,7 @@ class ByteController extends Controller
         //$byte->comments()->delete();
         $byte->delete();
 
-        if(request()->wantsJson())
-        {
+        if (request()->wantsJson()) {
             return response([], 204);
         }
 
@@ -404,7 +511,7 @@ class ByteController extends Controller
         return view('byte.country', compact('bytes', 'byteCount', 'code', 'country'));
     }
 
-    public function images ()
+    public function images()
     {
         $bytes = Auth::user()->myByteImages()->latest('byte_date')->paginate(50);
         $byteCount = Auth::user()->myByteImages()->count();
@@ -412,7 +519,7 @@ class ByteController extends Controller
         return view('byte.images', compact('bytes', 'byteCount'));
     }
 
-    public function imagesCountry ($code)
+    public function imagesCountry($code)
     {
         $bytes = Auth::user()->bytes()
             ->whereHas('place', function ($query) use ($code) {
@@ -431,48 +538,71 @@ class ByteController extends Controller
         return view('byte.imagesCountry', compact('bytes', 'byteCount', 'code', 'country'));
     }
 
-    public function grab (Byte $byte, Request $request)
+    public function grab(Byte $byte, Request $request)
     {
-        // Gather that the menu items
-        $places = Place::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
-        $people = Person::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
-        $timezones = Timezone::orderBy('timezone_name')->pluck('timezone_name', 'id')->toArray();
+        $count = 0;
+        $user = Auth::user();
+        $users = array();
+        $friends = $user->getAllFriendships();
+        foreach ($friends as $friend) {
+            if ($friend->sender->id == $user->id) {
+                $users[$count] = $friend->recipient->id;
+            } else {
+                $users[$count] = $friend->sender->id;
+            }
+            $count++;
+        }
 
-        // Get the date information
-        $fuzzy_date = new FuzzyDate();
+        $friend_test = in_array($byte->user_id, $users);
 
-        if($byte->accuracy == "0000000" || is_null($byte->byte_date)) {
+        if ($byte->privacy == 2 || ($byte->privacy == 1 && $friend_test)) {
 
-            $formDate = $fuzzy_date->makeFormValues(null, "0000000");
+            // Gather that the menu items
+            $places = Place::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
+            $people = Person::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
+            $timezones = Timezone::orderBy('timezone_name')->pluck('timezone_name', 'id')->toArray();
+
+            // Get the date information
+            $fuzzy_date = new FuzzyDate();
+
+            if ($byte->accuracy == "0000000" || is_null($byte->byte_date)) {
+
+                $formDate = $fuzzy_date->makeFormValues(null, "0000000");
+
+            } else {
+
+                $timeZone = Timezone::where('id', '=', $byte->timezone_id)->first();
+
+                $timestamp = Carbon::createFromFormat('Y-m-d H:i:s',
+                    $byte->byte_date, 'UTC');
+
+                $formDate = $fuzzy_date->makeFormValues($timestamp->setTimezone($timeZone->timezone_name), $byte->accuracy);
+            }
+
+            $peopleData = $byte->people()->select('id', 'name')->get();
+
+            $peopleDataArray = [];
+
+            foreach ($peopleData as $person) {
+                $peopleDataArray[$person->id] = $person->name;
+            }
+
+            $linesData = $byte->lines()->select('id', 'name')->get();
+
+            $linesDataArray = [];
+
+            foreach ($linesData as $line) {
+                $linesDataArray[$line->id] = $line->name;
+            }
+
+            return view('byte.grab', compact('byte', 'places', 'people', 'timezones', 'formDate', 'peopleDataArray', 'linesDataArray'));
 
         } else {
 
-            $timeZone = Timezone::where('id', '=', $byte->timezone_id)->first();
+            $heading = "Access Warning";
+            $message = "You are trying to access a byte you do not have rights to access, shame on you.";
 
-            $timestamp = Carbon::createFromFormat('Y-m-d H:i:s',
-                $byte->byte_date, 'UTC');
-
-            $formDate = $fuzzy_date->makeFormValues($timestamp->setTimezone($timeZone->timezone_name), $byte->accuracy);
+            return view('deny_access', compact('message', 'heading'));
         }
-
-        $peopleData = $byte->people()->select('id', 'name')->get();
-
-        $peopleDataArray = [];
-
-        foreach ($peopleData as $person)
-        {
-            $peopleDataArray[$person->id] = $person->name;
-        }
-
-        $linesData = $byte->lines()->select('id', 'name')->get();
-
-        $linesDataArray = [];
-
-        foreach ($linesData as $line)
-        {
-            $linesDataArray[$line->id] = $line->name;
-        }
-
-        return view('byte.grab', compact('byte', 'places', 'people', 'timezones', 'formDate', 'peopleDataArray', 'linesDataArray'));
     }
 }
