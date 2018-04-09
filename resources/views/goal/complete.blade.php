@@ -163,7 +163,7 @@
                                     <select class="form-control selectpicker" name="place_id" id="place_id">
                                         <option value="00" {{ !old('place_id') ? 'selected' : '' }}>Select a place</option>
                                         @foreach($places as $key => $value)
-                                            <option value="{{ $key }}" {{ (collect(old('place_id'))->contains($key)) ? 'selected' : '' }}>{{ $value }}</option>
+                                            <option value="{{ $key }}" {{ (collect(old('place_id', $goal->place_id))->contains($key)) ? 'selected' : '' }}>{{ $value }}</option>
                                         @endforeach
                                     </select>
                                 </div>
