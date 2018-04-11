@@ -94,8 +94,10 @@
                                 </div>
                             </div>
                             <div class="row form-group">
-                            <button type="submit" class="btn btn-primary btn-raised" data-toggle="tooltip" data-placement="top" title="Add a goal"> Update Goal </button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary btn-raised" data-toggle="tooltip" data-placement="top" title="Add a goal"> Update Goal </button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
                             </div>
                         </form>
                     </div>

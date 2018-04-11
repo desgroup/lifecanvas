@@ -14,7 +14,7 @@
                 </div>
                 @include('goal.item')
 
-                @forelse($bytes as $byte)
+                @foreach($bytes as $byte)
 
                     <div class="row">
                         <div class="col-md-12">
@@ -60,9 +60,8 @@
                         </div>
                     </div>
 
-                @empty
-                        <h3><a href="/goals/complete/{{ $goal->id }}">Add a byte to complete this goal</a></h3>
-                @endforelse
+                @endforeach
+                <h4><a href="/goals/complete/{{ $goal->id }}">Add a byte to complete this goal</a></h4>
             </div>
         </div>
     </div>

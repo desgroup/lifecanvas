@@ -58,7 +58,16 @@
                                         @endforeach
                                     </select>
                                 </div>
-
+                                <div class="col-md-4">
+                                    <label class="control-label" for="lists">Lists</label>
+                                    <select multiple="multiple" class="form-control selectpicker" name="lists[]" id="lists">
+                                        @foreach($lists as $key => $value)
+                                            <option value="{{ $key }}" {{ (collect(old('lists'))->contains($key)) ? 'selected' : '' }}>{{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row form-group">
                                 <div class="col-md-4">
                                     <label class="control-label" for="privacy">Privacy</label>
                                     <div class="radio radio-primary">
@@ -81,8 +90,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-raised" data-toggle="tooltip" data-placement="top" title="Add a goal"> Add Goal </button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary btn-raised" data-toggle="tooltip" data-placement="top" title="Add a goal"> Add Goal </button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

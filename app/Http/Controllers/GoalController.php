@@ -36,8 +36,9 @@ class GoalController extends Controller
     {
         $places = Place::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
         $people = Person::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
+        $lists = Lifelist::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
 
-        return view('goal.create', compact('places', 'people'));
+        return view('goal.create', compact('places', 'people', 'lists'));
     }
 
     /**
@@ -64,9 +65,9 @@ class GoalController extends Controller
         $goal = Goal::create([
             'user_id' => auth()->id(),
             'name' => request('name'),
-            'privacy' => request('privacy'),
-            'place_id' => request('place_id'),
-            'person_id' => request('person_id'),
+            'privacy' => request('privacy') ?? NULL,
+            'place_id' => request('place_id') ?? NULL,
+            'person_id' => request('person_id') ?? NULL,
             'asset_id' => $image_data['id'] ?? NULL
         ]);
 
@@ -144,9 +145,9 @@ class GoalController extends Controller
         $goal->update([
             'user_id' => auth()->id(),
             'name' => request('name'),
-            'privacy' => request('privacy'),
-            'place_id' => request('place_id'),
-            'person_id' => request('person_id'),
+            'privacy' => request('privacy') ?? NULL,
+            'place_id' => request('place_id') ?? NULL,
+            'person_id' => request('person_id') ?? NULL,
             'asset_id' => $image_data->id ?? $goal->asset_id ?? NULL
         ]);
 
