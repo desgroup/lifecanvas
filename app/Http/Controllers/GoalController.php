@@ -76,6 +76,7 @@ class GoalController extends Controller
             $goal->lists()->attach($request->lifelist_id);
             $page = '/lists/' . $request->lifelist_id;
         } else {
+            $goal->lists()->attach($request->lifelist_id);
             $page = '/goals';
         }
 
