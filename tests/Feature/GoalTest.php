@@ -83,4 +83,49 @@ class GoalTest extends TestCase
         $this->get('/goals/' . $goal->id . '/edit')
             ->assertSee($goalChanged['name']);
     }
+
+    /** @test */
+    function authenticated_users_can_complete_goals_by_joining_a_byte ()
+    {
+        $this->signIn();
+
+        $goal = create('App\Goal', ['user_id' => auth()->id(), 'name' => 'aabbccdd']);
+        $byte = create('App\Byte', ['user_id' => auth()->id()]);
+
+        $this->post('/goals/completed/' . $goal->id, ['byte_id' => $byte->id]);
+
+        $this->assertEquals(1, $goal->bytes()->count());
+    }
+
+    /** @test */
+    function authenticated_users_can_view_completed_goals_only ()
+    {
+        $this->signIn();
+
+        $goalCompleted = create('App\Goal', ['user_id' => auth()->id(), 'name' => 'aabbccdd']);
+        $byte = create('App\Byte', ['user_id' => auth()->id()]);
+        $this->post('/goals/completed/' . $goalCompleted->id, ['byte_id' => $byte->id]);
+
+        $goalUnCompleted = create('App\Goal', ['user_id' => auth()->id(), 'name' => 'eeffgghh']);
+
+        $this->get('/goals?filter=completed')
+            ->assertSee($goalCompleted->name)
+            ->assertDontSee($goalUnCompleted->name);
+    }
+
+    /** @test */
+    function authenticated_users_can_view_uncompleted_goals_only ()
+    {
+        $this->signIn();
+
+        $goalCompleted = create('App\Goal', ['user_id' => auth()->id(), 'name' => 'aabbccdd']);
+        $byte = create('App\Byte', ['user_id' => auth()->id()]);
+        $this->post('/goals/completed/' . $goalCompleted->id, ['byte_id' => $byte->id]);
+
+        $goalUnCompleted = create('App\Goal', ['user_id' => auth()->id(), 'name' => 'eeffgghh']);
+
+        $this->get('/goals?filter=uncompleted')
+            ->assertSee($goalUnCompleted->name)
+            ->assertDontSee($goalCompleted->name);
+    }
 }

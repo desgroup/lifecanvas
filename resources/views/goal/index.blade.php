@@ -12,10 +12,18 @@
                 <div class="hidden-sm hidden-xs">
                     <hr class="mt-1 mb-1">
                     <ul class="menu-box">
-                        <li class="menu-item">{{ $goalCount . " " . str_plural('lifegoal', $goalCount)}}</li>
+                        <li class="menu-item">
+                            @if(app('request')->input('filter') == "completed")
+                                {{ $goalCompletedCount }} completed
+                            @elseif (app('request')->input('filter') == "uncompleted")
+                                {{ $goalCount - $goalCompletedCount }} uncompleted
+                            @else
+                                {{ $goalCount . " " . str_plural('lifegoal', $goalCount)}} ({{ $goalCompletedCount }} completed)
+                            @endif
+                        </li>
                         <li class="menu-item"><a href="/goals"><i class="fa fa-check-circle"></i> All Goals</a></li>
-                        <li class="menu-item"><a href="#"><i class="fa fa-check-circle"></i> Completed Goals</a></li>
-                        <li class="menu-item"><a href="#"><i class="fa fa-check-circle-o"></i> Uncompleted Goals</a></li>
+                        <li class="menu-item"><a href="/goals?filter=completed"><i class="fa fa-check-circle"></i> Completed Goals</a></li>
+                        <li class="menu-item"><a href="/goals?filter=uncompleted"><i class="fa fa-check-circle-o"></i> Uncompleted Goals</a></li>
                         <li class="menu-item"><a href="/goals/create"><i class="zmdi zmdi-plus"></i> Add a Goal</a></li>
                         <li class="menu-item"></li>
                         <li class="menu-item"></li>
@@ -105,7 +113,7 @@
             };
 
             $('#items').infiniteScroll({
-                path: '/goals?page=@{{#}}',
+                path: "/goals?page=@{{#}}&filter={{ app('request')->input('filter') }}",
                 append: '.item',
                 history: false
             });

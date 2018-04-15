@@ -19,12 +19,21 @@ class GoalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $goals = Auth::user()->myGoals()->orderBy('name')->paginate(10);
-        $goalCount = Auth::user()->myGoals()->count();
+        //dd($request);
+        if ($request->filter == "completed") {
+            $goals = Auth::user()->myCompletedGoals()->paginate(10);
+        } elseif ($request->filter == "uncompleted") {
+            $goals = Auth::user()->myUnCompletedGoals()->paginate(10);
+        } else {
+            $goals = Auth::user()->myGoals()->orderBy('name')->paginate(10);
+        }
 
-        return view('goal.index', compact('goals', 'goalCount'));
+        $goalCount = Auth::user()->myGoals()->count();
+        $goalCompletedCount = Auth::user()->myCompletedGoals()->count();
+
+        return view('goal.index', compact('goals', 'goalCount', 'goalCompletedCount'));
     }
 
     /**

@@ -66,19 +66,31 @@ class LifelistController extends Controller
      * @param  \App\Lifelist  $lifelist
      * @return \Illuminate\Http\Response
      */
-    public function show(Lifelist $list)
+    public function show(Lifelist $list, Request $request)
     {
-        $goals = $list->goals()->orderBy('name')->paginate(10);
+
+        if ($request->filter == "completed") {
+            $goals = Auth::user()->myCompletedGoalsByLine($list->id)->paginate(10);
+        } elseif ($request->filter == "uncompleted") {
+            $goals = Auth::user()->myUnCompletedGoalsByLine($list->id)->paginate(10);
+        } else {
+            $goals = Auth::user()->myGoalsByLine($list->id)->paginate(10);
+        }
+
+
+        //$goals = $list->goals()->orderBy('name')->paginate(10);
+
         $places = Place::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
         $people = Person::where('user_id', '=', auth()->id())->orderBy('name')->pluck('name', 'id')->toArray();
 
-        $goalCount = $list->goals()->count();
-        $goalsCompletedCount = \DB::table('lifelists')
-            ->join('goal_lifelist','lifelists.id','=','goal_lifelist.lifelist_id')
-            ->join('goals','goal_lifelist.goal_id','=','goals.id')
-            ->join('byte_goal','goals.id','=','byte_goal.goal_id')
-            ->join('bytes','byte_goal.byte_id','=','bytes.id')
-            ->select('bytes.*')->where('lifelists.id','=',$list->id)->count();
+        $goalCount = Auth::user()->myGoalsByLine($list->id)->count();
+        $goalsCompletedCount = Auth::user()->myCompletedGoalsByLine($list->id)->count();
+//        $goalsCompletedCount = \DB::table('lifelists')
+//            ->join('goal_lifelist','lifelists.id','=','goal_lifelist.lifelist_id')
+//            ->join('goals','goal_lifelist.goal_id','=','goals.id')
+//            ->join('byte_goal','goals.id','=','byte_goal.goal_id')
+//            ->join('bytes','byte_goal.byte_id','=','bytes.id')
+//            ->select('bytes.*')->where('lifelists.id','=',$list->id)->count();
 
         return view('list.show', compact('goals', 'list', 'places', 'people', 'goalCount', 'goalsCompletedCount'));
     }

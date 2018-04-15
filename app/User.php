@@ -74,6 +74,44 @@ class User extends Authenticatable
         return $this->hasMany('App\Goal');
     }
 
+    public function myGoalsByLine($list) {
+        return $this->myGoals()
+            ->join('goal_lifelist','goals.id','=','goal_lifelist.goal_id')
+//            ->join('byte_goal','goals.id','=','byte_goal.goal_id')
+//            ->join('bytes','byte_goal.byte_id','=','bytes.id')
+            ->select('goals.*')
+            ->where('goal_lifelist.lifelist_id', '=', $list)
+            ->orderBy('name');
+    }
+
+    public function myCompletedGoals() {
+
+        return $this->myGoals()->has('bytes')->orderBy('name');
+    }
+
+    public function myCompletedGoalsByLine($list) {
+        return $this->myGoals()
+            ->has('bytes')
+            ->join('goal_lifelist','goals.id','=','goal_lifelist.goal_id')
+            ->select('goals.*')
+            ->where('goal_lifelist.lifelist_id', '=', $list)
+            ->orderBy('name');
+    }
+
+    public function myUnCompletedGoals() {
+
+        return $this->myGoals()->doesntHave('bytes')->orderBy('name');
+    }
+
+    public function myUnCompletedGoalsByLine($list) {
+        return $this->myGoals()
+            ->doesntHave('bytes')
+            ->join('goal_lifelist','goals.id','=','goal_lifelist.goal_id')
+            ->select('goals.*')
+            ->where('goal_lifelist.lifelist_id', '=', $list)
+            ->orderBy('name');
+    }
+
     public function bytes()
     {
         return $this->hasMany(Byte::class)->latest();

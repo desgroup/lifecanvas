@@ -14,8 +14,8 @@
                         <ul class="menu-box">
                             <li class="menu-item">{{ $goalCount . " " . str_plural('lifegoal', $goalCount)}} ({{ $goalsCompletedCount }} completed)</li>
                             <li class="menu-item"><a href="/lists/{{ $list->id }}"><i class="fa fa-check-circle"></i> All Goals</a></li>
-                            <li class="menu-item"><a href="#"><i class="fa fa-check-circle"></i> Completed Goals</a></li>
-                            <li class="menu-item"><a href="#"><i class="fa fa-check-circle-o"></i> Uncompleted Goals</a></li>
+                            <li class="menu-item"><a href="/lists/{{ $list->id }}?filter=completed"><i class="fa fa-check-circle"></i> Completed Goals</a></li>
+                            <li class="menu-item"><a href="/lists/{{ $list->id }}?filter=uncompleted"><i class="fa fa-check-circle-o"></i> Uncompleted Goals</a></li>
                             <li class="menu-item"><a href="javascript:void(0)" data-toggle="modal" data-target="#myModal7"><i class="zmdi zmdi-plus"></i> Add a Goal</a></li>
                             <li class="menu-item"></li>
                             <li class="menu-item"></li>
@@ -102,7 +102,7 @@
             };
 
             $('#items').infiniteScroll({
-                path: '/lists/{{ $list->id }}?page=@{{#}}',
+                path: "/lists/{{ $list->id }}?page=@{{#}}&filter={{ app('request')->input('filter') }}",
                 append: '.item',
                 history: false
             });
