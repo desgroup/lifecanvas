@@ -57,14 +57,19 @@
                                 data.addColumn('number', 'Value');
                                 data.addColumn({type:'string', role:'tooltip'});var ivalue = new Array();
 
+                                @forEach($countries as $country)
+                                    data.addRows([[{v:'{{ $country->id }}',f:'{{ $country->country_name_en }}'},0,'No Bytes']]);
+                                    ivalue['{{ $country->id }}'] = '/bytes/create?country={{ $country->id }}';
+                                @endforeach
+
                                 @forEach($my_countries as $country)
-                                    data.addRows([[{v:'{{ $country->code }}',f:'{{ $country->name }}'},0,'{{ $byteCountryCount[$country->code] . " " . str_plural('Byte', $byteCountryCount[$country->code]) }}']]);
+                                    data.addRows([[{v:'{{ $country->code }}',f:'{{ $country->name }}'},1,'{{ $byteCountryCount[$country->code] . " " . str_plural('Byte', $byteCountryCount[$country->code]) }}']]);
                                     ivalue['{{ $country->code }}'] = '{{ in_array($country->code, $provincesSupported) && $byteCountryCount[$country->code] > 2 ? "/map/$country->code" : "/bytes/country/$country->code" }}';
                                 @endforeach
 
                                 var options = {
                                     backgroundColor: {fill:'#FFFFFF',stroke:'#FFFFFF' ,strokeWidth:0 },
-                                    colorAxis:  {minValue: 0, maxValue: 0,  colors: ['#87CB12']},
+                                    colorAxis:  {minValue: 0, maxValue: 1,  colors: ['#EFF7CF','#87CB12']},
                                     legend: 'none',
                                     backgroundColor: {fill:'#FFFFFF',stroke:'#FFFFFF' ,strokeWidth:0 },
                                     datalessRegionColor: '#f5f5f5',

@@ -12,7 +12,11 @@ class MapController extends Controller
     public function index ()
     {
         $user_id = auth()->id();
-        //dd($user_id);
+
+        $countries = DB::select("
+                select *
+                from countries
+            ");
 
         $my_stats = DB::select("
             select count(distinct c.`continent_id`) as cont_count, count(distinct c.`id`) as contr_count
@@ -51,12 +55,20 @@ class MapController extends Controller
 
         $provincesSupported = Province::select('country_code')->groupby('country_code')->pluck('country_code')->toArray();
         //dd($provincesSupported);
-        return view('map.index', compact('my_countries', 'byteCount', 'byteCountryCount', 'my_stats', 'provincesSupported'));
+        return view('map.index', compact('countries', 'my_countries', 'byteCount', 'byteCountryCount', 'my_stats', 'provincesSupported'));
     }
 
     public function country ($country_code) {
 
         $user_id = auth()->id();
+
+        $provinces = DB::select("
+                select *
+                from provinces
+                where `country_code` = '$country_code'
+            ");
+
+        //dd($provinces);
 
         $my_provinces = DB::select("
             select pr.`province_name_en`, pr.`province_code`, pr.`country_code`
@@ -89,6 +101,21 @@ class MapController extends Controller
         $provinceCount = Province::where('country_code', $country_code)->count();
         $provinceVisitedCount = count($my_provinces);
 
-        return view('map.country', compact('country', 'country_code', 'byteCount', 'byteProvinceCount', 'provinceCount', 'provinceVisitedCount', 'my_provinces', 'byteCount'));
+        return view('map.country', compact('provinces', 'country', 'country_code', 'byteCount', 'byteProvinceCount', 'provinceCount', 'provinceVisitedCount', 'my_provinces', 'byteCount'));
+    }
+
+    public function province (Country $country, Province $province)
+    {
+        $user_id = auth()->id();
+
+        $bytes = DB::select("
+                    SELECT *
+                    from `bytes` as b RIGHT JOIN `places` as p
+                    on b.`place_id`  = p.`id` 
+                    where b.`user_id` = $user_id and p.`province` = '$province->province_code'");
+
+        //dd($bytes);
+
+        return view('develop', compact('bytes', 'province'));
     }
 }

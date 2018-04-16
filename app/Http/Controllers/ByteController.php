@@ -498,14 +498,14 @@ class ByteController extends Controller
     public function country($code)
     {
 
-        $bytes = Auth::user()->bytes()
+        $bytes = Auth::user()->myBytes()
             ->whereHas('place', function ($query) use ($code) {
                 $query->where('country_code', $code);
             })
             ->latest('byte_date')
             ->paginate(40);
 
-        $byteCount = Auth::user()->bytes()
+        $byteCount = Auth::user()->myBytes()
             ->whereHas('place', function ($query) use ($code) {
                 $query->where('country_code', $code);
             })->count();
@@ -525,14 +525,14 @@ class ByteController extends Controller
 
     public function imagesCountry($code)
     {
-        $bytes = Auth::user()->bytes()
+        $bytes = Auth::user()->myBytes()
             ->whereHas('place', function ($query) use ($code) {
                 $query->where('country_code', $code);
             })
             ->latest('byte_date')
             ->paginate(50);
 
-        $byteCount = Auth::user()->bytes()
+        $byteCount = Auth::user()->myBytes()
             ->whereHas('place', function ($query) use ($code) {
                 $query->where('country_code', $code);
             })->count();

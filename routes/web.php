@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/feed', 'PagesController@feed');
     Route::get('/map', 'MapController@index');
     Route::get('/map/{country}', 'MapController@country');
+    Route::get('/map/{country}/{province}', 'MapController@province');
     Route::get('/bytes/selectPlace/{byte}', 'ByteController@selectPlace');
     Route::post('/bytes/addPlace/{byte}', 'ByteController@addPlace');
     Route::post('/bytes/grab/{byte}', 'ByteController@grab');

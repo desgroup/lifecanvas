@@ -1,61 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>Uploader</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
-    <link rel="icon" type="image/png" href="images/favicon.png">
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/skeleton.css">
+    <title>Marker Clustering</title>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
 
-    <link rel="stylesheet" href="/assets/uploader/css/pe-icon-7-stroke.css">
-    <link rel="stylesheet" href="/assets/uploader/css/drop_uploader.css">
+    function initMap() {
 
-    <!--script src="js/jquery-2.2.4.min.js"></script-->
-    <script src="/assets/uploader/js/jquery-3.2.1.js"></script>
-    <script src="/assets/uploader/js/drop_uploader.js"></script>
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 5,
+            center: {lat:  49.404905, lng: -84.480707}
+        });
 
-    <script>
-        $(document).ready(function(){
-            $('input[type=file]').drop_uploader({
-                uploader_text: '',
-                browse_text: 'Browse',
-                only_one_error_text: 'Only one file allowed',
-                not_allowed_error_text: 'File type is not allowed',
-                big_file_before_error_text: 'Files, bigger than',
-                big_file_after_error_text: 'is not allowed',
-                allowed_before_error_text: 'Only',
-                allowed_after_error_text: 'files allowed',
-                browse_css_class: 'button button-primary',
-                browse_css_selector: 'file_browse',
-                uploader_icon: '<i class="pe-7s-cloud-upload"></i>',
-                file_icon: '<i class="pe-7s-file"></i>',
-                time_show_errors: 5,
-                layout: 'thumbnails',
-                method: 'normal',
-                url: 'ajax_upload.php',
-                delete_url: 'ajax_delete.php',
+        // Create an array of alphabetical characters used to label the markers.
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        var markers = locations.map(function(location, i) {
+            return new google.maps.Marker({
+                position: location,
+                label: labels[i % labels.length]
             });
         });
-    </script>
 
-</head>
-<body style="background: #fff;">
-<div class="container">
-    <form method="POST" action="upload.php" enctype="multipart/form-data">
-        <div class="row">
-            <div class="twelve column" style="margin-top: 5%">
-                <h4>Single File Upload Form</h4>
-
-                <input type="file" name="file" accept="image/*" data-maxfilesize="10000000">
-                <input class="button-primary" type="submit" value="Submit">
-
-            </div>
-        </div>
-    </form>
-</div>
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+    }
+    var locations = [
+        @foreach($bytes as $byte)
+            {lat: {{ $byte->lat }}, lng: {{ $byte->lng }} },
+        @endforeach
+    ]
+</script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAehCkA6njx1Gsp3Ot_7MSXTLuQJnbCpaU&callback=initMap">
+</script>
 </body>
 </html>

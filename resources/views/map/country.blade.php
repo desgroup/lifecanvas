@@ -57,14 +57,19 @@
                                 data.addColumn('number', 'Value');
                                 data.addColumn({type:'string', role:'tooltip'});var ivalue = new Array();
 
+                                @forEach($provinces as $province)
+                                    data.addRows([[{v:'{{ $province->country_code }}-{{ $province->province_code }}',f:'{{ $province->province_name_en }}'},0,'No Bytes']]);
+                                    ivalue['{{ $province->country_code }}-{{ $province->province_code }}'] = '/bytes/create?country={{ $province->country_code }}province={{ $province->province_code }}';
+                                @endforeach
+
                                 @forEach($my_provinces as $province)
-                                    data.addRows([[{v:'{{ $province->country_code }}-{{ $province->province_code }}',f:'{{ $province->province_name_en }}'},0,'{{ $byteProvinceCount[$province->province_code] . " " . str_plural('Byte', $byteProvinceCount[$province->province_code]) }}']]);
-                                    ivalue['{{ $province->country_code }}-{{ $province->province_code }}'] = '/bytes';
+                                    data.addRows([[{v:'{{ $province->country_code }}-{{ $province->province_code }}',f:'{{ $province->province_name_en }}'},1,'{{ $byteProvinceCount[$province->province_code] . " " . str_plural('Byte', $byteProvinceCount[$province->province_code]) }}']]);
+                                    ivalue['{{ $province->country_code }}-{{ $province->province_code }}'] = '/bytes/province/{{ $province->province_code }}';
                                 @endforeach
 
                                 var options = {
                                     backgroundColor: {fill:'#FFFFFF',stroke:'#FFFFFF' ,strokeWidth:0 },
-                                    colorAxis:  {minValue: 0, maxValue: 0,  colors: ['#87CB12']},
+                                    colorAxis:  {minValue: 0, maxValue: 1,  colors: ['#EFF7CF','#87CB12']},
                                     legend: 'none',
                                     backgroundColor: {fill:'#FFFFFF',stroke:'#FFFFFF' ,strokeWidth:0 },
                                     datalessRegionColor: '#f5f5f5',
@@ -79,6 +84,14 @@
                                     tooltip: {textStyle: {color: '#444444'}, trigger:'focus', isHtml: false}
                                 };
                                 var chart = new google.visualization.GeoChart(document.getElementById('visualization'));
+                                google.visualization.events.addListener(chart, 'select', function() {
+                                    var selection = chart.getSelection();
+                                    if (selection.length == 1) {
+                                        var selectedRow = selection[0].row;
+                                        var selectedRegion = data.getValue(selectedRow, 0);
+                                        if(ivalue[selectedRegion] != '') { document.location = ivalue[selectedRegion];  }
+                                    }
+                                });
                                 chart.draw(data, options);
                             }
                         </script>
