@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h2 class="">{{ $country->country_name_en}} lifebytes</h2>
+                <h2 class="">{{ $province->province_name_en}}, {{ $province->country_code}} lifebytes</h2>
             </div>
         </div>
         <div class="row">
@@ -13,9 +13,9 @@
                     <hr class="mt-1 mb-1">
                     <ul class="menu-box">
                         <li class="menu-item">{{ $byteCount }} lifebytes</li>
-                        <li class="menu-item"><a href="/bytes/country/{{ $country_code }}"><i class="zmdi zmdi-view-list"></i> Timeline</a></li>
-                        <li class="menu-item"><a href="/bytes/images/country/{{ $country_code }}"><i class="zmdi zmdi-camera"></i> Images</a></li>
-                        <li class="menu-item"><a href="/map/{{ $country_code }}"><i class="zmdi zmdi-pin"></i> Map</a></li>
+                        <li class="menu-item"><a href="/bytes/country/{{ $country_code }}/{{ $province->province_code }}"><i class="zmdi zmdi-view-list"></i> Timeline</a></li>
+                        <li class="menu-item"><a href="/bytes/images/country/{{ $country_code }}/{{ $province->province_code }}"><i class="zmdi zmdi-camera"></i> Images</a></li>
+                        <li class="menu-item"><a href="/map/{{ $country_code }}/{{ $province->province_code }}"><i class="zmdi zmdi-pin"></i> Map</a></li>
                         <li class="menu-item"></li>
                         <li class="menu-item"></li>
                         <li class="menu-item"></li>
@@ -33,65 +33,57 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="card">
-                    @if($provinceCount > 0)
                     <div class="card-block">
                         <div class="text-center">
-                            <h3>{{ $country->province_label_en }} Visited</h3>
-                            <div class="circle" id="circles-1"></div>
-                            <h1>{{ $provinceVisitedCount }}/{{ $provinceCount }}</h1>
+                            <h1 class="color-primary" style="font-size: 5em !important;">{{ $byteCount }}</h1>
+                            <h3>{{ str_plural('Byte', $byteCount) }}</h3>
                         </div>
                     </div>
-                    @endif
                 </div>
             </div>
             <div class="col-md-9">
                 <div class="card">
                     <div class="card-block">
                         <script type='text/javascript' src='https://www.google.com/jsapi'></script>
-                        <script type='text/javascript'>google.load('visualization', '1', {'packages': ['geochart']});
+                        <script type='text/javascript'>
+                            google.load('visualization', '1', {'packages': ['geochart']});
                             google.setOnLoadCallback(drawVisualization);
 
                             function drawVisualization() {var data = new google.visualization.DataTable();
 
+                                data.addColumn('number', 'Lat');
+                                data.addColumn('number', 'Lon');
                                 data.addColumn('string', 'Country');
                                 data.addColumn('number', 'Value');
                                 data.addColumn({type:'string', role:'tooltip'});var ivalue = new Array();
 
-                                @forEach($provinces as $province)
-                                    data.addRows([[{v:'{{ $province->country_code }}-{{ $province->province_code }}',f:'{{ $province->province_name_en }}'},0,'No Bytes']]);
-                                    ivalue['{{ $province->country_code }}-{{ $province->province_code }}'] = '/bytes/create?country={{ $province->country_code }}province={{ $province->province_code }}';
-                                @endforeach
-
-                                @forEach($my_provinces as $province)
-                                    data.addRows([[{v:'{{ $province->country_code }}-{{ $province->province_code }}',f:'{{ $province->province_name_en }}'},1,'{{ $byteProvinceCount[$province->province_code] . " " . str_plural('Byte', $byteProvinceCount[$province->province_code]) }}']]);
-                                    ivalue['{{ $province->country_code }}-{{ $province->province_code }}'] = '/map/{{ $province->country_code }}/{{ $province->province_code }}';
+                                @foreach ($clusterPoints as $point)
+                                    @if (array_key_exists('location', $point))
+                                        data.addRows([[{{ $point['location'][0] }},{{ $point['location'][1] }},'',0,'']]);
+                                        ivalue['{{ $point['location'][0] }}'] = '';
+                                    @else
+                                        data.addRows([[{{ $point['coordinate'][0] }},{{ $point['coordinate'][1] }},'',0,'']]);
+                                        ivalue['{{ $point['coordinate'][0] }}'] = '';
+                                    @endif
                                 @endforeach
 
                                 var options = {
                                     backgroundColor: {fill:'#FFFFFF',stroke:'#FFFFFF' ,strokeWidth:0 },
-                                    colorAxis:  {minValue: 0, maxValue: 1,  colors: ['#EFF7CF','#87CB12']},
+                                    colorAxis:  {minValue: 0, maxValue: 0,  colors: ['#87CB12']},
                                     legend: 'none',
                                     backgroundColor: {fill:'#FFFFFF',stroke:'#FFFFFF' ,strokeWidth:0 },
                                     datalessRegionColor: '#f5f5f5',
-                                    displayMode: 'regions',
+                                    displayMode: 'markers',
                                     enableRegionInteractivity: 'true',
                                     resolution: 'provinces',
                                     sizeAxis: {minValue: 1, maxValue:1,minSize:10,  maxSize: 10},
-                                    region:'{{ $country_code }}',
+                                    region:'{{ $country_code }}-{{ $province->province_code }}',
                                     keepAspectRatio: true,
-                                    width:600,
+                                    width:800,
                                     height:400,
-                                    tooltip: {textStyle: {color: '#444444'}, trigger:'focus', isHtml: false}
+                                    tooltip: {textStyle: {color: '#444444'}, trigger:'none', isHtml: false}
                                 };
                                 var chart = new google.visualization.GeoChart(document.getElementById('visualization'));
-                                google.visualization.events.addListener(chart, 'select', function() {
-                                    var selection = chart.getSelection();
-                                    if (selection.length == 1) {
-                                        var selectedRow = selection[0].row;
-                                        var selectedRegion = data.getValue(selectedRow, 0);
-                                        if(ivalue[selectedRegion] != '') { document.location = ivalue[selectedRegion];  }
-                                    }
-                                });
                                 chart.draw(data, options);
                             }
                         </script>
@@ -137,26 +129,4 @@
 @stop
 
 @section('js_scripts')
-    <script>
-        $( document ).ready(function() {
-            var myCircle = Circles.create({
-                id: 'circles-1',
-                radius: 60,
-                value: {{ round ($provinceVisitedCount / $provinceCount * 100 , 0) }},
-                maxValue: 100,
-                width: 8,
-                text: function(value) {
-                    return value + '%';
-                },
-                colors: ['#f1f1f1', '#000'],
-                duration: 600,
-                wrpClass: 'circles-wrp',
-                textClass: 'circles-text',
-                valueStrokeClass: 'circles-valueStroke circle-primary',
-                maxValueStrokeClass: 'circles-maxValueStroke',
-                styleWrapper: true,
-                styleText: true
-            });
-        });
-    </script>
 @endsection

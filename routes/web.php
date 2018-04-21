@@ -16,6 +16,8 @@ Route::get('/info', function () {
     return phpinfo();
 });
 
+Route::get('/cluster/{country}', 'MapController@cluster');
+
 Route::get('/develop', function () {
     return view('develop', ['lat' => 43.438338, 'lng' => -79.686901]);
 });
@@ -48,13 +50,16 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/feed', 'PagesController@feed');
     Route::get('/map', 'MapController@index');
     Route::get('/map/{country}', 'MapController@country');
-    Route::get('/map/{country}/{province}', 'MapController@province');
+    Route::get('/map/{country}/detail', 'MapController@countryDetail');
+    Route::get('/map/{country}/{province}', 'MapController@cluster');
     Route::get('/bytes/selectPlace/{byte}', 'ByteController@selectPlace');
     Route::post('/bytes/addPlace/{byte}', 'ByteController@addPlace');
     Route::post('/bytes/grab/{byte}', 'ByteController@grab');
     Route::get('/bytes/images', 'ByteController@images');
     Route::get('/bytes/images/country/{code}', 'ByteController@imagesCountry');
+    Route::get('/bytes/images/country/{country_code}/{province_code}', 'ByteController@imagesProvince');
     Route::get('/bytes/country/{code}', 'ByteController@country');
+    Route::get('/bytes/country/{country_code}/{province_code}', 'ByteController@province');
     Route::post('/bytes/{byte}/favorites', 'FavoriteController@store');
     Route::post('/bytes/{byte}/comment', 'CommentController@store');
     Route::resource('/bytes', 'ByteController');

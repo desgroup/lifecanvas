@@ -6,6 +6,7 @@ use App\Country;
 use App\Person;
 use App\Place;
 use App\Byte;
+use App\Province;
 use App\Timezone;
 use App\Lifecanvas\Utilities\FuzzyDate;
 use App\Lifecanvas\Utilities\ImageUtilities;
@@ -515,6 +516,29 @@ class ByteController extends Controller
         return view('byte.country', compact('bytes', 'byteCount', 'code', 'country'));
     }
 
+    public function province($country_code, $province_code)
+    {
+
+        $bytes = Auth::user()->myBytes()
+            ->whereHas('place', function ($query) use ($country_code, $province_code) {
+                $query->where([['country_code', $country_code], ['province', $province_code]]);
+            })
+            ->latest('byte_date')
+            ->paginate(40);
+
+        $byteCount = Auth::user()->myBytes()
+            ->whereHas('place', function ($query) use ($country_code, $province_code) {
+                $query->where([['country_code', $country_code], ['province', $province_code]]);
+            })->count();
+
+        $code = $country_code;
+
+        $country = Country::where('id', $country_code)->first();
+        $province = Province::where([['country_code', $country_code], ['province_code', $province_code]])->first();
+
+        return view('byte.province', compact('bytes', 'byteCount', 'code', 'country', 'province'));
+    }
+
     public function images()
     {
         $bytes = Auth::user()->myByteImages()->latest('byte_date')->paginate(50);
@@ -540,6 +564,27 @@ class ByteController extends Controller
         $country = Country::where('id', $code)->first();
 
         return view('byte.imagesCountry', compact('bytes', 'byteCount', 'code', 'country'));
+    }
+
+    public function imagesProvince($country_code, $province_code)
+    {
+        $bytes = Auth::user()->myBytes()
+            ->whereHas('place', function ($query) use ($country_code, $province_code) {
+                $query->where([['country_code', $country_code], ['province', $province_code]]);
+            })
+            ->latest('byte_date')
+            ->paginate(50);
+
+        $byteCount = Auth::user()->myBytes()
+            ->whereHas('place', function ($query) use ($country_code, $province_code) {
+                $query->where([['country_code', $country_code], ['province', $province_code]]);
+            })->count();
+
+        $code = $country_code;
+        $country = Country::where('id', $country_code)->first();
+        $province = Province::where([['country_code', $country_code], ['province_code', $province_code]])->first();
+
+        return view('byte.imagesProvince', compact('bytes', 'byteCount', 'code', 'country', 'province'));
     }
 
     public function grab(Byte $byte, Request $request)
