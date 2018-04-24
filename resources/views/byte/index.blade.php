@@ -1,7 +1,6 @@
 @extends('layouts.app2')
 
 @section('content')
-
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -67,14 +66,12 @@
         }
 
         .image-container {
-
             width: 100%;
             overflow: hidden;
             resize: both;
         }
         .image-container img {
             object-fit: contain;
-
             width: 100%;
         }
     </style>
