@@ -11,20 +11,20 @@
             <div class="col-12">
                 <div class="hidden-sm hidden-xs">
                     <hr class="mt-1 mb-1">
-                        <ul class="menu-box">
-                            <li class="menu-item">{{ $byteCount . " " . str_plural('lifebyte', $byteCount)}}</li>
-                            <li class="menu-item"><a href="/bytes"><i class="zmdi zmdi-view-list"></i> Timeline</a></li>
-                            <li class="menu-item"><a href="/bytes/images"><i class="zmdi zmdi-camera"></i> Images</a></li>
-                            <li class="menu-item"><a href="/map"><i class="zmdi zmdi-pin"></i> Map</a></li>
-                            <li class="menu-item"></li>
-                            <li class="menu-item"></li>
-                            <li class="menu-item"></li>
-                            <li class="menu-item"></li>
-                            <li class="menu-item"></li>
-                            <li class="menu-item"></li>
-                            <li class="menu-item"></li>
-                            <li class="menu-item"></li>
-                        </ul>
+                    <ul class="menu-box">
+                        <li class="menu-item">{{ $byteCount . " " . str_plural('lifebyte', $byteCount)}}</li>
+                        <li class="menu-item"><a href="/bytes"><i class="zmdi zmdi-view-list"></i> Timeline</a></li>
+                        <li class="menu-item"><a href="/bytes/images"><i class="zmdi zmdi-camera"></i> Images</a></li>
+                        <li class="menu-item"><a href="/map"><i class="zmdi zmdi-pin"></i> Map</a></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                        <li class="menu-item"></li>
+                    </ul>
                     <hr class="mt-1 mb-3">
                 </div>
             </div>
@@ -33,6 +33,17 @@
             <div class="col-lg-9">
                 <ul class="ms-timeline" id="items">
                     @foreach($bytes as $byte)
+                        @if(!is_null($byte->byte_date))
+                            @if($year != Carbon\Carbon::parse($byte->byte_date)->format('Y'))
+                                @php($year = Carbon\Carbon::parse($byte->byte_date)->format('Y'))
+                                @include('byte.partials.year')
+                            @endif
+                        @else
+                            @if($year != "Undated")
+                                @php($year = "Undated")
+                                @include('byte.partials.year')
+                            @endif
+                        @endif
                         @include('byte.partials.card')
                     @endforeach
                 </ul>

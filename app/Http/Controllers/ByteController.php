@@ -26,10 +26,11 @@ class ByteController extends Controller
     public function index()
     {
         //dd(Timezone::where('id', '=', 1)->first());
-        $bytes = Auth::user()->myBytes()->latest('byte_date')->paginate(10);
+        $bytes = Auth::user()->myBytes()->latest('byte_date')->paginate(100);
         $byteCount = Auth::user()->myBytes()->count();
+        $year = "";
 
-        return view('byte.index', compact('bytes', 'byteCount'));
+        return view('byte.index', compact('bytes', 'byteCount', 'year'));
     }
 
     /**
