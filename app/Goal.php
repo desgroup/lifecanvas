@@ -21,19 +21,25 @@ class Goal extends Model
         return $this->belongsTo('App\Asset');
     }
 
-    public function thumbnail()
+    public function thumbnail($user_id = NUll)
     {
-        return '/usr/' . $this->user_id . '/thumb/' . $this->asset->file_name;
+        $user_id = $user_id ?? $this->user_id;
+
+        return '/usr/' . $user_id . '/thumb/' . $this->asset->file_name;
     }
 
-    public function small()
+    public function small($user_id = NUll)
     {
-        return '/usr/' . $this->user_id . '/small/' . $this->asset->file_name;
+        $user_id = $user_id ?? $this->user_id;
+
+        return '/usr/' . $user_id . '/small/' . $this->asset->file_name;
     }
 
-    public function medium()
+    public function medium($user_id = NUll)
     {
-        return '/usr/' . $this->user_id . '/medium/' . $this->asset->file_name;
+        $user_id = $user_id ?? $this->user_id;
+
+        return '/usr/' . $user_id . '/medium/' . $this->asset->file_name;
     }
 
     public function bytes()

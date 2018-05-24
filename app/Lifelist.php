@@ -15,8 +15,6 @@ class Lifelist extends Model
 
     public function listImage ()
     {
-        return $this->with(['goals' => function ($query) {
-            $query->whereNotNull('asset_id')->orderBy('created_at', 'DESC');
-        }])->first();
+        return $this->goals()->whereNotNull('asset_id')->orderBy('created_at', 'DESC')->first();;
     }
 }

@@ -15,10 +15,10 @@
                                 <div class="card">
                                     <a href="/lists/{{ $list->id }}">
                                     <div class="image-container" style="display: flex; align-items: center; justify-content: center; background-color: #F2F2F2">
-                                        @if(true)
+                                        @if(is_null($list->listImage()))
                                             <i class="icon-byte-icon2" style="font-size: 100px; color: #87cb12; "></i>
                                         @else
-                                            <img src="{{ $list->listImage() }}" alt="" class="img-fluid">
+                                            <img src="{{ $list->listImage()->medium() }}" alt="" class="img-fluid">
                                         @endif
                                     </div>
                                     </a>

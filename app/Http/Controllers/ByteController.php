@@ -116,11 +116,11 @@ class ByteController extends Controller
 
         if (isset($image_data['timezone_id']) && !is_null($image_data['timezone_id'])) {
             $timeZone_id = $image_data['timezone_id'];
-//        } elseif (!is_null($request->place_id) && $request->place_id <> '00') {
-//            $timeZone = Place::where('id', '=', $request->place_id)->first()->timezone;
-//            if(!is_null($timeZone)) {
-//                $timeZone_id = $timeZone->id;
-//            }
+        } elseif (!is_null($request->place_id) && $request->place_id <> '00') {
+            $timeZone = Place::where('id', '=', $request->place_id)->first()->timezone;
+            if(!is_null($timeZone)) {
+                $timeZone_id = $timeZone->id;
+            }
         } else {
             if (!is_null($request->usertimezone)) {
                 $timeZone_id = Timezone::where('timezone_name', '=', $request->usertimezone)->first(['id'])->id;
