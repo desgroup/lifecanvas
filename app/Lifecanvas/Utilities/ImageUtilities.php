@@ -67,7 +67,7 @@ class ImageUtilities
                 $size = array_key_exists('GPSLongitude', $exif) ? $exif['FileSize'] / 1000 : NULL;
                 $height = $exif['COMPUTED']['Height'] ?? NULL;
                 $width = $exif['COMPUTED']['Width'] ?? NULL;
-                $date = $exif['DateTime'] ?? NULL;
+                $date = $exif['DateTimeOriginal'] ?? NULL;
 
                 // Build longitude and latitude data if available
                 if (array_key_exists('GPSLongitude', $exif)) {
